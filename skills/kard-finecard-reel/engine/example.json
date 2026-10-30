@@ -1,0 +1,480 @@
+{
+ "title": "Dream Painting Pikachu · Fine Card cut (example)",
+ "assets_dir": "../assets",
+ "sfx_dir": "../sfx",
+ "logo": "07_kard_logo.png",
+ "voiceover": "voiceover.mp3",
+ "pills": [
+  {
+   "text": "FOLLOW",
+   "at": 7.4,
+   "y": 1430
+  },
+  {
+   "text": "IN STOCK · KARD AVENUE",
+   "at": 52.32,
+   "hold": 2.6,
+   "y": 1430,
+   "size": 32
+  }
+ ],
+ "open_decisions": [],
+ "scenes": [
+  {
+   "beat": "Hook",
+   "dur": 6.741,
+   "vo": "Gambar-gambar Pikachu dari 30th Celebration ternyata ada figure blind box-nya?! Dan satu di antaranya Secret.",
+   "caption": "The 30th Celebration Pikachu art has a figure blind box?! And one is a Secret.",
+   "no_caption": true,
+   "visual": "Studio shot of the Sugimori figure on white, slow push-in; the hook types on top-left (sans + italic serif)",
+   "shots": [
+    {
+     "img": "03_figure_017_sugimori.png",
+     "plate": "white",
+     "fill": 0.62,
+     "y": 0.66,
+     "from": [
+      0.5,
+      0.58,
+      1.0
+     ],
+     "to": [
+      0.5,
+      0.6,
+      1.12
+     ],
+     "title": {
+      "text": "The 30th Celebration Pikachu art has a *figure blind box?!* And one is a *Secret.*",
+      "at": 0.3,
+      "per": 0.17,
+      "size": 74,
+      "y": 330
+     }
+    }
+   ]
+  },
+  {
+   "beat": "Origin",
+   "dur": 5.766,
+   "vo": "September 2026, untuk ulang tahun ke-30 Pokémon, Pokémon China merilis Dream Painting.",
+   "caption": "In Sept 2026, for Pokémon's 30th, Pokémon China released Dream Painting.",
+   "visual": "Box on a white studio sweep with a booster pack behind it on each side, slow push-in",
+   "shots": [
+    {
+     "img": "06b_box_with_packs.png",
+     "plate": "white",
+     "fill": 0.42,
+     "y": 0.47,
+     "keys": [
+      [
+       0,
+       0.5,
+       0.47,
+       1.0
+      ],
+      [
+       3.4596,
+       0.5,
+       0.47,
+       1.06
+      ],
+      [
+       5.766,
+       0.5,
+       0.465,
+       1.1
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "beat": "Detail",
+   "dur": 5.494,
+   "vo": "Set kartu 30th Celebration punya 30 Pikachu, dan tiap kartunya digambar ilustrator yang berbeda.",
+   "caption": "The 30th Celebration card set has 30 Pikachus, each drawn by a different artist.",
+   "visual": "Fast macro cuts across three Pikachu card artworks",
+   "shots": [
+    {
+     "img": "12_card_026.png",
+     "from": [
+      0.42,
+      0.285,
+      2.4
+     ],
+     "to": [
+      0.58,
+      0.285,
+      2.6
+     ],
+     "d": 1.47
+    },
+    {
+     "img": "16_card_034.png",
+     "from": [
+      0.58,
+      0.29,
+      2.6
+     ],
+     "to": [
+      0.42,
+      0.285,
+      2.4
+     ],
+     "d": 1.47
+    },
+    {
+     "img": "18_card_040.png",
+     "from": [
+      0.5,
+      0.27,
+      2.3
+     ],
+     "to": [
+      0.5,
+      0.3,
+      2.6
+     ]
+    }
+   ]
+  },
+  {
+   "beat": "Detail",
+   "dur": 5.465,
+   "vo": "Tiga belas di antaranya dibuat jadi figure, lengkap dengan kartu aslinya di setiap box.",
+   "caption": "Thirteen became figures, each one boxed with its card.",
+   "visual": "Three figures on white, one shot each with slow push",
+   "shots": [
+    {
+     "img": "03_figure_017_sugimori.png",
+     "plate": "white",
+     "fill": 0.9,
+     "y": 0.47,
+     "from": [
+      0.5,
+      0.47,
+      1.1
+     ],
+     "to": [
+      0.5,
+      0.46,
+      1.2200000000000002
+     ],
+     "d": 1.53
+    },
+    {
+     "img": "04_figure_041_nishida.png",
+     "plate": "white",
+     "fill": 0.9,
+     "y": 0.47,
+     "from": [
+      0.48,
+      0.47,
+      1.1500000000000001
+     ],
+     "to": [
+      0.52,
+      0.47,
+      1.27
+     ],
+     "d": 1.53
+    },
+    {
+     "img": "05_figure_031_yuu_nishida.png",
+     "plate": "white",
+     "fill": 0.9,
+     "y": 0.47,
+     "from": [
+      0.52,
+      0.47,
+      1.1500000000000001
+     ],
+     "to": [
+      0.48,
+      0.46,
+      1.27
+     ]
+    }
+   ]
+  },
+  {
+   "beat": "Detail",
+   "dur": 4.652,
+   "vo": "Salah satunya digambar Atsuko Nishida, orang yang pertama kali mendesain Pikachu.",
+   "caption": "One of them is by Atsuko Nishida, the person who first designed Pikachu.",
+   "visual": "Nishida's card, camera glides into the 'Illus. Atsuko Nishida · 041/103 · 25/30' credit",
+   "shots": [
+    {
+     "img": "10_card_041_nishida.png",
+     "plate": "blur",
+     "fill": 0.72,
+     "y": 0.42,
+     "keys": [
+      [
+       0,
+       0.5,
+       0.42,
+       1.0
+      ],
+      [
+       1.4,
+       0.5,
+       0.42,
+       1.06
+      ],
+      [
+       3.3,
+       0.25,
+       0.7,
+       2.5
+      ],
+      [
+       4.6,
+       0.25,
+       0.7,
+       2.6
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "beat": "Twist",
+   "dur": 4.794,
+   "vo": "Di sisi box-nya, figure Secret ini cuma ditandai tanda tanya. Isinya?",
+   "caption": "On the box, the Secret figure is just a question mark. What's inside?",
+   "visual": "Box on white, camera drifts into the side panel's '?' Secret silhouette (隐藏款)",
+   "shots": [
+    {
+     "img": "06_box.png",
+     "plate": "white",
+     "fill": 0.5,
+     "y": 0.5,
+     "keys": [
+      [
+       0.0,
+       0.5,
+       0.5,
+       1.0
+      ],
+      [
+       1.54,
+       0.5,
+       0.5,
+       1.08
+      ],
+      [
+       3.25,
+       0.638,
+       0.645,
+       4.0
+      ],
+      [
+       4.79,
+       0.638,
+       0.645,
+       4.3
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "beat": "Twist",
+   "dur": 2.665,
+   "vo": "Pikachu dari Base Set, set pertama Pokémon TCG.",
+   "caption": "Pikachu from Base Set, the very first Pokémon TCG set.",
+   "visual": "Card 136/103 comes into focus, then the Secret figure itself on white",
+   "shots": [
+    {
+     "img": "24_card_136_arita_pikachu.png",
+     "from": [
+      0.5,
+      0.45,
+      1.0
+     ],
+     "to": [
+      0.5,
+      0.43,
+      1.08
+     ],
+     "focus_in": 0.9,
+     "d": 1.3,
+     "sfx": [
+      [
+       0.2,
+       "shimmer",
+       0.6
+      ]
+     ]
+    },
+    {
+     "img": "01_figure_hidden_arita.png",
+     "plate": "white",
+     "fill": 0.9,
+     "y": 0.47,
+     "from": [
+      0.5,
+      0.47,
+      1.0
+     ],
+     "to": [
+      0.5,
+      0.45,
+      1.12
+     ]
+    }
+   ]
+  },
+  {
+   "beat": "Artist",
+   "dur": 3.955,
+   "vo": "Ilustrasinya karya legenda Pokémon TCG, Mitsuhiro Arita…",
+   "caption": "The art is by Pokémon TCG legend Mitsuhiro Arita…",
+   "visual": "Arita photo over a blurred card wall, name in Japanese + romaji",
+   "shots": [
+    {
+     "type": "person",
+     "img": "22_avatar_arita.png",
+     "bg": "24_card_136_arita_pikachu.png",
+     "name_jp": "有田満弘",
+     "name_en": "Mitsuhiro Arita"
+    }
+   ]
+  },
+  {
+   "beat": "Artist",
+   "dur": 3.997,
+   "vo": "…yang juga menggambar Charizard Base Set yang legendaris.",
+   "caption": "…who also drew the legendary Base Set Charizard.",
+   "visual": "Base Set Charizard inside a film-strip frame (archival look), slow pan",
+   "shots": [
+    {
+     "type": "film",
+     "img": "08_card_arita_charizard_base.png",
+     "from": [
+      0.5,
+      0.4,
+      1.0
+     ],
+     "to": [
+      0.5,
+      0.45,
+      1.15
+     ]
+    }
+   ]
+  },
+  {
+   "beat": "Proof",
+   "dur": 7.787,
+   "vo": "Rasio produksinya 143 banding 1. Artinya, rata-rata cuma ada satu figure Secret di setiap 144 box.",
+   "caption": "It's made at 143 to 1: on average, one Secret figure in every 144 boxes.",
+   "visual": "Split screen: card 136/103 art over the Secret figure; then the figure with a type-on '143 : 1'",
+   "shots": [
+    {
+     "type": "split",
+     "d": 3.3,
+     "top": {
+      "img": "24_card_136_arita_pikachu.png",
+      "from": [
+       0.5,
+       0.3,
+       1.5
+      ],
+      "to": [
+       0.5,
+       0.33,
+       1.7
+      ]
+     },
+     "bottom": {
+      "img": "01_figure_hidden_arita.png",
+      "plate": "white",
+      "fill": 0.8,
+      "y": 0.5,
+      "from": [
+       0.5,
+       0.47,
+       1.6
+      ],
+      "to": [
+       0.5,
+       0.47,
+       1.8
+      ]
+     }
+    },
+    {
+     "img": "01_figure_hidden_arita.png",
+     "plate": "white",
+     "fill": 0.7,
+     "y": 0.62,
+     "from": [
+      0.5,
+      0.6,
+      1.0
+     ],
+     "to": [
+      0.5,
+      0.6,
+      1.1
+     ],
+     "title": {
+      "text": "*143 : 1*",
+      "at": 0.2,
+      "per": 0.12,
+      "size": 150,
+      "y": 300,
+      "align": "center"
+     }
+    }
+   ]
+  },
+  {
+   "beat": "Payoff",
+   "dur": 3.944,
+   "vo": "Mau coba keberuntunganmu? Blind box Dream Painting sudah ready di Kard Avenue.",
+   "caption": "Feeling lucky? Dream Painting blind boxes are in stock at Kard Avenue.",
+   "visual": "Box on white, slow push; small red 'IN STOCK · KARD AVENUE' tag",
+   "shots": [
+    {
+     "img": "06_box.png",
+     "plate": "white",
+     "fill": 0.52,
+     "y": 0.47,
+     "from": [
+      0.5,
+      0.47,
+      1.05
+     ],
+     "to": [
+      0.5,
+      0.47,
+      1.2
+     ]
+    }
+   ]
+  },
+  {
+   "beat": "End card",
+   "dur": 4.492,
+   "vo": "Follow Kard Avenue buat update terbaru, dan download app-nya di Google Play dan App Store.",
+   "caption": "Follow Kard Avenue for the latest updates, and download the app on Google Play and the App Store.",
+   "no_caption": true,
+   "visual": "Fixed full-screen FOLLOW US! end card",
+   "shots": [
+    {
+     "type": "end",
+     "img": "23_end_card.png"
+    }
+   ]
+  }
+ ],
+ "stock_confirmed": true,
+ "forbidden_words": [
+  "TGA"
+ ],
+ "ig_handle": "@kardavenue",
+ "post_caption": "Keluar langsung dari kartunya 👀\n\n2026 Pokémon Simplified Chinese Dream Painting (绘梦点睛) 30th Anniversary Pikachu Figure Set — 12 regular + 1 Secret: Base Set Pikachu, illus. Mitsuhiro Arita (143:1)\n\nBlind box Dream Painting ready di @[Kard Avenue IG] · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #pokemon #pokemontcg #pokemonindonesia"
+}
