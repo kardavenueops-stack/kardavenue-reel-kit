@@ -9,7 +9,9 @@ A calm, premium, documentary-style Reel after @thefinecard: every shot fills the
 
 ## 0. Setup (once per chat)
 
-Everything is in this skill folder. From the skill root, the example runs as-is:
+The files come from the first of these that exists: (1) this skill's own folder, if it has `engine/` and `assets/`; (2) the GitHub repo `kardavenueops-stack/kardavenue-reel-kit` (attach it to the session and clone it), using `skills/kard-finecard-reel/` as the skill root; (3) the skill zip (`kard-finecard-reel.zip`) attached in chat; otherwise ask the user to attach the zip.
+
+Everything is in the skill folder. From the skill root, the example runs as-is:
 ```
 python3 engine/fc_reel.py engine/example.json check     # generates sfx/ on first run, must print OK
 ```

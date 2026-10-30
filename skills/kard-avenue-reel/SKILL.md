@@ -9,10 +9,12 @@ Produces a 9:16, 45–60s card-story Reel for Kard Avenue in the thefinecard sty
 
 ## 0. Load the house rules and engine (do this first, once per chat)
 
-The files come from one of two places. Use the first that exists:
+The files come from one of these places. Use the first that exists:
 
-1. **This skill's own folder** (the shareable package): `engine/`, `references/`, `assets/` next to this SKILL.md.
-2. **The claude.ai Project "VIDEO GENERATION"**, read with the Projects tool (`project_read`).
+1. **This skill's own folder**: `engine/`, `references/`, `assets/` next to this SKILL.md.
+2. **The GitHub repo `kardavenueops-stack/kardavenue-reel-kit`** (attach it to the session and clone it): use `skills/kard-avenue-reel/` as the skill folder.
+3. **The skill zip (`kard-avenue-reel.zip`) attached in chat.**
+4. **The claude.ai Project "VIDEO GENERATION"**, read with the Projects tool (`project_read`).
 
 | File (skill folder → project doc) | Save locally as |
 |---|---|
