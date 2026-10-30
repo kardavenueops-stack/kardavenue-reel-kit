@@ -25,7 +25,7 @@ The files come from one of these places. Use the first that exists:
 | `engine/example.json` → `claude/kard-reel-example-config.json` | `work/example.json` (pattern to copy) |
 | `references/reference-thefinecard-style.md` → `claude/reference-thefinecard-style.md` | read only — script structure reference |
 
-If neither source is available, ask the user to attach these files.
+If none of these is available, ask the user to attach the skill zip.
 
 **The playbook always wins.** Old script docs (`claude/video-NN-*.md`) are content records only (facts, lines, asset lists). Voice, register ("kamu"), format, layout and workflow always come from the playbook, even where an old doc says otherwise (e.g. Video 01's "Zandhira" voice and "lo"). If this SKILL.md and the playbook differ, follow the playbook.
 
