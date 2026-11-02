@@ -14,17 +14,17 @@ The files come from one of these places. Use the first that exists:
 1. **This skill's own folder**: `engine/`, `references/`, `assets/` next to this SKILL.md.
 2. **The GitHub repo `kardavenueops-stack/kardavenue-reel-kit`** (attach it to the session and clone it): use `skills/kard-avenue-reel/` as the skill folder.
 3. **The skill zip (`kard-avenue-reel.zip`) attached in chat.**
-4. **The claude.ai Project "VIDEO GENERATION"**, read with the Projects tool (`project_read`).
+4. **The claude.ai Project "KARD VIDEO GENERATIONS"**: only the playbook (`claude/kard-reel-playbook.md`) lives there. Never use an engine, config or sound script from the Project.
 
-| File (skill folder → project doc) | Save locally as |
+| File (skill folder) | Save locally as |
 |---|---|
-| `references/kard-reel-playbook.md` → `claude/kard-reel-playbook.md` | read only — all rules (layout, branding, script, sound, checklist) |
-| `engine/kard_reel.py` → `claude/kard-reel-renderer.py` | `work/kard_reel.py` |
-| `engine/editor_template.html` → `claude/kard-reel-editor-template.html` | `work/editor_template.html` |
+| `references/kard-reel-playbook.md` (also `claude/kard-reel-playbook.md` in the Project) | read only — all rules (layout, branding, script, sound, checklist) |
+| `engine/kard_reel.py` (v3.1) | `work/kard_reel.py` |
+| `engine/editor_template.html` | `work/editor_template.html` |
 | `assets/sfx/*.wav` (the user's sound pack) | copy into `work/sfx/` (no synthesized sounds; never run an old make_sfx.py) |
 | `engine/example_brand_mono_delta_reign.json` | `work/example.json` (**default pattern to copy**, approved Video 06 brand-mono 3D style) |
 | `engine/example_3d_illustration_contest.json` | reference only (Video 05) |
-| `references/reference-thefinecard-style.md` → `claude/reference-thefinecard-style.md` | read only — script structure reference |
+| `references/reference-thefinecard-style.md` | read only — script structure reference |
 
 If none of these is available, ask the user to attach the skill zip.
 
@@ -99,10 +99,10 @@ The MP4, the cover, the editor page (link or zip), the script doc and the post c
 - Content is centred, there's a ≥60px gap above the caption, headings sit midway between the logo and the cards, and nothing important goes below y≈1680.
 - Every card named in the voiceover gets its own big frame. Detail callouts zoom in. The artist scene shows the avatar alone.
 - Kard Avenue logo centred at the top on every scene except the end card (same size and position as on the FOLLOW US! poster). No draft tags in deliverables.
-- Transitions per playbook §14: whip pans and warm light leaks (0.25–0.45s); at most one white flash, no other coloured flashes.
+- Transitions per playbook §14 motion rules: whip pans and soft white light leaks (`leak_color`, §15), 0.25–0.45s; at most one white flash, no other coloured flashes.
 - Never stretch any card, pack or image; 3D tilts use true rotation. Cut white scan corners before use.
-- Keep the approved Video 05 v6 level of motion and drama (playbook §14) until the user updates it.
+- Keep the approved Video 06 "brand mono" style (playbook §15, with §14 motion) until the user updates it: black #0a0a0a / white #fafafa only, white captions, a moving `crowd` behind any empty scene, one scene per product.
 - Never draw Pokémon characters or store badges. Use the real card art and the official FOLLOW US! poster.
 - Always end on the FOLLOW US! poster (`end_card`, `23_follow_us_cta.jpg`). All text in Telegraf.
-- No music baked in; synthesized sound effects only.
+- No music baked in. Sound effects come only from the user's pack in `assets/sfx/` (sound map in playbook §15); no synthesized sounds.
 - Keep the chat token-efficient: one intake message, batched feedback, `clip` for single-scene fixes instead of full re-renders.
