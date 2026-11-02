@@ -44,6 +44,7 @@ SIDE_MARGIN = 30
 LOGO_W, LOGO_ALPHA = 370, 1.
 LOGO_POS = ((1080 - 370) // 2, 150)
 MIN_LEN, MAX_LEN = 45.0, 60.0
+PAPER, INK = (250, 250, 250), (10, 10, 10)   # Kard Avenue brand white #fafafa / black #0a0a0a
 YELLOW, PINK, RED, GREEN = (255, 216, 77), (255, 92, 170), (235, 45, 60), (40, 200, 110)
 def _find_font(name, *system_dirs):
     """Bundled fonts/ folder next to this script first, then common system locations."""
@@ -159,13 +160,13 @@ def put(c, name, cx, cy, h, angle=0, alpha=1., shadow=True, sweep=None, crop_fra
     if alpha > .5 and role != 'fx': FRAME_BOXES.append((role, x, y, x + s.width, y + s.height, h, bleed))
 
 @functools.lru_cache(None)
-def text_img(text, path, size, fill=(255, 255, 255), stroke=0):
+def text_img(text, path, size, fill=PAPER, stroke=0):
     f = font(path, size); bb = f.getbbox(text, stroke_width=stroke)
     im = Image.new('RGBA', (bb[2] - bb[0] + 4, bb[3] - bb[1] + 4), (0, 0, 0, 0))
     ImageDraw.Draw(im).text((2 - bb[0], 2 - bb[1]), text, font=f, fill=fill, stroke_width=stroke, stroke_fill=(10, 8, 20))
     return im
 
-def put_text(c, text, cx, cy, path=F_XB, size=48, fill=(255, 255, 255), stroke=0, alpha=1., scale=1., record=True):
+def put_text(c, text, cx, cy, path=F_XB, size=48, fill=PAPER, stroke=0, alpha=1., scale=1., record=True):
     im = text_img(text, path, size, fill, stroke)
     if scale != 1: im = im.resize((max(1, int(im.width * scale)), max(1, int(im.height * scale))), Image.LANCZOS)
     im = with_alpha(im, alpha); x, y = int(cx - im.width / 2), int(cy + OY - im.height / 2)
@@ -173,7 +174,7 @@ def put_text(c, text, cx, cy, path=F_XB, size=48, fill=(255, 255, 255), stroke=0
     if record and alpha > .5: FRAME_BOXES.append(('text', x, y, x + im.width, y + im.height, 0, False))
 
 @functools.lru_cache(None)
-def chip_img(text, bg=(255, 255, 255), fg=(15, 12, 30), size=40):
+def chip_img(text, bg=PAPER, fg=INK, size=40):
     f = font(F_BLACK, size); tw = f.getlength(text)
     im = Image.new('RGBA', (int(tw + size * 1.2), int(size * 1.7)), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
     d.rounded_rectangle([0, 0, im.width - 1, im.height - 1], im.height // 2, fill=bg)
@@ -221,7 +222,9 @@ def dim(c, a):
 def bg_base():
     bw, bh = W + 240, H + 240; yy, xx = np.mgrid[0:bh, 0:bw]
     r = np.clip(np.hypot((xx - bw * .5) / bw, (yy - bh * .38) / bh) * 1.6, 0, 1)
-    base = np.stack([lerp(42, 10, r), lerp(24, 8, r), lerp(70, 22, r)], -1)
+    bc = CFG.get('bg_color')
+    if bc: base = np.stack([lerp(bc[0][k], bc[1][k], r) for k in range(3)], -1)   # brand flat background: [centre, edge]
+    else: base = np.stack([lerp(42, 10, r), lerp(24, 8, r), lerp(70, 22, r)], -1)
     im = Image.fromarray(base.astype(np.uint8)).convert('RGBA')
     bgc = CFG.get('bg_image')
     if bgc:  # optional event backdrop: image cover-fit, heavily blurred, then darkened toward the navy gradient
@@ -363,14 +366,14 @@ def product_intro_keys(d, s): return [(min(2.2, d - .45), 'box + date')]
 # 4 ---------------------------------------------------------------- card_grid
 def card_grid(c, u, d, s):
     """cards: up to 9 images, 3 per row, fly in; collapses into `keep` (index) at the end if set."""
-    cards = s['cards']; rows = math.ceil(len(cards) / 3); h = s.get('card_h', 360); gap = h * 1.04
+    cards = s['cards']; NC = s.get('cols', 3); rows = math.ceil(len(cards) / NC); h = s.get('card_h', 360); gap = h * 1.04
     top = 760 - (rows - 1) * gap / 2; keep = s.get('keep'); co = eio(prog(u, d - .4, d)) if keep is not None else 0
     for i, name in enumerate(cards):
         sf = s.get('soft')
         pr = prog(u, .15 + i * sf, .15 + i * sf + .75) if sf else prog(u, .1 + i * .08, .45 + i * .08)
         if pr <= 0: continue
-        p = eo3(pr) if sf else eback(pr); col, row = i % 3, i // 3; n_in_row = min(3, len(cards) - row * 3)
-        tx = 540 + (col - (n_in_row - 1) / 2) * 300; ty = top + row * gap
+        p = eo3(pr) if sf else eback(pr); col, row = i % NC, i // NC; n_in_row = min(NC, len(cards) - row * NC)
+        tx = 540 + (col - (n_in_row - 1) / 2) * s.get('col_gap', 300); ty = top + row * gap
         tx, ty = lerp(tx, 540, co), lerp(ty, 760, co)
         if sf: put(c, name, tx, ty + 140 * (1 - p), h, alpha=p * (1 - co * (i != keep)))   # one by one: soft fade + rise
         else: put(c, name, lerp(540, tx, min(1, p)), lerp(2100, ty, min(1, p)), h, alpha=1 - co * (i != keep))
@@ -649,11 +652,11 @@ def slam(c, u, d, s):
     """Big word slams in (scale-down + shake), over dimmed grey cards. words: [..], cards: [imgs]."""
     for j, name in enumerate(s.get('cards', [])):
         x = 540 + (j - (len(s['cards']) - 1) / 2) * 300; put(c, name, x, 760 + 20 * math.sin(u * 2 + j), 400, angle=(j - 1) * 4, alpha=.55, role='fx')
-    c.alpha_composite(tint_layer((150, 10, 25), .55))
+    c.alpha_composite(tint_layer(tuple(CFG.get('slam_tint', (150, 10, 25))), .55))
     for j, w_ in enumerate(s['words']):
         t0 = s.get('at', .05) + j * .22; p = prog(u, t0, t0 + .16)
         fs = min(170, int(170 * 940 / max(1, font(F_BLACK, 170).getlength(w_))))
-        if p > 0: put_text(c, w_, 540, 700 + j * 190 - (len(s['words']) - 1) * 95, F_BLACK, int(lerp(fs * 1.5, fs, eo3(p))), fill=(255, 70, 80) if j == len(s['words']) - 1 else (255, 255, 255), stroke=10, alpha=p, record=False)
+        if p > 0: put_text(c, w_, 540, 700 + j * 190 - (len(s['words']) - 1) * 95, F_BLACK, int(lerp(fs * 1.5, fs, eo3(p))), fill=tuple(CFG.get('slam_color', (255, 70, 80))) if j == len(s['words']) - 1 else PAPER, stroke=10, alpha=p, record=False)
 
 def wall(c, u, d, s):
     """The 'top 300' wall: rows of blacked-out finalist cards scrolling on a tilted plane; counter; rapid ✗ stamps; AI glitch bursts."""
@@ -733,7 +736,8 @@ def scene_sfx(s):
                 seen.add(e[1])
             out.append(e)
         ev = out
-    return [e[:3] for e in ev]
+    ev = [e[:3] for e in ev] + [tuple(e) for e in s.get('sfx', [])]   # per-scene extra sounds: [[t, name, gain]]
+    return ev
 
 # ======================================================================
 # Timeline, captions, frames
@@ -775,7 +779,7 @@ def caption_plain(text, size):
     d = ImageDraw.Draw(im); ds = ImageDraw.Draw(sh)
     for i, ln in enumerate(lines):
         t = ' '.join(ln); x = (im.width - f.getlength(t)) / 2; y = 20 + i * lh
-        ds.text((x, y + 3), t, font=f, fill=200, stroke_width=3); d.text((x, y), t, font=f, fill=(255, 255, 255, 255))
+        ds.text((x, y + 3), t, font=f, fill=200, stroke_width=3); d.text((x, y), t, font=f, fill=PAPER + (255,))
     shadow = Image.new('RGBA', im.size, (0, 0, 0, 0)); shadow.putalpha(sh.filter(ImageFilter.GaussianBlur(6)))
     shadow.alpha_composite(im); return shadow
 
@@ -827,7 +831,7 @@ def scene_layer(i, t, u):
         end = bs[k + 1]['at'] if k + 1 < len(bs) else d
         if b['at'] <= u < end + .001:
             out = prog(u, end - .2, end) if k + 1 < len(bs) else 0
-            put_chip(c, b['text'], 540, b.get("y", 288 - OY), prog(u, b['at'], b['at'] + .3) * (1 - out), bg=YELLOW if b.get('hl') else (255, 255, 255), size=b.get('size', 34))
+            put_chip(c, b['text'], 540, b.get("y", 288 - OY), prog(u, b['at'], b['at'] + .3) * (1 - out), bg=(PAPER if CFG.get('mono_ui') else YELLOW) if b.get('hl') else PAPER, size=b.get('size', 34))
     return c
 
 @functools.lru_cache(None)
@@ -846,8 +850,35 @@ def tint_layer(rgb, strength):
     a = Image.fromarray((r * 255 * strength).astype(np.uint8)).resize((W, H), Image.BILINEAR)
     lay = Image.new('RGBA', (W, H), tuple(rgb) + (0,)); lay.putalpha(a); return lay
 
+@functools.lru_cache(maxsize=32)
+def crowd_strip(names, h, k, blur):
+    """One vertical column of cards for the moving crowd background (cached)."""
+    sp = int(h * 1.08); n = max(len(names), int(H * 2 / sp) + 2); n -= n % len(names) if n > len(names) else 0
+    n = max(n, int(H / sp) + 2); col = Image.new('RGBA', (int(h * .75) + 20, n * sp), (0, 0, 0, 0))
+    for j in range(n):
+        nm = names[(j * 3 + k * 5) % len(names)]; im = scaled(nm, h, 0, True)
+        col.alpha_composite(im, ((col.width - im.width) // 2, j * sp + (sp - h) // 2))
+    return col.filter(ImageFilter.GaussianBlur(blur)) if blur else col
+
+def crowd(c, s, t):
+    """Moving crowd of cards behind the scene: columns drift up/down in opposite directions, dimmed and soft."""
+    cr = s.get('crowd')
+    if not cr: return
+    names = tuple(cr['cards']); h = cr.get('h', 300); cols = cr.get('cols', 5); sp = W / (cols - 1)
+    lay = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    for k in range(cols + 1):
+        st = crowd_strip(names, h, k, cr.get('blur', 2)); dy = (t * cr.get('speed', 45) * (1 if k % 2 else -1) * (1 + .15 * (k % 3))) % st.height
+        x = int(-sp / 2 + k * sp - st.width / 2 + 20 * math.sin(t * .4 + k))
+        y = -dy
+        while y < H: paste_safe(lay, st, x, int(y)); y += st.height
+    lay = project_layer(lay, cr.get('tx', 0), cr.get('ty', .12), cover=True) if cr.get('tilt', True) else lay
+    c.alpha_composite(with_alpha(lay, cr.get('alpha', .3)))
+    vg = cr.get('vignette', .55)
+    if vg: c.alpha_composite(tint_layer((10, 10, 10), vg))
+
 def fx_layers(c, s, t, u):
     """Upbeat extras behind the scene: per-scene colour tint, slow rotating light rays, drifting confetti."""
+    crowd(c, s, t)
     tn = s.get('tint')
     if tn: c.alpha_composite(tint_layer(tuple(tn[:3]), tn[3] if len(tn) > 3 else .45))
     ry = CFG.get('rays')
@@ -869,7 +900,30 @@ def fx_layers(c, s, t, u):
 def leak_layer(k):
     a = k / 20; yy, xx = np.mgrid[0:H:8, 0:W:8]; r = np.hypot((xx - W * .75) / W, (yy - H * .3) / H)
     al = Image.fromarray((np.clip(1.1 - r * 1.3, 0, 1) * 235 * a).astype(np.uint8)).resize((W, H), Image.BILINEAR)
-    lay = Image.new('RGBA', (W, H), (255, 150, 40, 0)); lay.putalpha(al); return lay
+    lay = Image.new('RGBA', (W, H), tuple(CFG.get('leak_color', (255, 150, 40))) + (0,)); lay.putalpha(al); return lay
+
+@functools.lru_cache(maxsize=8)
+def flare_glow(rgb):
+    yy, xx = np.mgrid[0:H // 4, 0:W // 4].astype(float); r = np.hypot(xx - W / 8, yy - H / 8) / (W / 4)
+    g = Image.fromarray((np.clip(1 - r, 0, 1) ** 2.2 * 255).astype(np.uint8)).resize((W // 2 * 2, W // 2 * 2), Image.BILINEAR)
+    lay = Image.new('RGBA', g.size, tuple(rgb) + (0,)); lay.putalpha(g); return lay
+
+def flare(c, f, u):
+    """Warm anamorphic lens flare drifting across the frame (pairs with a fire whoosh). f: {t0, t1, color, y, strength}."""
+    t0, t1 = f.get('t0', 0), f.get('t1', 1.6); x = prog(u, t0, t1)
+    if x <= 0 or x >= 1: return c
+    env = math.sin(math.pi * x) ** 1.2 * f.get('strength', .9); col = tuple(f.get('color', (255, 140, 40)))
+    cx = lerp(-150, W + 150, eio(x)); cy = f.get('y', 620) + 60 * math.sin(x * 3)
+    lay = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    g = flare_glow(col); g = with_alpha(g, env); paste_safe(lay, g, int(cx - g.width / 2), int(cy - g.height / 2))
+    core = flare_glow((255, 240, 215)).resize((520, 520)); paste_safe(lay, with_alpha(core, min(1, env * 1.2)), int(cx - 260), int(cy - 260))
+    st = Image.new('L', (W, 40), 0); ImageDraw.Draw(st).rectangle([0, 12, W, 28], fill=int(min(255, 255 * env))); st = st.filter(ImageFilter.GaussianBlur(8))
+    sl = Image.new('RGBA', (W, 40), col + (0,)); sl.putalpha(st); paste_safe(lay, sl, 0, int(cy - 20))
+    for k, (o, r_) in enumerate([(.35, 70), (.6, 40), (.85, 110)]):   # ghost orbs along the flare axis
+        gx = lerp(cx, W - cx, o); gy = lerp(cy, H - cy, o * .5); orb = flare_glow(col).resize((r_ * 2, r_ * 2)); paste_safe(lay, with_alpha(orb, env * .5), int(gx - r_), int(gy - r_))
+    from PIL import ImageChops as IC
+    rgb = IC.screen(c.convert('RGB'), Image.alpha_composite(Image.new('RGBA', (W, H), (0, 0, 0, 255)), lay).convert('RGB'))
+    return rgb.convert('RGBA')
 
 def camera(c, s, u, t):
     """Whole-frame camera: punch-in settle at each cut, gentle handheld drift, light colour grade."""
@@ -917,6 +971,7 @@ def frame(t):
         if tr == 'leak':   # warm light-leak flare across the cut
             c.alpha_composite(leak_layer(int(math.sin(math.pi * mix) * 20)))
     c = camera(c, s, u, t)
+    if s.get('flare'): c = flare(c, s['flare'], u)
     if s.get('continue_caption'):
         prev = CFG['scenes'][i - 1]; cp = caption_for(prev, prev['dur'] - .01 + u, prev['dur'] + d)
         cp = (cp[0], -9, cp[2], d) if cp else None
@@ -1021,7 +1076,7 @@ def cmd_cover(out):
         title = ''.join(ch for ch in cv['title'] if ord(ch) < 0x2190).strip()   # fonts have no emoji
         f = font(F_BLACK, 96); lines = wrap(title, f, 900)
         if len(lines) > 1 and len(lines[-1]) == 1 and len(lines[-2]) > 1: lines[-1].insert(0, lines[-2].pop())   # no orphan word
-        for i, ln in enumerate(lines): put_text(c, ' '.join(ln), 540, 1560 - OY + i * 110 - (len(lines) - 1) * 55, F_BLACK, 96, fill=YELLOW, stroke=8)
+        for i, ln in enumerate(lines): put_text(c, ' '.join(ln), 540, 1560 - OY + i * 110 - (len(lines) - 1) * 55, F_BLACK, 96, fill=(PAPER if CFG.get('mono_ui') else YELLOW), stroke=8)
     logo(c); c.convert('RGB').save(out); print('cover', out)
 
 def cmd_check():

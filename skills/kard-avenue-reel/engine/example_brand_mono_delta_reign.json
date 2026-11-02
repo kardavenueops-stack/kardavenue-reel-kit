@@ -1,0 +1,1085 @@
+{
+ "title": "Video 06 — Delta Reign (EN) Reel",
+ "assets_dir": "assets",
+ "sfx_dir": "sfx",
+ "logo": "07_kard_logo.png",
+ "caption_mode": "chunks",
+ "chunk_words": 4,
+ "highlight_words": [],
+ "forbidden_words": [
+  "TGA"
+ ],
+ "sfx_gain": 0.6,
+ "sfx_style": "soft",
+ "xfade": 0.35,
+ "stock_confirmed": true,
+ "ig_handle": "",
+ "cover": {
+  "img": "01_mega_rayquaza_ex_sir_138_en.png",
+  "title": "Mega Rayquaza is back 🐉"
+ },
+ "open_decisions": [
+  "Approve final render"
+ ],
+ "bokeh": [
+  [
+   250,
+   250,
+   250
+  ],
+  [
+   150,
+   150,
+   150
+  ],
+  [
+   210,
+   210,
+   210
+  ]
+ ],
+ "highlight_sfx_once": true,
+ "camera": {
+  "punch": 0.03,
+  "punch_t": 0.5,
+  "breathe": 0.01,
+  "drift": 4,
+  "base": 1.02,
+  "grade": {
+   "sat": 1.1,
+   "contrast": 1.08
+  }
+ },
+ "badge_sfx": "shutter",
+ "cut_sfx": "swoosh",
+ "caption_style": "plain",
+ "caption_size": 50,
+ "voiceover": "vo_final.wav",
+ "post_caption": "Mega Rayquaza is back 🐉\n\n2026 Pokémon Mega Evolution Delta Reign Mega Rayquaza ex Special Illustration Rare — illus. Kazuki Minami\n\nStorm Emeralda (versi Jepang Delta Reign) ready di @[Kard Avenue IG] · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #pokemon #pokemontcg #pokemonindonesia",
+ "scenes": [
+  {
+   "beat": "Hook",
+   "vo": "Delta Reign is coming!",
+   "caption": "Delta Reign is coming!",
+   "type": "macro3d",
+   "dur": 1.64,
+   "img": "01_mega_rayquaza_ex_sir_138_en.png",
+   "dof": 10,
+   "focus": {
+    "axis": "y",
+    "at": 0.38,
+    "width": 0.45
+   },
+   "from": {
+    "fx": 0.31,
+    "fy": 0.32,
+    "h": 3350,
+    "rot": -1.2,
+    "tx": 0.05,
+    "ty": 0.07
+   },
+   "to": {
+    "fx": 0.33,
+    "fy": 0.305,
+    "h": 3500,
+    "rot": -0.4,
+    "tx": 0.035,
+    "ty": 0.075
+   },
+   "sfx": [
+    [
+     0,
+     "fire_long",
+     0.45
+    ]
+   ],
+   "vo_window": [
+    0.21,
+    1.52
+   ],
+   "flare": {
+    "t0": 0,
+    "t1": 1.9,
+    "y": 560,
+    "strength": 1.2
+   }
+  },
+  {
+   "beat": "Hook",
+   "type": "hero_stamp",
+   "dur": 2.96,
+   "img": "02_mega_rayquaza_ex_sar_110_jp.png",
+   "h": 880,
+   "reflect": true,
+   "trans": "leak",
+   "xfade_in": 0.6,
+   "badges": [
+    {
+     "text": "ALREADY OUT IN JAPAN",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.05,
+     "reveal",
+     0.8
+    ]
+   ],
+   "vo": "Tapi kartu-kartunya, sudah bisa kamu pegang dari sekarang.",
+   "caption": "But its cards are already here.",
+   "vo_window": [
+    0.12,
+    2.66
+   ]
+  },
+  {
+   "beat": "Origin",
+   "vo": "Rilis 6 November 2026, ini set keenam dari seri Mega Evolution.",
+   "caption": "Out Nov 6, 2026, the sixth Mega Evolution set.",
+   "type": "macro3d",
+   "dur": 4.65,
+   "img": "06_booster_box.png",
+   "cover": false,
+   "dof": 7,
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 1050,
+    "rot": -5,
+    "tx": -0.18,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 1150,
+    "rot": 3,
+    "tx": 0.15,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "06.11.2026",
+     "at": 0.3,
+     "hl": true
+    },
+    {
+     "text": "MEGA EVOLUTION · SET 6",
+     "at": 0.7
+    }
+   ],
+   "sfx": [
+    [
+     0.2,
+     "metal_whoosh",
+     0.5
+    ]
+   ],
+   "vo_window": [
+    0.32,
+    4.38
+   ]
+  },
+  {
+   "beat": "Answer",
+   "type": "macro3d",
+   "dur": 2.22,
+   "img": "01_mega_rayquaza_ex_sir_138_en.png",
+   "dof": 10,
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "focus": {
+    "axis": "y",
+    "at": 0.5,
+    "width": 0.45
+   },
+   "from": {
+    "fx": 0.3,
+    "fy": 0.66,
+    "h": 2500,
+    "rot": 2,
+    "tx": 0.1,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.7,
+    "fy": 0.64,
+    "h": 2700,
+    "rot": -1,
+    "tx": -0.06,
+    "ty": 0.07
+   },
+   "badges": [
+    {
+     "text": "DELTA REIGN · EN · NOV 6",
+     "at": 0.2,
+     "hl": true
+    }
+   ],
+   "vo": "Delta Reign adalah versi Inggris",
+   "caption": "Delta Reign is the English version",
+   "vo_window": [
+    0.29,
+    2.12
+   ]
+  },
+  {
+   "beat": "Answer",
+   "type": "macro3d",
+   "dur": 2.83,
+   "img": "02_mega_rayquaza_ex_sar_110_jp.png",
+   "dof": 10,
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "focus": {
+    "axis": "y",
+    "at": 0.5,
+    "width": 0.45
+   },
+   "from": {
+    "fx": 0.3,
+    "fy": 0.62,
+    "h": 2500,
+    "rot": 2,
+    "tx": 0.1,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.7,
+    "fy": 0.6,
+    "h": 2700,
+    "rot": -1,
+    "tx": -0.06,
+    "ty": 0.07
+   },
+   "badges": [
+    {
+     "text": "STORM EMERALDA · JP · JULY",
+     "at": 0.2,
+     "hl": true
+    }
+   ],
+   "vo": "dari set Jepang Storm Emeralda, yang sudah rilis sejak Juli.",
+   "caption": "of Japan's Storm Emeralda, out since July.",
+   "vo_window": [
+    0.1,
+    2.41
+   ]
+  },
+  {
+   "beat": "Detail",
+   "vo": "Lebih dari 135 kartu, dengan empat Mega ex: Rayquaza, Golisopod, Golurk, dan Malamar.",
+   "caption": "135+ cards and four Mega ex: Rayquaza, Golisopod, Golurk and Malamar.",
+   "type": "card_grid",
+   "dur": 6.55,
+   "card_h": 480,
+   "soft": 0.3,
+   "cards": [
+    "set_30_ME06_EN_84.png",
+    "set_23_ME06_EN_11.png",
+    "set_25_ME06_EN_47.png",
+    "set_27_ME06_EN_69.png"
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "badges": [
+    {
+     "text": "135+ CARDS",
+     "at": 0.4
+    },
+    {
+     "text": "4 MEGA ex",
+     "at": 0.98,
+     "hl": true
+    }
+   ],
+   "cols": 2,
+   "col_gap": 375,
+   "crowd": {
+    "cards": [
+     "set_01_003-Masquerain.png",
+     "set_02_me06-en-012-819x1114-179006610.png",
+     "set_03_me06-en-013-819x1114-179006610.png",
+     "set_04_me06-en-014-819x1114-179006610.png",
+     "set_09_033-Raikou-ex.png",
+     "set_10_Pincurchin-Delta-Reign.png",
+     "set_11_055-Nidoran.png",
+     "set_18_104-Masquerain.png",
+     "set_21_Pincurchin-Mega-Evolution-Delt.png",
+     "set_22_hGhtjYgbqrkL5aJpDk5vWU-819-80_.png",
+     "set_23_ME06_EN_11.png",
+     "set_24_ME06_EN_23_webp.png",
+     "set_25_ME06_EN_47.png",
+     "set_26_ME06_EN_53_webp.png",
+     "set_27_ME06_EN_69.png",
+     "set_28_ME06_EN_75_webp.png",
+     "set_29_ME06_EN_79_webp.png",
+     "set_30_ME06_EN_84.png",
+     "set_31_ME06_EN_103_webp.png",
+     "set_32_ME06_EN_96.png",
+     "set_33_ME06_EN_97.png",
+     "set_34_114-Eevee.png"
+    ],
+    "h": 300,
+    "cols": 5,
+    "alpha": 0.32,
+    "speed": 50,
+    "blur": 1.5
+   },
+   "vo_window": [
+    0.49,
+    6.34
+   ]
+  },
+  {
+   "beat": "Artist",
+   "vo": "Kartu paling dicari?",
+   "caption": "Top chase?",
+   "type": "slam",
+   "dur": 1.05,
+   "words": [
+    "TOP",
+    "CHASE"
+   ],
+   "at": 0.1,
+   "cards": [
+    "set_23_ME06_EN_11.png",
+    "01_mega_rayquaza_ex_sir_138_en.png",
+    "set_27_ME06_EN_69.png"
+   ],
+   "shake": 1,
+   "shake_at": 0.3,
+   "trans": "whip",
+   "xfade_in": 0.25,
+   "sfx": [
+    [
+     0.1,
+     "fire",
+     0.7
+    ]
+   ],
+   "crowd": {
+    "cards": [
+     "set_01_003-Masquerain.png",
+     "set_02_me06-en-012-819x1114-179006610.png",
+     "set_03_me06-en-013-819x1114-179006610.png",
+     "set_04_me06-en-014-819x1114-179006610.png",
+     "set_09_033-Raikou-ex.png",
+     "set_10_Pincurchin-Delta-Reign.png",
+     "set_11_055-Nidoran.png",
+     "set_18_104-Masquerain.png",
+     "set_21_Pincurchin-Mega-Evolution-Delt.png",
+     "set_22_hGhtjYgbqrkL5aJpDk5vWU-819-80_.png",
+     "set_23_ME06_EN_11.png",
+     "set_24_ME06_EN_23_webp.png",
+     "set_25_ME06_EN_47.png",
+     "set_26_ME06_EN_53_webp.png",
+     "set_27_ME06_EN_69.png",
+     "set_28_ME06_EN_75_webp.png",
+     "set_29_ME06_EN_79_webp.png",
+     "set_30_ME06_EN_84.png",
+     "set_31_ME06_EN_103_webp.png",
+     "set_32_ME06_EN_96.png",
+     "set_33_ME06_EN_97.png",
+     "set_34_114-Eevee.png"
+    ],
+    "h": 300,
+    "cols": 5,
+    "alpha": 0.4,
+    "speed": 90,
+    "blur": 1.5
+   },
+   "vo_window": [
+    0.21,
+    0.9
+   ]
+  },
+  {
+   "beat": "Artist",
+   "type": "macro3d",
+   "dur": 3.3,
+   "img": "01_mega_rayquaza_ex_sir_138_en.png",
+   "dof": 14,
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "focus": {
+    "axis": "x",
+    "at": 0.5,
+    "width": 0.45
+   },
+   "from": {
+    "fx": 0.36,
+    "fy": 0.3,
+    "h": 3400,
+    "rot": 4,
+    "tx": -0.12,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.44,
+    "fy": 0.3,
+    "h": 4000,
+    "rot": 1,
+    "tx": -0.05,
+    "ty": 0.07
+   },
+   "badges": [
+    {
+     "text": "ILLUS. KAZUKI MINAMI",
+     "at": 0.39749999999999996,
+     "hl": true
+    }
+   ],
+   "vo": "Mega Rayquaza ex SIR ini, karya Kazuki Minami,",
+   "caption": "This Mega Rayquaza ex SIR by Kazuki Minami,",
+   "vo_window": [
+    0.32,
+    3.15
+   ]
+  },
+  {
+   "beat": "Artist",
+   "type": "hero_stamp",
+   "dur": 2.2,
+   "img": "01_mega_rayquaza_ex_sir_138_en.png",
+   "h": 880,
+   "reflect": true,
+   "trans": "whip",
+   "xfade_in": 0.45,
+   "badges": [
+    {
+     "text": "2024 ILLUSTRATION CONTEST WINNER",
+     "at": 0.2,
+     "hl": true
+    }
+   ],
+   "vo": "juara Illustration Contest 2024.",
+   "caption": "winner of the 2024 Illustration Contest.",
+   "vo_window": [
+    0.16,
+    1.93
+   ]
+  },
+  {
+   "beat": "Artist 2",
+   "vo": "Chase keduanya, Raikou ex SIR, digambar oleh Oku.",
+   "caption": "Second chase: the Raikou ex SIR, by Oku.",
+   "type": "macro3d",
+   "dur": 3.75,
+   "img": "set_22_hGhtjYgbqrkL5aJpDk5vWU-819-80_.png",
+   "dof": 8,
+   "trans": "whip",
+   "xfade_in": 0.35,
+   "focus": {
+    "axis": "x",
+    "at": 0.35,
+    "at1": 0.62,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.4,
+    "fy": 0.27,
+    "h": 3000,
+    "rot": 3,
+    "tx": 0.14,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.6,
+    "fy": 0.26,
+    "h": 3200,
+    "rot": -1,
+    "tx": -0.06,
+    "ty": 0.07
+   },
+   "badges": [
+    {
+     "text": "ILLUS. OKU",
+     "at": 0.5,
+     "hl": true
+    }
+   ],
+   "vo_window": [
+    0.26,
+    3.4
+   ]
+  },
+  {
+   "beat": "Products",
+   "type": "macro3d",
+   "dur": 3.15,
+   "img": "06_booster_box.png",
+   "cover": false,
+   "dof": 6,
+   "trans": "leak",
+   "xfade_in": 0.3,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 1050,
+    "rot": -5,
+    "tx": -0.18,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 1155.0,
+    "rot": 3,
+    "tx": 0.15,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "BOOSTER BOX · 36 PACKS",
+     "at": 0.15,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.1,
+     "coin",
+     0.5
+    ]
+   ],
+   "vo": "Pilihannya ada tiga: booster box isi 36 pack,",
+   "caption": "Three options. Booster box · 36 packs",
+   "vo_window": [
+    0.35,
+    2.87
+   ]
+  },
+  {
+   "beat": "Products",
+   "type": "macro3d",
+   "dur": 1.45,
+   "img": "20_booster_packs.png",
+   "cover": false,
+   "dof": 6,
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 760,
+    "rot": -5,
+    "tx": -0.18,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 830,
+    "rot": 3,
+    "tx": 0.15,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "BOOSTER BUNDLE · 6 PACKS",
+     "at": 0.15,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.1,
+     "coin",
+     0.5
+    ]
+   ],
+   "vo": "booster bundle isi 6 pack,",
+   "caption": "Booster bundle · 6 packs",
+   "vo_window": [
+    0.11,
+    1.31
+   ]
+  },
+  {
+   "beat": "Products",
+   "type": "macro3d",
+   "dur": 1.35,
+   "img": "06b_etb.png",
+   "cover": false,
+   "dof": 6,
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 740,
+    "rot": -5,
+    "tx": -0.18,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 810,
+    "rot": 3,
+    "tx": 0.15,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "ELITE TRAINER BOX",
+     "at": 0.15,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.1,
+     "coin",
+     0.5
+    ]
+   ],
+   "vo": "dan Elite Trainer Box.",
+   "caption": "Elite Trainer Box",
+   "vo_window": [
+    0.14,
+    1.13
+   ]
+  },
+  {
+   "beat": "What's inside",
+   "type": "macro3d",
+   "dur": 1.0,
+   "img": "06c_etb_contents.png",
+   "cover": false,
+   "dof": 5,
+   "trans": "leak",
+   "xfade_in": 0.35,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 640,
+    "rot": -5,
+    "tx": -0.2,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 716.8000000000001,
+    "rot": 4,
+    "tx": 0.18,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "WHAT'S INSIDE",
+     "at": 0.05,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.05,
+     "shutter",
+     0.4
+    ]
+   ],
+   "vo": "Di dalam ETB ada",
+   "caption": "Inside the ETB:",
+   "vo_window": [
+    0.24,
+    0.95
+   ]
+  },
+  {
+   "beat": "What's inside",
+   "type": "macro3d",
+   "dur": 1.15,
+   "img": "24_etb_packs.png",
+   "cover": false,
+   "dof": 5,
+   "trans": "whip",
+   "xfade_in": 0.2,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 700,
+    "rot": -5,
+    "tx": -0.2,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 784.0000000000001,
+    "rot": 4,
+    "tx": 0.18,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "9 BOOSTER PACKS",
+     "at": 0.05,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.05,
+     "shutter",
+     0.4
+    ]
+   ],
+   "vo": "9 booster pack,",
+   "caption": "9 booster packs",
+   "vo_window": [
+    0.03,
+    0.96
+   ]
+  },
+  {
+   "beat": "What's inside",
+   "type": "macro3d",
+   "dur": 2.55,
+   "img": "26_sleeves.png",
+   "cover": false,
+   "dof": 5,
+   "trans": "whip",
+   "xfade_in": 0.2,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 700,
+    "rot": -5,
+    "tx": -0.2,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 784.0000000000001,
+    "rot": 4,
+    "tx": 0.18,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "65 SLEEVES · 40 ENERGY",
+     "at": 0.05,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.05,
+     "shutter",
+     0.4
+    ]
+   ],
+   "vo": "65 sleeve, 40 kartu energi,",
+   "caption": "65 sleeves · 40 Energy",
+   "vo_window": [
+    0.2,
+    2.38
+   ]
+  },
+  {
+   "beat": "What's inside",
+   "type": "macro3d",
+   "dur": 1.07,
+   "img": "27_dice_coin.png",
+   "cover": false,
+   "dof": 5,
+   "trans": "whip",
+   "xfade_in": 0.2,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 560,
+    "rot": -5,
+    "tx": -0.2,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 627.2,
+    "rot": 4,
+    "tx": 0.18,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "DICE + COIN",
+     "at": 0.05,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.05,
+     "shutter",
+     0.4
+    ]
+   ],
+   "vo": "dadu,",
+   "caption": "Dice",
+   "vo_window": [
+    0.16,
+    0.59
+   ]
+  },
+  {
+   "beat": "What's inside",
+   "type": "macro3d",
+   "dur": 1.23,
+   "img": "06b_etb.png",
+   "cover": false,
+   "dof": 5,
+   "trans": "whip",
+   "xfade_in": 0.2,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 700,
+    "rot": -5,
+    "tx": -0.2,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 784.0000000000001,
+    "rot": 4,
+    "tx": 0.18,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "STORAGE BOX",
+     "at": 0.05,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.05,
+     "shutter",
+     0.4
+    ]
+   ],
+   "vo": "storage box,",
+   "caption": "Storage box",
+   "vo_window": [
+    0.14,
+    0.81
+   ]
+  },
+  {
+   "beat": "What's inside",
+   "type": "macro3d",
+   "dur": 0.75,
+   "img": "25_kyogre_promo.png",
+   "cover": false,
+   "dof": 5,
+   "trans": "whip",
+   "xfade_in": 0.2,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 900,
+    "rot": -5,
+    "tx": -0.2,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 1008.0000000000001,
+    "rot": 4,
+    "tx": 0.18,
+    "ty": 0.03
+   },
+   "badges": [
+    {
+     "text": "FULL-ART KYOGRE PROMO",
+     "at": 0.05,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0.05,
+     "reveal",
+     0.6
+    ]
+   ],
+   "vo": "dan promo full art",
+   "caption": "and a full-art Kyogre promo",
+   "vo_window": [
+    0.07,
+    1.71
+   ]
+  },
+  {
+   "beat": "What's inside",
+   "type": "macro3d",
+   "dur": 1.35,
+   "img": "25_kyogre_promo.png",
+   "dof": 10,
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "focus": {
+    "axis": "x",
+    "at": 0.35,
+    "at1": 0.6,
+    "width": 0.45
+   },
+   "from": {
+    "fx": 0.28,
+    "fy": 0.24,
+    "h": 2300,
+    "rot": 3,
+    "tx": 0.12,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.42,
+    "fy": 0.22,
+    "h": 2600,
+    "rot": -1,
+    "tx": -0.05,
+    "ty": 0.07
+   },
+   "badges": [
+    {
+     "text": "FULL-ART KYOGRE PROMO",
+     "at": 0,
+     "hl": true
+    }
+   ],
+   "vo": "Kyogre.",
+   "vo_window": [
+    0.57,
+    0.96
+   ],
+   "continue_caption": true
+  },
+  {
+   "beat": "Payoff",
+   "vo": "Delta Reign belum masuk, tapi Storm Emeralda, versi Jepangnya, sudah ready di Kard Avenue.",
+   "caption": "Delta Reign isn't here yet, but Storm Emeralda is in stock at Kard Avenue.",
+   "type": "hero_stamp",
+   "dur": 5.04,
+   "img": "02_mega_rayquaza_ex_sar_110_jp.png",
+   "h": 880,
+   "reflect": true,
+   "trans": "whip",
+   "xfade_in": 0.35,
+   "badges": [
+    {
+     "text": "STORM EMERALDA · READY STOCK",
+     "at": 0.756,
+     "hl": true
+    }
+   ],
+   "vo_window": [
+    0.36,
+    4.72
+   ]
+  },
+  {
+   "beat": "End card",
+   "vo": "Follow Kard Avenue untuk cerita kartu lainnya, dan download aplikasinya sekarang.",
+   "caption": "Follow Kard Avenue for more card stories, and download the app now.",
+   "type": "end_card",
+   "dur": 4.08,
+   "img": "23_follow_us_cta.jpg",
+   "punch": 0.4,
+   "vo_window": [
+    0.31,
+    3.53
+   ]
+  }
+ ],
+ "bg_color": [
+  [
+   26,
+   26,
+   26
+  ],
+  [
+   10,
+   10,
+   10
+  ]
+ ],
+ "mono_ui": true,
+ "slam_tint": [
+  20,
+  20,
+  20
+ ],
+ "slam_color": [
+  250,
+  250,
+  250
+ ],
+ "leak_color": [
+  255,
+  236,
+  210
+ ],
+ "voiceover_offset": 0
+}

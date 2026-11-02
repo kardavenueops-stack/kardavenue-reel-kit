@@ -267,3 +267,48 @@ Approved 29 Oct 2026 on Video 05 (Illustration Contest 2024). Every new reel sta
 **Performance:** macro3d renders straight from the source scan in one warp (~0.4s/frame); a 53s reel renders in ~8–10 min. Use `clip` for single-scene reviews.
 
 **Asset wish list (improves this style most):** scans ≥2000px tall (close-ups enlarge 4–6×), phone footage of a hand tilting each card/pack over a dark table, screen recordings of official results pages. Never use others' event photos without rights.
+
+
+## 15. APPROVED DEFAULT STYLE — Video 06 Delta Reign "brand mono" (engine v3.1), approved 2 Nov 2026
+Supersedes §14 colours and sounds; all §14 motion rules still apply.
+
+### Engine v3.1: new features and config keys
+
+| Key | Where | What it does |
+|---|---|---|
+| `"bg_color": [[26,26,26],[10,10,10]]` | global | Flat brand background (centre → edge). #0a0a0a black. Replaces the navy gradient. |
+| `"bokeh": [[250,250,250],[150,150,150],[210,210,210]]` | global | Neutral soft light spots (no colour). |
+| `"mono_ui": true` | global | Highlight badges and the cover title use #fafafa instead of yellow. |
+| `PAPER` / `INK` constants | engine | #fafafa / #0a0a0a used for all text, chips and captions (chip = #fafafa bg, #0a0a0a text). |
+| `"slam_tint": [20,20,20]`, `"slam_color": [250,250,250]` | global | Slam scene: dark tint + white words (no red). |
+| `"leak_color": [255,236,210]` | global | Light-leak transition colour (soft white, not orange). |
+| `"cols": 2`, `"col_gap": 375` | `card_grid` | 2×2 (or any column count) grids. Used for the 4 Mega ex. |
+| `"crowd": {cards, h, cols, alpha, speed, blur, tilt}` | any scene | **Moving crowd of cards** behind the scene: columns drift up/down in opposite directions on a slight tilt, dimmed. Fixes "empty / boring" scenes. Negative `speed` reverses direction. |
+| `"flare": {t0, t1, y, strength, color}` | any scene | Warm anamorphic lens flare sweeping across (glow + streak + ghost orbs). Paired with the fire whoosh at the start. |
+| `"sfx": [[t, "name", gain]]` | any scene | Extra per-scene sounds (e.g. `fire_long` on the hook, `reveal` on a card reveal, `coin` on products). |
+
+### Sound map (user's pack → engine names)
+
+| Engine name | Source file | Used for |
+|---|---|---|
+| `swoosh` | whoosh-1.mp3 | Scene cuts (`cut_sfx`), card moves |
+| `shutter` (also `tap`) | camera-shutter-dslrr.mp3 | Every badge (`badge_sfx`), grid cards landing |
+| `coin` (also `drop`) | coin_1.mp3 | Products / pack counts |
+| `fire` (also `impact`) | fire-whoosh.mp3 | Slam ("TOP CHASE") |
+| `fire_long` | fire-whooshing.mp3 | Hook macro (fire art) |
+| `reveal` | magic-reveal-audio.mp3 | Big card reveal, Kyogre promo |
+| `metal_whoosh` | ambient-metal-whoosh-2.mp3 | Box turntable |
+| `sent`, `bit8` | mail-sent.mp3, 8-bit-sound.mp3 | Not used yet |
+
+### Playbook additions (new §15: Video 06 style, approved 2 Nov 2026)
+
+- **Colours:** Kard Avenue essentials only: black #0a0a0a background, white #fafafa for all text, badges and captions. Captions white only (no highlight colours). Colour comes from the card art.
+- **Never leave a scene empty:** grids, slams and simple hero shots get a moving `crowd` of real set cards behind them.
+- **Products:** one scene per product (3D turntable, `cover: false`), each with its own caption and label, never one combined layout.
+- **"What's inside" montage:** one quick 3D-turntable shot per item, in the same order as the voiceover, ending on the promo card with a close-up pan. Add short pauses in the VO between items so it isn't rushed.
+- **Comparing two versions of a card:** use slow text pans (macro3d across the printed text), English first, then the other language.
+- **Hook:** slow, relaxed push-in on the Pokémon's face (small zoom, almost no rotation, wide focus band), with a lens flare matched to the opening sound.
+- **Captions:** one caption per shot, split so each line matches what is on screen (never let a long line spill across several shots via `continue_caption` chains).
+- **Voiceover over 60s:** shorten silent gaps (never speed up the voice), keep ~0.1s between phrases.
+- **Timing without a transcription tool:** use `ffmpeg silencedetect` (n=-32dB, d=0.07–0.12) to find phrase boundaries, then set each scene's start and `vo_window` to the phrase it shows.
+

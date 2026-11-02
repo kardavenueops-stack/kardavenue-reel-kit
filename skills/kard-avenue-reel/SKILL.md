@@ -21,14 +21,14 @@ The files come from one of these places. Use the first that exists:
 | `references/kard-reel-playbook.md` → `claude/kard-reel-playbook.md` | read only — all rules (layout, branding, script, sound, checklist) |
 | `engine/kard_reel.py` → `claude/kard-reel-renderer.py` | `work/kard_reel.py` |
 | `engine/editor_template.html` → `claude/kard-reel-editor-template.html` | `work/editor_template.html` |
-| `engine/make_sfx.py` → `claude/kard-reel-sfx.py` | `work/make_sfx.py` → run it inside `work/sfx/` to create the 10 wav files |
-| `engine/example_3d_illustration_contest.json` → `claude/kard-reel-example-3d-config.json` | `work/example_3d.json` (**default pattern to copy**, approved 3D style) |
-| `engine/example.json` → `claude/kard-reel-example-config.json` | `work/example.json` (older flat style, reference only) |
+| `assets/sfx/*.wav` (the user's sound pack) | copy into `work/sfx/` (no synthesized sounds; never run an old make_sfx.py) |
+| `engine/example_brand_mono_delta_reign.json` | `work/example.json` (**default pattern to copy**, approved Video 06 brand-mono 3D style) |
+| `engine/example_3d_illustration_contest.json` | reference only (Video 05) |
 | `references/reference-thefinecard-style.md` → `claude/reference-thefinecard-style.md` | read only — script structure reference |
 
 If none of these is available, ask the user to attach the skill zip.
 
-**Default style (approved, keep until the user says otherwise):** the Video 05 v6 "3D thefinecard" style in playbook §14, built from `engine/example_3d_illustration_contest.json` (engine v3). Start every new reel from that example.
+**Default style (approved, keep until the user says otherwise):** the Video 06 "brand mono" style in playbook §15 (Video 05 3D look + Kard Avenue black #0a0a0a / white #fafafa, moving card crowds, lens flare, the user's sound pack), built from `engine/example_brand_mono_delta_reign.json` (engine v3.1). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
 
 **The playbook always wins.** Old script docs (`claude/video-NN-*.md`) are content records only (facts, lines, asset lists). Voice, register ("kamu"), format, layout and workflow always come from the playbook, even where an old doc says otherwise (e.g. Video 01's "Zandhira" voice and "lo"). If this SKILL.md and the playbook differ, follow the playbook.
 
@@ -71,7 +71,7 @@ The workspace cannot download from TCGplayer, TCG Collector, X or Google Images.
 
 ## 3. Build → check-in 2
 
-1. Copy `example_3d_illustration_contest.json` (default style, playbook §14) and point `assets_dir` and `sfx_dir` at the right folders. Pick scene types from the playbook §11 table and fill in the fields.
+1. Copy `example_brand_mono_delta_reign.json` (default style, playbook §15) and point `assets_dir` and `sfx_dir` at the right folders. Pick scene types from the playbook §11 table and fill in the fields.
 2. `python3 kard_reel.py reel.json check` must print **OK**. Fix captions or durations until it does; never skip it.
 3. `python3 kard_reel.py reel.json stills stills.png`. The sheet shows each scene's **key moments** (reveal, zoom, highlight…), labelled. Look at it yourself, then send it to the user. **Stop for approval.** Collect all feedback in one batch.
 
