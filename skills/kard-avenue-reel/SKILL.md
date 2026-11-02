@@ -22,10 +22,13 @@ The files come from one of these places. Use the first that exists:
 | `engine/kard_reel.py` → `claude/kard-reel-renderer.py` | `work/kard_reel.py` |
 | `engine/editor_template.html` → `claude/kard-reel-editor-template.html` | `work/editor_template.html` |
 | `engine/make_sfx.py` → `claude/kard-reel-sfx.py` | `work/make_sfx.py` → run it inside `work/sfx/` to create the 10 wav files |
-| `engine/example.json` → `claude/kard-reel-example-config.json` | `work/example.json` (pattern to copy) |
+| `engine/example_3d_illustration_contest.json` → `claude/kard-reel-example-3d-config.json` | `work/example_3d.json` (**default pattern to copy**, approved 3D style) |
+| `engine/example.json` → `claude/kard-reel-example-config.json` | `work/example.json` (older flat style, reference only) |
 | `references/reference-thefinecard-style.md` → `claude/reference-thefinecard-style.md` | read only — script structure reference |
 
 If none of these is available, ask the user to attach the skill zip.
+
+**Default style (approved, keep until the user says otherwise):** the Video 05 v6 "3D thefinecard" style in playbook §14, built from `engine/example_3d_illustration_contest.json` (engine v3). Start every new reel from that example.
 
 **The playbook always wins.** Old script docs (`claude/video-NN-*.md`) are content records only (facts, lines, asset lists). Voice, register ("kamu"), format, layout and workflow always come from the playbook, even where an old doc says otherwise (e.g. Video 01's "Zandhira" voice and "lo"). If this SKILL.md and the playbook differ, follow the playbook.
 
@@ -68,7 +71,7 @@ The workspace cannot download from TCGplayer, TCG Collector, X or Google Images.
 
 ## 3. Build → check-in 2
 
-1. Copy `example.json` and point `assets_dir` and `sfx_dir` at the right folders. Pick scene types from the playbook §11 table and fill in the fields.
+1. Copy `example_3d_illustration_contest.json` (default style, playbook §14) and point `assets_dir` and `sfx_dir` at the right folders. Pick scene types from the playbook §11 table and fill in the fields.
 2. `python3 kard_reel.py reel.json check` must print **OK**. Fix captions or durations until it does; never skip it.
 3. `python3 kard_reel.py reel.json stills stills.png`. The sheet shows each scene's **key moments** (reveal, zoom, highlight…), labelled. Look at it yourself, then send it to the user. **Stop for approval.** Collect all feedback in one batch.
 
@@ -95,8 +98,10 @@ The MP4, the cover, the editor page (link or zip), the script doc and the post c
 
 - Content is centred, there's a ≥60px gap above the caption, headings sit midway between the logo and the cards, and nothing important goes below y≈1680.
 - Every card named in the voiceover gets its own big frame. Detail callouts zoom in. The artist scene shows the avatar alone.
-- Kard Avenue logo top-left on every scene except the end card. No draft tags in deliverables.
-- Smooth 0.4–0.6s transitions, at most one white flash (the reveal), no coloured flashes.
+- Kard Avenue logo centred at the top on every scene except the end card (same size and position as on the FOLLOW US! poster). No draft tags in deliverables.
+- Transitions per playbook §14: whip pans and warm light leaks (0.25–0.45s); at most one white flash, no other coloured flashes.
+- Never stretch any card, pack or image; 3D tilts use true rotation. Cut white scan corners before use.
+- Keep the approved Video 05 v6 level of motion and drama (playbook §14) until the user updates it.
 - Never draw Pokémon characters or store badges. Use the real card art and the official FOLLOW US! poster.
 - Always end on the FOLLOW US! poster (`end_card`, `23_follow_us_cta.jpg`). All text in Telegraf.
 - No music baked in; synthesized sound effects only.

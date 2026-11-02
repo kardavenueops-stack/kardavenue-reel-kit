@@ -85,7 +85,10 @@ Example config: `claude/kard-reel-example-config.json` (the Chinese Sylveon reel
 
 ## 5. Branding
 
-- **Kard Avenue logo** (white, transparent PNG) **top-left** on every scene: x 60, y 120, width 300, 85% opacity.
+- **Kard Avenue logo** (white, transparent PNG) **centred at the top** on every scene, same size and position as the logo on the FOLLOW US! poster: width 370, y 150, 100% opacity.
+- **Badges** (`badges: [{text, at, hl}]` on any scene) pop in midway between the logo and the cards; yellow when `hl` is true.
+- **Caption panel** (`caption_bg: true`) puts a dark rounded panel behind the caption; use it on full-frame zooms and b-roll.
+- Content offset OY 120, caption centre y 1560.
 - **Hidden on the end card**, because the promo image has its own logo.
 - **No draft tags or watermarks** in anything delivered (no "DRAFT v…").
 - **End card (call to action) = always the Kard Avenue "FOLLOW US!" poster** (`23_follow_us_cta.jpg`: logo, "FOLLOW US! / TO GET THE LATEST KARD AVENUE'S UPDATE.", "AUTHENTIC. GUARANTEED.", phone showing @kardavenue, App Store + Google Play badges). Every video ends with it, shown full-bleed (9:16) with a slow push-in. No burned-in caption and no logo overlay on it; the voiceover still plays.
@@ -203,6 +206,7 @@ A video is **one JSON config**: global settings + a list of scenes. Claude copie
 | `featured_cards` | Each card full-size, then fan | `cards:[{img,label}]`, `heading` |
 | `stat_chart` | PSA pop bars + counter + highlight | `bars`, `total`, `source`, `highlight:{at,lines}` |
 | `cta_product` | Product + stamp (READY STOCK) | `img`, `stamp_text` |
+| `broll` | Opener: one slow, steady left-to-right pan across the card, soft fade in (≈2s, carries the start of the hook line) | `img`, `pan:{fx0, fx1, fy, h}`, `caption_bg: true` |
 | `end_card` | Closing call to action, every video (full-bleed FOLLOW US! poster, no caption burned in) | `img: 23_follow_us_cta.jpg` |
 
 Every scene also has `dur`, `beat`, `vo` (Bahasa, "kamu") and `caption` (EN). Use `continue_caption: true` to hold the previous caption across a scene. Global options:
@@ -228,3 +232,38 @@ Every scene also has `dur`, `beat`, `vo` (Bahasa, "kamu") and `caption` (EN). Us
 - **A series format** ("Cuma ada di China #1, #2…") reuses the same engine with new assets.
 - **Batch production:** prepare 3–5 scripts at once, then render them in one session.
 - **Own footage when possible** (hands tilting the real card) beats scans for trust, since Kard Avenue's brand is authentication.
+
+
+## 13. Motion & sound defaults (from Video 04 feedback)
+- **Scene transitions:** every cut is a 0.45s dissolve (`"xfade": 0.45`). Logo stays fixed on top and fades out only into the end card.
+- **Captions:** fade + small rise in (0.28s), quick fade out when the next chunk comes. No scale pop.
+- **Sound:** `"sfx_style": "soft"`, `"sfx_gain": 0.5`. A light sound on every card motion, nothing when nothing moves: `swoosh` (airy) when a card arrives, sweeps or a zoom starts; `tap` (soft card tap) for each card flying into a grid or the circle callout; `drop` (water drop) when a badge, tag or avatar appears. No riser, impact, shimmer, stamp or ding.
+- **B-roll opener:** a simple, slow left-to-right pan (`pan: {fx0: .36, fx1: .64, fy: .42, h: 2600}`), never jumpy multi-shot close-ups. It keeps moving under a longer 0.9s dissolve into the full card (`"xfade_in": 0.9` on the next scene).
+- **Artist photo:** never stretched. Square crop with the face kept whole (`avatar_crop: [cx, top, size]` as fractions; default is a centred square from the top).
+
+## 14. APPROVED DEFAULT STYLE — Video 05 v6 "3D thefinecard" (engine v3) — keep until the user says otherwise
+Approved 29 Oct 2026 on Video 05 (Illustration Contest 2024). Every new reel starts from `engine/example_3d_illustration_contest.json` and keeps this level of motion, drama and finish unless the user asks for a change.
+
+**Look**
+- Dark navy background (no `bg_image`), warm bokeh: `"bokeh": [[255,170,80],[120,90,220],[255,90,140]]`.
+- `"camera": {"punch": .03, "punch_t": .5, "breathe": .01, "drift": 4, "base": 1.02, "grade": {"sat": 1.1, "contrast": 1.08}}` — small zoom-settle on every cut, gentle handheld drift, light colour grade. Never dizzying.
+- Captions: `"caption_style": "plain"`, `"caption_size": 50`, `"chunk_words": 4` — small plain white, soft shadow, no panel, no yellow words.
+- `"xfade": .35`. Per-scene `"trans": "whip"` (motion-blur slide, `xfade_in` .25–.35) or `"leak"` (warm orange light leak, `xfade_in` .45). Mix them; don't use the same one twice in a row.
+- Sound: `sfx_style: soft`, `badge_sfx: "pop"`, `cut_sfx: "swoosh"`, `sfx_gain` ~.55, `highlight_sfx_once: true` (circle/tag highlight sound only the first time).
+- **Never stretch anything.** All 3D uses true rotation (proportions kept). Full-bleed close-ups scale evenly to cover; objects shown whole use `"cover": false`.
+- Card scans: cut the white scan corners to transparent PNG before use (flood-fill from corners).
+
+**Scene types added in v3**
+| Type | Use | Key fields |
+|---|---|---|
+| `macro3d` | Tilted 3D close-up of a card/pack with depth of field; the camera keeps moving | `img`, `from`/`to`: `{fx, fy, h, rot, tx, ty}` (tx/ty = yaw/pitch, ±.2 max), `focus: {axis: x|y, at, at1 (rack focus), width}`, `dof` (px), `cover` (false = whole object, e.g. pack turntable) |
+| `slam` | Drama hit: big words slam in with shake over dim cards + red tint | `words: ["BUT THEN…", "DRAMA"]`, `cards`, `at`, `shake: 1`, `shake_at` |
+| `wall` | "Many entries" beat: blacked-out cards on a tilted wall, counter, rapid ✗ stamps, glitch bursts | `cards`, `counter`, `count_end`, `x_at`, `x_step`, `x_tiles` (keep in the middle rows), `tilt`, `scroll`, `glitch: [[t0,t1],…]` (short, ≤.15s each) |
+
+**Options added to existing scenes:** `hero_stamp` `reflect: true` + `h` (glossy floor reflection); `card_grid` `soft: .45` (items fade/rise in one by one); `reveal_zoom` `zoom.pan: .07` (slow left→right drift while zoomed); any scene `mono: true` / `mono_at` (desaturate), `tint: [r,g,b,a]`, `shake`, `glitch`, `punch`. Global: `float` (idle bob), `confetti`, `rays`, `bg_image` exist but are OFF in this style.
+
+**Approved Video 05 structure (pattern to reuse):** macro3d hook (face) → whip → reflect hero + badge → leak → macro3d detail stamp → whip → macro3d tilt-down art → grid (facts as badges) → slam "BUT THEN… DRAMA" → wall (counter / ✗ / glitch) → leak → reflect hero (winner) → whip → macro3d with badge → whip → macro3d rack-focus pan (card 2) → whip → macro3d swing (card 3) → leak → macro3d pack turntable (`cover: false`) with date badges → soft one-by-one grid payoff → end card.
+
+**Performance:** macro3d renders straight from the source scan in one warp (~0.4s/frame); a 53s reel renders in ~8–10 min. Use `clip` for single-scene reviews.
+
+**Asset wish list (improves this style most):** scans ≥2000px tall (close-ups enlarge 4–6×), phone footage of a hand tilting each card/pack over a dark table, screen recordings of official results pages. Never use others' event photos without rights.

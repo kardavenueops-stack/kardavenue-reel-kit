@@ -13,11 +13,12 @@ Everything another Claude needs to make Kard Avenue card-story Reels: 9:16, 45â€
 | `SKILL.md` | The skill: workflow, check-ins, hard rules |
 | `references/kard-reel-playbook.md` | House rules: format, script, layout, branding, assets, motion, sound, checklist, engine commands |
 | `references/reference-thefinecard-style.md` | Script structure and voice reference |
-| `engine/kard_reel.py` | Renderer (v2.1): `check`, `stills` (key moments), `clip` (partial render), `render`, `cover`, `script`, `page`, `frame`, `caption` |
+| `engine/kard_reel.py` | Renderer (v3, adds the approved 3D style: macro3d, slam, wall, whip/leak, reflect, glitch, camera): `check`, `stills` (key moments), `clip` (partial render), `render`, `cover`, `script`, `page`, `frame`, `caption` |
 | `engine/fonts/` | Telegraf (brand font for all video text), Inter Bold (stills labels) and DejaVu Sans Mono (typed date). Keep next to `kard_reel.py` |
 | `engine/editor_template.html` | Review page with per-scene notes (published by `page`) |
 | `engine/make_sfx.py` | Generates the 10 sound-effect WAVs (run it inside an empty `sfx/` folder) |
-| `engine/example.json` | Example config (Chinese Sylveon reel) to copy |
+| `engine/example_3d_illustration_contest.json` | **Default** example config: Video 05 v6, approved 3D style |
+| `engine/example.json` | Older flat-style example (Chinese Sylveon reel) |
 | `assets/` | Brand files: `07_kard_logo.png`, `23_follow_us_cta.jpg` (add them if missing) |
 
 ## Requirements

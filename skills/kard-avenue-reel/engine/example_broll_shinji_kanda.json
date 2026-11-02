@@ -1,0 +1,361 @@
+{
+ "title": "Shinji Kanda Reel",
+ "assets_dir": "../assets",
+ "sfx_dir": "sfx",
+ "logo": "07_kard_logo.png",
+ "caption_mode": "chunks",
+ "chunk_words": 6,
+ "highlight_words": [
+  "Shinji",
+  "Kanda",
+  "Shinji Tax",
+  "Giratina",
+  "Magmar",
+  "Magneton",
+  "Pikachu",
+  "Kyoto"
+ ],
+ "forbidden_words": [
+  "TGA"
+ ],
+ "voiceover": "vo.wav",
+ "voiceover_offset": 0,
+ "sfx_gain": 0.5,
+ "bg": {
+  "center": [
+   40,
+   26,
+   72
+  ],
+  "edge": [
+   8,
+   10,
+   22
+  ],
+  "bokeh": [
+   [
+    120,
+    70,
+    200
+   ],
+   [
+    40,
+    170,
+    180
+   ],
+   [
+    200,
+    60,
+    90
+   ],
+   [
+    255,
+    200,
+    90
+   ]
+  ]
+ },
+ "stock_confirmed": true,
+ "ig_handle": "",
+ "cover": {
+  "img": "01_giratina_v_aa.png",
+  "title": "The \"Shinji Tax\""
+ },
+ "open_decisions": [
+  "Approve stills",
+  "Approve final render"
+ ],
+ "scenes": [
+  {
+   "type": "broll",
+   "beat": "Hook b-roll",
+   "img": "01_giratina_v_aa.png",
+   "dur": 2.0,
+   "vo_window": [
+    0.05,
+    2.0
+   ],
+   "vo": "Kartu Giratina ini salah satu kartu paling ikonik",
+   "caption": "One of the most iconic cards",
+   "caption_bg": true,
+   "pan": {
+    "fx0": 0.36,
+    "fx1": 0.64,
+    "fy": 0.42,
+    "h": 2600
+   }
+  },
+  {
+   "type": "hero_stamp",
+   "beat": "Hook",
+   "img": "01_giratina_v_aa.png",
+   "badges": [
+    {
+     "text": "GIRATINA V · LOST ORIGIN",
+     "at": 0.3
+    }
+   ],
+   "vo": "di era Sword and Shield.",
+   "caption": "of the Sword & Shield era.",
+   "dur": 3.85,
+   "vo_window": [
+    0,
+    3.55
+   ],
+   "xfade_in": 0.9
+  },
+  {
+   "type": "card_grid",
+   "beat": "Hook turn",
+   "cards": [
+    "01_giratina_v_aa.png",
+    "11_magikarp_ir.png",
+    "03_magneton_svp159.png",
+    "13_seismitoad_ir.png",
+    "14_oricorio.png",
+    "12_roaring_moon_ex.png"
+   ],
+   "card_h": 380,
+   "vo": "Tapi pelukisnya jauh lebih menarik.",
+   "caption": "But the artist behind it is even more interesting.",
+   "dur": 2.5,
+   "vo_window": [
+    0.22,
+    1.97
+   ]
+  },
+  {
+   "type": "artist",
+   "beat": "Origin",
+   "avatar": "22_kanda_avatar.png",
+   "name": "SHINJI KANDA",
+   "role": "ILLUSTRATOR",
+   "handle": "BORN 1986 · KYOTO, JAPAN",
+   "vo": "Namanya Shinji Kanda. Lahir tahun seribu sembilan ratus delapan puluh enam di Kyoto, Jepang.",
+   "caption": "Meet Shinji Kanda. Born in 1986 in Kyoto, Japan.",
+   "dur": 5.75,
+   "vo_window": [
+    0.26,
+    5.15
+   ],
+   "avatar_crop": [
+    0.49,
+    0.02,
+    0.72
+   ]
+  },
+  {
+   "type": "reveal_zoom",
+   "beat": "Detail",
+   "img": "02_magmar_brs.png",
+   "zoom": {
+    "fx": 0.5,
+    "fy": 0.25,
+    "tag": "COLORED PENCIL ON PLASTIC",
+    "zoom_h": 1500
+   },
+   "zoom_at": 2.6,
+   "badges": [
+    {
+     "text": "HIS FIRST CARD · 2022",
+     "at": 0.5,
+     "hl": true
+    }
+   ],
+   "caption_bg": true,
+   "vo": "Kartu pertamanya, Magmar, digambar pakai pensil warna di atas plastik,",
+   "caption": "His first card, Magmar, was drawn in colored pencil on plastic,",
+   "dur": 5.25,
+   "vo_window": [
+    0.32,
+    4.93
+   ]
+  },
+  {
+   "type": "reveal_zoom",
+   "beat": "Detail",
+   "img": "02_magmar_brs.png",
+   "zoom": {
+    "fx": 0.5,
+    "fy": 0.25,
+    "zoom_h": 1500
+   },
+   "zoom_at": -0.6,
+   "badges": [
+    {
+     "text": "HEATED UNTIL IT SHRANK",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "caption_bg": true,
+   "vo": "lalu dipanaskan sampai menyusut.",
+   "caption": "then heated until the plastic shrank.",
+   "dur": 2.75,
+   "vo_window": [
+    0.27,
+    2.01
+   ]
+  },
+  {
+   "type": "reveal_zoom",
+   "beat": "Twist",
+   "img": "03_magneton_svp159.png",
+   "zoom": {
+    "fx": 0.5,
+    "fy": 0.33,
+    "tag": "CRUMPLED FOIL, SCANNED",
+    "zoom_h": 1800
+   },
+   "zoom_at": 2.4,
+   "caption_bg": true,
+   "vo": "Kartu Magneton-nya? Teksturnya dari aluminium foil yang diremas, lalu di-scan.",
+   "caption": "His Magneton? Its texture came from crumpled aluminum foil, scanned.",
+   "dur": 5.6,
+   "vo_window": [
+    0.36,
+    5.17
+   ]
+  },
+  {
+   "type": "featured_cards",
+   "beat": "Proof",
+   "cards": [
+    {
+     "img": "01_giratina_v_aa.png"
+    },
+    {
+     "img": "11_magikarp_ir.png"
+    },
+    {
+     "img": "12_roaring_moon_ex.png"
+    }
+   ],
+   "vo": "Karyanya yang paling diburu: Giratina V, Magikarp, dan Roaring Moon ex.",
+   "caption": "His most wanted: Giratina V, Magikarp, and Roaring Moon ex.",
+   "dur": 6.3,
+   "vo_window": [
+    0.3,
+    5.88
+   ],
+   "badges": [
+    {
+     "text": "GIRATINA V",
+     "at": 0.3,
+     "hl": true
+    },
+    {
+     "text": "MAGIKARP",
+     "at": 2.4,
+     "hl": true
+    },
+    {
+     "text": "ROARING MOON ex",
+     "at": 4.5,
+     "hl": true
+    }
+   ]
+  },
+  {
+   "type": "hero_stamp",
+   "beat": "Proof",
+   "img": "11_magikarp_ir.png",
+   "h": 900,
+   "badges": [
+    {
+     "text": "THE \"SHINJI TAX\"",
+     "at": 0.4,
+     "hl": true
+    }
+   ],
+   "vo": "Kolektor sampai punya istilah \"Shinji Tax\": harga ekstra untuk kartu apa pun yang dia gambar.",
+   "caption": "Collectors call it the \"Shinji Tax\": a premium on any card he draws.",
+   "dur": 6.35,
+   "vo_window": [
+    0.27,
+    5.92
+   ]
+  },
+  {
+   "type": "card_grid",
+   "beat": "Payoff",
+   "cards": [
+    "01_giratina_v_aa.png",
+    "11_magikarp_ir.png",
+    "03_magneton_svp159.png",
+    "14_oricorio.png",
+    "13_seismitoad_ir.png",
+    "15_galarian_moltres.png"
+   ],
+   "card_h": 380,
+   "badges": [
+    {
+     "text": "IN STOCK AT KARD AVENUE",
+     "at": 0.6,
+     "hl": true
+    }
+   ],
+   "vo": "Dan kabar baiknya, banyak kartunya ready di Kard Avenue.",
+   "caption": "Good news: lots of his cards are in stock at Kard Avenue.",
+   "dur": 4.2,
+   "vo_window": [
+    0.29,
+    3.64
+   ]
+  },
+  {
+   "type": "artist",
+   "beat": "Artist",
+   "avatar": "22_kanda_avatar.png",
+   "name": "SHINJI KANDA",
+   "role": "GALLERY ARTIST · KYOTO",
+   "handle": "@kandashinji",
+   "vo": "Di luar Pokémon, dia pelukis galeri yang rutin pameran tunggal di Kyoto.",
+   "caption": "Beyond Pokémon, he is a gallery artist with regular solo shows in Kyoto.",
+   "dur": 4.95,
+   "vo_window": [
+    0.43,
+    4.41
+   ],
+   "avatar_crop": [
+    0.49,
+    0.02,
+    0.72
+   ]
+  },
+  {
+   "type": "hero_stamp",
+   "beat": "Fun fact",
+   "img": "16_pikachu_30th.png",
+   "badges": [
+    {
+     "text": "30th CELEBRATION · 034/103",
+     "at": 0.4,
+     "hl": true
+    }
+   ],
+   "vo": "Dan dia juga menggambar Pikachu untuk set ulang tahun ketiga puluh Pokémon.",
+   "caption": "He also drew Pikachu for Pokémon's 30th Celebration set.",
+   "dur": 4.1,
+   "vo_window": [
+    0.32,
+    3.53
+   ]
+  },
+  {
+   "type": "end_card",
+   "beat": "End card",
+   "img": "23_follow_us_cta.jpg",
+   "vo": "Follow Kard Avenue untuk cerita kartu lainnya, dan download aplikasinya sekarang.",
+   "caption": "Follow Kard Avenue for more card stories, and download the app now.",
+   "dur": 5.68,
+   "vo_window": [
+    0.37,
+    5.24
+   ]
+  }
+ ],
+ "post_caption": "Kenapa semua kartu yang digambar Shinji Kanda jadi incaran kolektor? 🎨\n\nGiratina V Alt Art, Magikarp IR, Magneton, Oricorio ex, Seismitoad, Galarian Moltres, Roaring Moon ex & Pikachu 30th Celebration — illus. Shinji Kanda (@kandashinji)\n\nBanyak kartunya ready di Kard Avenue!\n\nFollow @[Kard Avenue IG] · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #pokemon #pokemontcg #pokemonindonesia #shinjikanda #pokemonart",
+ "sfx_style": "soft",
+ "xfade": 0.45
+}

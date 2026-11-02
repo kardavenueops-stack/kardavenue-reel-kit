@@ -76,3 +76,18 @@ for _ in range(14):
     x[m]+=np.sin(2*np.pi*f*(tt[m]-s))*np.exp(-(tt[m]-s)*9)*rng.uniform(.3,1)
 save('shimmer.wav',norm(x*np.sin(np.pi*tt/d),0.45))
 print(sorted(os.listdir('.')))
+
+# ---- soft set (sfx_style: "soft") ----
+# swoosh: airy, low-passed breath of noise, slow swell, no hard edges
+d=.8; tt=t(d); nz=rng.standard_normal(len(tt))
+x=lp(hp(lp(nz,500+1300*np.sin(np.pi*tt/d)**2),180),2500)*np.sin(np.pi*tt/d)**2.5
+save('swoosh.wav',norm(x,0.22))
+# drop: water drop, quick upward pitch glide, soft round body, tiny tail
+d=.45; tt=t(d); f=380+900*(1-np.exp(-tt*45))
+body=np.sin(2*np.pi*np.cumsum(f)/SR)*np.exp(-tt*16)*np.minimum(1,tt*300)
+tail=np.sin(2*np.pi*np.cumsum(f*1.5)/SR)*np.exp(-tt*28)*.15
+save('drop.wav',norm(lp(body+tail,3500),0.3))
+# tap: light, rounded card tap (soft click, low level)
+d=.18; tt=t(d)
+x=lp(rng.standard_normal(len(tt)),2200)*np.exp(-tt*70)*.6+np.sin(2*np.pi*700*tt)*np.exp(-tt*45)*.5
+save('tap.wav',norm(x*np.minimum(1,tt*900),0.2))

@@ -1,0 +1,554 @@
+{
+ "title": "Illustration Contest 2024 Reel (3D style, approved v6)",
+ "assets_dir": "assets",
+ "sfx_dir": "sfx",
+ "logo": "07_kard_logo.png",
+ "caption_mode": "chunks",
+ "chunk_words": 4,
+ "highlight_words": [
+  "Pikachu",
+  "Kazuki",
+  "Minami",
+  "Acorviart",
+  "Anderson",
+  "Feraligatr",
+  "Toxtricity",
+  "10,000",
+  "AI"
+ ],
+ "forbidden_words": [
+  "TGA"
+ ],
+ "voiceover": "vo3.wav",
+ "voiceover_offset": 0,
+ "sfx_gain": 0.55,
+ "sfx_style": "soft",
+ "xfade": 0.35,
+ "stock_confirmed": true,
+ "ig_handle": "",
+ "cover": {
+  "img": "01_pikachu_242.png",
+  "title": "Pikachu Sang Juara 🏆"
+ },
+ "open_decisions": [
+  "Approve stills",
+  "Approve final render"
+ ],
+ "scenes": [
+  {
+   "beat": "Hook b-roll",
+   "dur": 2.5,
+   "vo_window": [
+    0.16,
+    2.42
+   ],
+   "vo": "Pikachu yang lagi nguap ini",
+   "caption": "This yawning Pikachu",
+   "type": "macro3d",
+   "img": "01_pikachu_242.png",
+   "dof": 16,
+   "focus": {
+    "axis": "y",
+    "at": 0.42,
+    "width": 0.34
+   },
+   "from": {
+    "fx": 0.4,
+    "fy": 0.25,
+    "h": 4600,
+    "rot": -4,
+    "tx": 0.1,
+    "ty": 0.07
+   },
+   "to": {
+    "fx": 0.46,
+    "fy": 0.24,
+    "h": 5100,
+    "rot": -1,
+    "tx": 0.04,
+    "ty": 0.09
+   }
+  },
+  {
+   "beat": "Hook",
+   "dur": 1.35,
+   "vo_window": [
+    0.09,
+    0.99
+   ],
+   "vo": "ngalahin lebih dari sepuluh ribu karya.",
+   "caption": "beat over 10,000 entries.",
+   "type": "hero_stamp",
+   "img": "01_pikachu_242.png",
+   "h": 880,
+   "reflect": true,
+   "trans": "whip",
+   "xfade_in": 0.35,
+   "badges": [
+    {
+     "text": "10,000+ ENTRIES",
+     "at": 0.3,
+     "hl": true
+    }
+   ]
+  },
+  {
+   "beat": "Origin",
+   "dur": 3.6,
+   "vo_window": [
+    0.09,
+    3.55
+   ],
+   "vo": "ini Juara Pokémon Card Illustration Contest dua ribu dua empat,",
+   "caption": "Winner of the 2024 Pokémon Card Illustration Contest,",
+   "type": "macro3d",
+   "img": "01_pikachu_242.png",
+   "dof": 14,
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "focus": {
+    "axis": "x",
+    "at": 0.5,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.8,
+    "fy": 0.75,
+    "h": 2900,
+    "rot": 3,
+    "tx": -0.12,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.83,
+    "fy": 0.79,
+    "h": 3200,
+    "rot": 1,
+    "tx": -0.05,
+    "ty": 0.08
+   }
+  },
+  {
+   "beat": "Origin",
+   "dur": 1.93,
+   "vo_window": [
+    0.05,
+    1.77
+   ],
+   "vo": "temanya \"Magical Pokémon Moments.\"",
+   "caption": "The theme: \"Magical Pokémon Moments.\"",
+   "type": "macro3d",
+   "img": "01_pikachu_242.png",
+   "dof": 12,
+   "trans": "whip",
+   "xfade_in": 0.35,
+   "focus": {
+    "axis": "y",
+    "at": 0.5,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.45,
+    "fy": 0.14,
+    "h": 3000,
+    "ty": 0.12,
+    "rot": -2
+   },
+   "to": {
+    "fx": 0.47,
+    "fy": 0.28,
+    "h": 2400,
+    "ty": 0.04,
+    "rot": 0
+   }
+  },
+  {
+   "type": "card_grid",
+   "beat": "Detail",
+   "card_h": 400,
+   "cards": [
+    "08_feraligatr_241.png",
+    "01_pikachu_242.png",
+    "09_toxtricity_243.png"
+   ],
+   "badges": [
+    {
+     "text": "JAPAN · USA · UK",
+     "at": 0.6
+    },
+    {
+     "text": "CANADA · AUSTRALIA · NZ",
+     "at": 2.1,
+     "hl": true
+    }
+   ],
+   "dur": 4.07,
+   "vo": "Pesertanya datang dari enam negara, dari Jepang sampai Amerika.",
+   "caption": "Artists from six countries, from Japan to the US.",
+   "vo_window": [
+    0.1,
+    3.61
+   ]
+  },
+  {
+   "type": "slam",
+   "beat": "Twist",
+   "dur": 1.17,
+   "vo": "Tapi ada drama.",
+   "caption": "Then came drama.",
+   "vo_window": [
+    0.15,
+    1.07
+   ],
+   "words": [
+    "BUT THEN…",
+    "DRAMA"
+   ],
+   "at": 0.12,
+   "cards": [
+    "08_feraligatr_241.png",
+    "01_pikachu_242.png",
+    "09_toxtricity_243.png"
+   ],
+   "shake": 1,
+   "shake_at": 0.34,
+   "trans": "whip",
+   "xfade_in": 0.25
+  },
+  {
+   "type": "wall",
+   "beat": "Twist",
+   "dur": 5.13,
+   "vo": "Beberapa finalis tiga ratus besar didiskualifikasi, karena diduga pakai AI.",
+   "caption": "Some top-300 finalists were disqualified over suspected AI art.",
+   "vo_window": [
+    0.12,
+    4.81
+   ],
+   "cards": [
+    "08_feraligatr_241.png",
+    "01_pikachu_242.png",
+    "09_toxtricity_243.png"
+   ],
+   "counter": 300,
+   "count_end": 2.0,
+   "x_at": 2.2,
+   "x_step": 0.16,
+   "x_tiles": [
+    16,
+    18,
+    22,
+    20,
+    26,
+    15,
+    24,
+    28
+   ],
+   "tilt": 0.2,
+   "scroll": 420,
+   "glitch": [
+    [
+     3.45,
+     3.6
+    ],
+    [
+     3.85,
+     3.95
+    ],
+    [
+     4.3,
+     4.45
+    ]
+   ],
+   "xfade_in": 0.2,
+   "badges": [
+    {
+     "text": "SUSPECTED AI",
+     "at": 3.45,
+     "hl": true,
+     "y": 1130,
+     "size": 46
+    }
+   ]
+  },
+  {
+   "type": "hero_stamp",
+   "beat": "Artist",
+   "img": "01_pikachu_242.png",
+   "h": 880,
+   "reflect": true,
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "badges": [
+    {
+     "text": "GRAND PRIZE · KAZUKI MINAMI",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "dur": 2.8,
+   "vo": "Juaranya Kazuki Minami dari Jepang.",
+   "caption": "The winner: Kazuki Minami from Japan.",
+   "vo_window": [
+    0.22,
+    2.58
+   ]
+  },
+  {
+   "type": "macro3d",
+   "beat": "Artist",
+   "img": "01_pikachu_242.png",
+   "dof": 14,
+   "trans": "whip",
+   "xfade_in": 0.35,
+   "focus": {
+    "axis": "x",
+    "at": 0.5,
+    "width": 0.45
+   },
+   "badges": [
+    {
+     "text": "INSPIRED BY HIS DOG",
+     "at": 1.6,
+     "hl": true
+    }
+   ],
+   "from": {
+    "fx": 0.36,
+    "fy": 0.27,
+    "h": 3700,
+    "rot": 4,
+    "tx": -0.12,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.42,
+    "fy": 0.27,
+    "h": 4500,
+    "rot": 1,
+    "tx": -0.05,
+    "ty": 0.07
+   },
+   "dur": 4.95,
+   "vo": "Kartu Pikachu yang menguap dan meregang ini terinspirasi dari anjing peliharaannya.",
+   "caption": "This yawning, stretching Pikachu card was inspired by his own dog.",
+   "vo_window": [
+    0.15,
+    4.76
+   ]
+  },
+  {
+   "beat": "Proof",
+   "dur": 5.95,
+   "vo": "Kartu Feraligatr karya Acorviart, lagi berenang santai di pagi hari, dengan gaya cetak linocut.",
+   "caption": "Acorviart's Feraligatr card takes a calm morning swim, in a linocut-inspired style.",
+   "vo_window": [
+    0.17,
+    5.72
+   ],
+   "trans": "whip",
+   "xfade_in": 0.35,
+   "type": "macro3d",
+   "img": "08_feraligatr_241.png",
+   "dof": 13,
+   "focus": {
+    "axis": "x",
+    "at": 0.32,
+    "at1": 0.66,
+    "width": 0.38
+   },
+   "badges": [
+    {
+     "text": "BEST STANDARD CARD · ACORVIART",
+     "at": 0.3,
+     "hl": true
+    },
+    {
+     "text": "LINOCUT-INSPIRED STYLE",
+     "at": 2.8,
+     "hl": true
+    }
+   ],
+   "from": {
+    "fx": 0.36,
+    "fy": 0.3,
+    "h": 2300,
+    "rot": 3,
+    "tx": 0.14,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.62,
+    "fy": 0.29,
+    "h": 2700,
+    "rot": -1,
+    "tx": -0.07,
+    "ty": 0.07
+   }
+  },
+  {
+   "type": "macro3d",
+   "beat": "Proof",
+   "img": "09_toxtricity_243.png",
+   "dof": 12,
+   "trans": "whip",
+   "xfade_in": 0.35,
+   "focus": {
+    "axis": "y",
+    "at": 0.4,
+    "width": 0.4
+   },
+   "badges": [
+    {
+     "text": "BEST ex CARD · ANDERSON",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "from": {
+    "fx": 0.5,
+    "fy": 0.47,
+    "h": 2200,
+    "rot": -5,
+    "tx": 0.16,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.45,
+    "fy": 0.34,
+    "h": 3000,
+    "rot": -1,
+    "tx": 0.05,
+    "ty": 0.09
+   },
+   "dur": 4.95,
+   "vo": "Kartu Toxtricity ex karya Anderson, main gitar sambil loncat keluar dari frame.",
+   "caption": "Anderson's Toxtricity ex card plays guitar while leaping out of frame.",
+   "vo_window": [
+    0.22,
+    4.59
+   ]
+  },
+  {
+   "beat": "Fun fact",
+   "dur": 5.65,
+   "vo": "Di Jepang, ketiganya jadi bonus dari pembelian satu box Heat Wave Arena selama stok masih ada.",
+   "caption": "In Japan, they came free with each Heat Wave Arena box, while supplies lasted.",
+   "vo_window": [
+    0.33,
+    5.47
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "type": "macro3d",
+   "img": "20_promo_pack.png",
+   "dof": 7,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "badges": [
+    {
+     "text": "JAPAN · 14.03.2025",
+     "at": 0.4
+    },
+    {
+     "text": "BONUS WITH EACH HEAT WAVE ARENA BOX",
+     "at": 2.4,
+     "hl": true
+    }
+   ],
+   "from": {
+    "fx": 0.5,
+    "fy": 0.555,
+    "h": 1000,
+    "rot": -6,
+    "tx": -0.2,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.56,
+    "h": 1120,
+    "rot": 3,
+    "tx": 0.16,
+    "ty": 0.03
+   },
+   "cover": false
+  },
+  {
+   "type": "card_grid",
+   "beat": "Payoff",
+   "card_h": 410,
+   "soft": 0.45,
+   "cards": [
+    "08_feraligatr_241.png",
+    "01_pikachu_242.png",
+    "09_toxtricity_243.png",
+    "20_promo_pack.png"
+   ],
+   "badges": [
+    {
+     "text": "AVAILABLE AT KARD AVENUE",
+     "at": 2.0,
+     "hl": true
+    }
+   ],
+   "dur": 4.5,
+   "vo": "Sekarang, tiga kartunya, plus promo pack-nya, tersedia di Kard Avenue.",
+   "caption": "Now all three cards, plus the sealed pack, are available at Kard Avenue.",
+   "vo_window": [
+    0.17,
+    4.27
+   ]
+  },
+  {
+   "type": "end_card",
+   "beat": "End card",
+   "img": "23_follow_us_cta.jpg",
+   "punch": 0.4,
+   "vo": "Follow Kard Avenue untuk cerita kartu lainnya, dan download aplikasinya sekarang.",
+   "caption": "Follow Kard Avenue for more card stories, and download the app now.",
+   "dur": 4.75,
+   "vo_window": [
+    0.21,
+    4.44
+   ]
+  }
+ ],
+ "post_caption": "Pikachu yang ngalahin 10.000+ karya 🏆\n\n2025 Pokémon Japanese SV-P Promo \"Illustration Contest 2024\" — Pikachu 242 (illus. Kazuki Minami), Feraligatr 241 (illus. Acorviart), Toxtricity ex 243 (illus. Anderson) + sealed promo pack\n\nTersedia di @[Kard Avenue IG] · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #pokemon #pokemontcg #pokemonindonesia #pokemonart",
+ "bokeh": [
+  [
+   255,
+   170,
+   80
+  ],
+  [
+   120,
+   90,
+   220
+  ],
+  [
+   255,
+   90,
+   140
+  ]
+ ],
+ "highlight_sfx_once": true,
+ "camera": {
+  "punch": 0.03,
+  "punch_t": 0.5,
+  "breathe": 0.01,
+  "drift": 4,
+  "base": 1.02,
+  "grade": {
+   "sat": 1.1,
+   "contrast": 1.08
+  }
+ },
+ "badge_sfx": "pop",
+ "cut_sfx": "swoosh",
+ "caption_style": "plain",
+ "caption_size": 50
+}
