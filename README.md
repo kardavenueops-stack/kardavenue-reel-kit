@@ -4,7 +4,7 @@ Everything needed to make Kard Avenue card-story Instagram Reels with Claude: en
 
 | Skill | Style | Folder |
 |---|---|---|
-| `kard-avenue-reel` | Graphic, default "3D thefinecard" style (engine v3): 3D card tilts, whip pans, light leaks, Telegraf captions | `skills/kard-avenue-reel/` |
+| `kard-avenue-reel` | Graphic, default Video 11 editorial style (engine v3.2): 3D card moves, article highlighter shots, glitch/zoom/whip/light-leak transitions, Telegraf captions | `skills/kard-avenue-reel/` |
 | `kard-finecard-reel` | Cinematic "Fine Card": full-bleed slow camera moves, blur dissolves, one-line captions | `skills/kard-finecard-reel/` |
 
 Both end on the Kard Avenue FOLLOW US! call-to-action poster and follow the same script rules (Bahasa "kamu" VO, English captions, 45–60s, 9:16).

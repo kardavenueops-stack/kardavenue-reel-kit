@@ -9,6 +9,8 @@ Produces a 9:16, 45–60s card-story Reel for Kard Avenue in the thefinecard sty
 
 ## 0. Load the house rules and engine (do this first, once per chat)
 
+**Before starting any reel:** read the project memory file `areas/kard-avenue-reels.md` and playbook §16. **After the user approves a video:** write what was learned (revisions asked for, what worked) back to that memory file and to the playbook, so the same revision never has to be asked twice.
+
 The files come from one of these places. Use the first that exists:
 
 1. **This skill's own folder**: `engine/`, `references/`, `assets/` next to this SKILL.md.
@@ -19,16 +21,17 @@ The files come from one of these places. Use the first that exists:
 | File (skill folder) | Save locally as |
 |---|---|
 | `references/kard-reel-playbook.md` (also `claude/kard-reel-playbook.md` in the Project) | read only — all rules (layout, branding, script, sound, checklist) |
-| `engine/kard_reel.py` (v3.1) | `work/kard_reel.py` |
+| `engine/kard_reel.py` (v3.2) | `work/kard_reel.py` |
 | `engine/editor_template.html` | `work/editor_template.html` |
 | `assets/sfx/*.wav` (the user's sound pack) | copy into `work/sfx/` (no synthesized sounds; never run an old make_sfx.py) |
-| `engine/example_brand_mono_delta_reign.json` | `work/example.json` (**default pattern to copy**, approved Video 06 brand-mono 3D style) |
+| `engine/example_editorial_arita.json` | `work/example.json` (**default pattern to copy**, approved Video 11 editorial style) |
+| `engine/example_brand_mono_delta_reign.json` | reference only (Video 06) |
 | `engine/example_3d_illustration_contest.json` | reference only (Video 05) |
 | `references/reference-thefinecard-style.md` | read only — script structure reference |
 
 If none of these is available, ask the user to attach the skill zip.
 
-**Default style (approved, keep until the user says otherwise):** the Video 06 "brand mono" style in playbook §15 (Video 05 3D look + Kard Avenue black #0a0a0a / white #fafafa, moving card crowds, lens flare, the user's sound pack), built from `engine/example_brand_mono_delta_reign.json` (engine v3.1). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
+**Default style (approved, keep until the user says otherwise):** the Video 11 editorial style in playbook §16, on top of the Video 06 "brand mono" base in §15 (black #0a0a0a / white #fafafa, the user's sound pack), built from `engine/example_editorial_arita.json` (engine v3.2: glitch + zoom transitions, `macro3d` with `"card": false`, editorial `highlight` with `follow` camera, `noir` + `spot` detective look, fly-over `plane` mode, artist `cutout`, `card_wall` scene; `mono_ui` turns all accents white, no navy/purple tints). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
 
 **The playbook always wins.** Old script docs (`claude/video-NN-*.md`) are content records only (facts, lines, asset lists). Voice, register ("kamu"), format, layout and workflow always come from the playbook, even where an old doc says otherwise (e.g. Video 01's "Zandhira" voice and "lo"). If this SKILL.md and the playbook differ, follow the playbook.
 
@@ -71,7 +74,7 @@ The workspace cannot download from TCGplayer, TCG Collector, X or Google Images.
 
 ## 3. Build → check-in 2
 
-1. Copy `example_brand_mono_delta_reign.json` (default style, playbook §15) and point `assets_dir` and `sfx_dir` at the right folders. Pick scene types from the playbook §11 table and fill in the fields.
+1. Copy `example_editorial_arita.json` (default style, playbook §16 on top of §15) and point `assets_dir` and `sfx_dir` at the right folders. Pick scene types from the playbook §11 table and fill in the fields.
 2. `python3 kard_reel.py reel.json check` must print **OK**. Fix captions or durations until it does; never skip it.
 3. `python3 kard_reel.py reel.json stills stills.png`. The sheet shows each scene's **key moments** (reveal, zoom, highlight…), labelled. Look at it yourself, then send it to the user. **Stop for approval.** Collect all feedback in one batch.
 
@@ -101,7 +104,7 @@ The MP4, the cover, the editor page (link or zip), the script doc and the post c
 - Kard Avenue logo centred at the top on every scene except the end card (same size and position as on the FOLLOW US! poster). No draft tags in deliverables.
 - Transitions per playbook §14 motion rules: whip pans and soft white light leaks (`leak_color`, §15), 0.25–0.45s; at most one white flash, no other coloured flashes.
 - Never stretch any card, pack or image; 3D tilts use true rotation. Cut white scan corners before use.
-- Keep the approved Video 06 "brand mono" style (playbook §15, with §14 motion) until the user updates it: black #0a0a0a / white #fafafa only, white captions, a moving `crowd` behind any empty scene, one scene per product.
+- Keep the approved Video 11 style (playbook §16 on top of §15, with §14 motion) until the user updates it: black #0a0a0a / white #fafafa only, white captions, a moving `crowd` behind any empty scene, one scene per product.
 - Never draw Pokémon characters or store badges. Use the real card art and the official FOLLOW US! poster.
 - Always end on the FOLLOW US! poster (`end_card`, `23_follow_us_cta.jpg`). All text in Telegraf.
 - No music baked in. Sound effects come only from the user's pack in `assets/sfx/` (sound map in playbook §15); no synthesized sounds.

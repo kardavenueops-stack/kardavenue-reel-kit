@@ -101,7 +101,7 @@ def img(name, card=True):
 
 def make_mystery(im):
     a = im.split()[3]; art = np.asarray(im.convert('RGB')).astype(float)
-    dark = np.full_like(art, (18, 20, 44)) * .86 + art * .14
+    dark = np.full_like(art, (20, 20, 20)) * .86 + art * .14
     m = Image.fromarray(dark.astype(np.uint8)).convert('RGBA'); m.putalpha(a)
     pad = 40; g = Image.new('L', (im.width + pad * 2, im.height + pad * 2), 0); g.paste(a, (pad, pad))
     g = g.filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.GaussianBlur(14))
@@ -215,7 +215,7 @@ def flash(c, u, t0, dur=.3):
     if 0 < p < 1: c.alpha_composite(Image.new('RGBA', (W, H), (255, 255, 255, int(255 * (1 - p) ** 2))))
 
 def dim(c, a):
-    if a > 0: c.alpha_composite(Image.new('RGBA', (W, H), (8, 6, 16, int(255 * a))))
+    if a > 0: c.alpha_composite(Image.new('RGBA', (W, H), (10, 10, 10, int(255 * a))))
 
 # ---------------- background / burst / ? ----------------
 @functools.lru_cache(None)
@@ -453,8 +453,42 @@ def avatar_square(name, crop=()):
     sq = im.crop((x0, y0, x0 + sz, y0 + sz)); bg = Image.new('RGBA', sq.size, (30, 22, 50, 255)); bg.alpha_composite(sq)
     return bg
 
+@functools.lru_cache(maxsize=4)
+def cutout_paper(name, crop, ph, seed=7):
+    """Photo on a scissor-cut paper: white border with uneven straight snips."""
+    im = img(name, card=False)
+    if crop: x0, y0, x1, y1 = crop; im = im.crop((int(x0 * im.width), int(y0 * im.height), int(x1 * im.width), int(y1 * im.height)))
+    pw = round(im.width * ph / im.height); im = im.resize((pw, ph), Image.LANCZOS)
+    rng = np.random.default_rng(seed); b = 26; pad = 60; Wp, Hp_ = pw + 2 * (b + pad), ph + 2 * (b + pad)
+    def edge(p0, p1, n):
+        pts = []
+        for k in range(n):
+            t = k / n; x = p0[0] + (p1[0] - p0[0]) * t; y = p0[1] + (p1[1] - p0[1]) * t
+            pts.append((x + rng.uniform(-9, 9), y + rng.uniform(-9, 9)))
+        return pts
+    L, T, R, B = pad + 4, pad + 4, Wp - pad - 4, Hp_ - pad - 4
+    poly = edge((L, T), (R, T), 5) + edge((R, T), (R, B), 6) + edge((R, B), (L, B), 5) + edge((L, B), (L, T), 6)
+    paper = Image.new('RGBA', (Wp, Hp_), (0, 0, 0, 0)); ImageDraw.Draw(paper).polygon(poly, fill=PAPER + (255,))
+    sh = Image.new('L', (Wp, Hp_), 0); ImageDraw.Draw(sh).polygon([(x + 10, y + 16) for x, y in poly], fill=170); sh = sh.filter(ImageFilter.GaussianBlur(18))
+    out = Image.new('RGBA', (Wp, Hp_), (0, 0, 0, 0)); sl = Image.new('RGBA', (Wp, Hp_), (0, 0, 0, 0)); sl.putalpha(sh); out.alpha_composite(sl)
+    out.alpha_composite(paper); out.alpha_composite(im.convert('RGBA'), (pad + b, pad + b)); return out
+
+def artist_cutout(c, u, d, s):
+    p = eback(prog(u, .05, .55)); ph = s.get('photo_h', 760)
+    if p > 0:
+        pc = cutout_paper(s['avatar'], tuple(s.get('photo_crop', ())), ph)
+        sc = lerp(.82, 1, p); ang = lerp(-9, s.get('photo_angle', -3), eo3(prog(u, .05, .7))) + .6 * math.sin(u * 1.3)
+        im = pc.resize((int(pc.width * sc), int(pc.height * sc)), Image.LANCZOS).rotate(ang, resample=Image.BICUBIC, expand=True)
+        cy_ = s.get('photo_y', 640) + OY + 10 * math.sin(u * 1.1); paste_safe(c, with_alpha(im, min(1, p)), int(540 - im.width / 2), int(cy_ - im.height / 2))
+        hh = ph * sc / 2 + 40; FRAME_BOXES.append(('card', 540 - hh * .7, cy_ - hh, 540 + hh * .7, cy_ + hh, ph, False))
+    a = eo3(prog(u, .45, .85)); ny = s.get('name_y', 1150)
+    put_text(c, s['name'], 540, ny, F_BLACK, 104, stroke=6, alpha=a)
+    put_text(c, s.get('role', 'ILLUSTRATOR'), 540, ny + 88, F_XB, 40, fill=YELLOW, alpha=a)
+    if s.get('handle'): put_text(c, s['handle'], 540, ny + 145, F_B, 36, fill=(220, 220, 220), alpha=a)
+
 def artist(c, u, d, s):
     """avatar, name, role (default ILLUSTRATOR), handle. Avatar alone, centred."""
+    if s.get('cutout'): return artist_cutout(c, u, d, s)
     ap = eback(prog(u, .1, .6))
     if ap > 0:
         r = int(230 * ap); cx_, cy_ = 540, 640 + OY
@@ -470,7 +504,7 @@ def artist(c, u, d, s):
         a = min(1, ap)
         put_text(c, s['name'], 540, 1000, F_BLACK, 120, stroke=6, alpha=a)
         put_text(c, s.get('role', 'ILLUSTRATOR'), 540, 1100, F_XB, 44, fill=YELLOW, alpha=a)
-        if s.get('handle'): put_text(c, s['handle'], 540, 1165, F_B, 38, fill=(220, 220, 235), alpha=a)
+        if s.get('handle'): put_text(c, s['handle'], 540, 1165, F_B, 38, fill=(220, 220, 220), alpha=a)
 
 def artist_sfx(d, s): return [(0, 'whoosh', .6), (.1, 'pop', .9)]
 def artist_keys(d, s): return [(d * .8, 'avatar + name')]
@@ -576,7 +610,7 @@ def broll(c, u, d, s):
     put(c, s['img'], 540 - (fx - .5) * h * ar, H / 2 - OY - (fy - .5) * h, h, shadow=False, bleed=True)
     yy, xx = np.mgrid[0:H:8, 0:W:8]; r = np.hypot((xx - W / 2) / W, (yy - H / 2) / H)
     v = Image.fromarray((np.clip((r - .3) * 2., 0, 1) * 170).astype(np.uint8)).resize((W, H), Image.BILINEAR)
-    vig = Image.new('RGBA', (W, H), (6, 4, 14, 0)); vig.putalpha(v); c.alpha_composite(vig)
+    vig = Image.new('RGBA', (W, H), (6, 6, 6, 0)); vig.putalpha(v); c.alpha_composite(vig)
     fi = 1 - eo3(prog(u, 0, s.get('fade_in', .5)))
     if fi > 0: c.alpha_composite(Image.new('RGBA', (W, H), (0, 0, 0, int(255 * fi))))
     FRAME_BOXES[:] = [b for b in FRAME_BOXES if b[0] != 'card']
@@ -596,34 +630,98 @@ def dof_mask(axis, at, width, q):
     m = np.clip((np.abs(v - at) - width / 2) / .22, 0, 1) ** 1.3
     return Image.fromarray((m * 255).astype(np.uint8)).resize((W, H), Image.BILINEAR)
 
+HL_COLOR = (255, 226, 0)
+def highlight_src(src, s, u):
+    """Editorial highlight on an article screenshot: page upscaled + sharpened + text thickened (bold, crisp);
+    noir = drained/darkened page; marker = bright yellow multiplied under the text (text stays solid black), sweeping in sync with the voice."""
+    base, bold = article_base(s['img'], bool(s.get('noir')))
+    out = base.copy(); Wd, Hd = out.size; hl = s['highlight']
+    dim = 0 if s.get('noir') else max((eio(prog(u, h_.get('t0', .4), h_.get('t0', .4) + .5)) for h_ in hl), default=0) * s.get('dim', .45)
+    if dim > 0:
+        sh = Image.new('RGBA', out.size, (0, 0, 0, int(255 * dim))); m = Image.new('L', out.size, 255); dm = ImageDraw.Draw(m)
+        for h_ in hl:
+            x0, y0, x1, y1 = h_['box']; dm.rectangle([x0 * Wd - 14, y0 * Hd - 10, x1 * Wd + 14, y1 * Hd + 10], fill=0)
+        sh.putalpha(Image.fromarray((np.asarray(m).astype(float) * dim).astype(np.uint8))); out.alpha_composite(sh)
+    for h_ in hl:
+        t0 = h_.get('t0', .4); pr = eio(prog(u, t0, t0 + h_.get('dur', .7)))
+        x0, y0, x1, y1 = h_['box']; bx = (int(x0 * Wd), int(y0 * Hd), int(x1 * Wd), int(y1 * Hd))
+        if pr <= 0: continue
+        xe = int(bx[0] + (bx[2] - bx[0]) * pr); reg = (bx[0], bx[1], max(bx[0] + 1, xe), bx[3])
+        crop = bold.crop(reg).convert('RGB'); col = Image.new('RGB', crop.size, tuple(h_.get('color', HL_COLOR)))
+        out.paste(ImageChops.multiply(crop, col).convert('RGBA'), reg[:2])
+    return out
+
+@functools.lru_cache(maxsize=8)
+def article_base(name, noir):
+    """Returns (page, bold): page = sharp, regular-weight text (noir-graded if asked); bold = the same page with a light bold, used only on highlighted lines."""
+    im = img(name, False).convert('RGB'); im = im.resize((im.width * 2, im.height * 2), Image.LANCZOS)
+    im = ImageEnhance.Contrast(im.filter(ImageFilter.UnsharpMask(3, 140, 2))).enhance(1.15)
+    sharp = im.point(lambda v: 0 if v < 70 else (255 if v > 225 else v))
+    thick = sharp.filter(ImageFilter.MinFilter(3))
+    bold = Image.blend(sharp, thick, .55).point(lambda v: 0 if v < 90 else (255 if v > 220 else v)).convert('RGBA')   # light bold, not heavy
+    page = sharp.convert('RGBA')
+    if noir:
+        rgb = ImageEnhance.Brightness(ImageEnhance.Color(sharp).enhance(0)).enhance(.72); page = rgb.convert('RGBA')
+    return page, bold
+
+def follow_pos(s, u, h, ar):
+    """Camera follows the highlighter: glides along each marked line while it is being marked, then moves to the next line."""
+    hv = 540 / (h * ar) * s.get('follow_margin', .78); keys = []
+    for h_ in s['highlight']:
+        x0, y0, x1, y1 = h_['box']; cy = (y0 + y1) / 2; t0 = h_.get('t0', .4); du = h_.get('dur', .7)
+        if x1 - x0 <= 2 * hv: a = b = (x0 + x1) / 2
+        else: a, b = x0 + hv, x1 - hv
+        keys += [(t0, a, cy), (t0 + du, b, cy)]
+    if u <= keys[0][0]: return keys[0][1], keys[0][2]
+    for (ta, xa, ya), (tb, xb, yb) in zip(keys, keys[1:]):
+        if u <= tb:
+            k = eio(prog(u, ta, tb)); return lerp(xa, xb, k), lerp(ya, yb, k)
+    return keys[-1][1], keys[-1][2]
+
 def macro3d(c, u, d, s):
     """Macro close-up on a tilted card plane with depth of field. from/to: {fx, fy, h, rot, tx, ty}; focus: {axis, at, width}; dof: blur px."""
     nx = CFG['scenes'][CFG['scenes'].index(s) + 1] if s is not CFG['scenes'][-1] else {}
     T = d + nx.get('xfade_in', CFG.get('xfade', .45)); x = prog(u, 0, T); p = x * x * (3 - 2 * x) * .6 + x * .4
     a, b = s['from'], s['to']; g = lambda k, dv: lerp(a.get(k, dv), b.get(k, a.get(k, dv)), p)
-    src = img(s['img']); ar = src.width / src.height; h = g('h', 2600); fx, fy = g('fx', .5), g('fy', .4)
+    src = img(s['img'], s.get('card', True))
+    if s.get('highlight'): src = highlight_src(src, s, u)
+    ar = src.width / src.height; h = g('h', 2600); fx, fy = g('fx', .5), g('fy', .4)
+    if s.get('follow') and s.get('highlight'): fx, fy = follow_pos(s, u, h, ar)
     tx, ty = g('tx', 0), g('ty', 0)      # tx > 0: right side recedes; ty > 0: top recedes
     yw, pt, f = math.radians(tx * 40), math.radians(ty * 40), s.get('focal', 2300)   # true 3D rotation of the plane: no stretching
-    q = []
-    for X, Y in [(-W / 2, -H / 2), (W / 2, -H / 2), (W / 2, H / 2), (-W / 2, H / 2)]:
+    q = []; m = s.get('plane', 1.)   # plane > 1: the card lies on a bigger surface, so steep fly-over angles never show the plane's edge
+    for X, Y in [(-W / 2 * m, -H / 2 * m), (W / 2 * m, -H / 2 * m), (W / 2 * m, H / 2 * m), (-W / 2 * m, H / 2 * m)]:
         X1, Z1 = X * math.cos(yw), X * math.sin(yw); Y2 = Y * math.cos(pt) + Z1 * math.sin(pt); Z2 = Z1 * math.cos(pt) - Y * math.sin(pt)
         q.append((f * X1 / (f + Z2), f * Y2 / (f + Z2)))
     k = 1.
-    if s.get('cover', True):   # full-bleed close-ups: scale evenly (both axes) until the tilted plane covers the frame
+    if s.get('cover', True) and m == 1:   # full-bleed close-ups: scale evenly (both axes) until the tilted plane covers the frame
         k = max(W / 2 / min(abs(x_) for x_, _ in q), H / 2 / min(abs(y_) for _, y_ in q)) * 1.01
     q = [(x_ * k + W / 2, y_ * k + H / 2) for x_, y_ in q]
-    Hp = np.append(persp_coeffs(q, [(0, 0), (W, 0), (W, H), (0, H)]), 1).reshape(3, 3)      # output -> flat frame
+    e0x, e0y = W / 2 * (1 - m), H / 2 * (1 - m); e1x, e1y = W / 2 * (1 + m), H / 2 * (1 + m)
+    Hp = np.append(persp_coeffs(q, [(e0x, e0y), (e1x, e0y), (e1x, e1y), (e0x, e1y)]), 1).reshape(3, 3)      # output -> flat frame
     sc = h / src.height; th = math.radians(g('rot', 0)); C = (540 - (fx - .5) * h * ar, H / 2 - (fy - .5) * h)
     ca, sa = math.cos(th), math.sin(th)                                                        # flat frame -> source pixels (one warp, fast)
     A = np.array([[ca / sc, -sa / sc, 0], [sa / sc, ca / sc, 0], [0, 0, 1.]]) @ np.array([[1, 0, -C[0]], [0, 1, -C[1]], [0, 0, 1.]])
     A = np.array([[1, 0, src.width / 2], [0, 1, src.height / 2], [0, 0, 1.]]) @ A
     M = A @ Hp; M = M / M[2, 2]
-    warped = Image.new('RGBA', (W, H), (8, 6, 16, 255)); warped.alpha_composite(src.transform((W, H), Image.PERSPECTIVE, tuple(M.reshape(9)[:8]), Image.BICUBIC))
+    warped = Image.new('RGBA', (W, H), (10, 10, 10, 255)); warped.alpha_composite(src.transform((W, H), Image.PERSPECTIVE, tuple(M.reshape(9)[:8]), Image.BICUBIC))
     dof = s.get('dof', 10)
     if dof:
         fo = s.get('focus', {}); sm = warped.resize((W // 3, H // 3), Image.BILINEAR).filter(ImageFilter.GaussianBlur(dof / 3)).resize((W, H), Image.BILINEAR)
         warped = Image.composite(sm, warped, dof_mask(fo.get('axis', 'y'), round(lerp(fo.get('at', .45), fo.get('at1', fo.get('at', .45)), p), 2), fo.get('width', .3), 0))
-    c.paste(warped, (0, 0)); FRAME_BOXES[:] = [bx for bx in FRAME_BOXES if bx[0] != 'card']
+    c.paste(warped, (0, 0))
+    if s.get('spot'):
+        sp = s['spot']; c.alpha_composite(spot_layer(sp.get('w', 1050), sp.get('h', 380), sp.get('dark', .78), round(.5 + .5 * math.sin(u * 7) * sp.get('flicker', .04), 2)))
+    FRAME_BOXES[:] = [bx for bx in FRAME_BOXES if bx[0] != 'card']
+
+@functools.lru_cache(maxsize=32)
+def spot_layer(w, h, dark, fl):
+    """Spotlight on the line being read (frame centre) + heavy vignette closing in from the edges."""
+    q = 4; yy, xx = np.mgrid[0:H // q, 0:W // q]; x = (xx * q - W / 2) / (w / 2); y = (yy * q - H / 2) / (h / 2)
+    r = np.sqrt(x * x + y * y); m = np.clip((r - .75) / 1.6, 0, 1) ** .9
+    e = np.hypot((xx * q - W / 2) / (W / 2), (yy * q - H / 2) / (H / 2)); m = np.clip(m + np.clip(e - .85, 0, 1) * .8, 0, 1)
+    a = (m * 255 * (dark + (fl - .5) * .1)).clip(0, 255).astype(np.uint8)
+    lay = Image.new('RGBA', (W, H), (4, 3, 2, 0)); lay.putalpha(Image.fromarray(a).resize((W, H), Image.BILINEAR)); return lay
 
 def macro3d_sfx(d, s): return []
 def macro3d_keys(d, s): return [(d * .1, 'macro start'), (d * .9, 'macro end')]
@@ -647,6 +745,26 @@ def glitch(c, amt, seed):
         y0 = int(rng.uniform(0, H - 60)); hb = int(rng.uniform(14, 70)); dx = int(rng.uniform(-1, 1) * amt * 3)
         band = c.crop((0, y0, W, y0 + hb)); c.paste(ImageChops.offset(band, dx, 0), (0, y0))
     return c
+
+def card_wall(c, u, d, s):
+    """Full-screen wall of cards on black: even spacing, slow drift, gentle 3D tilt that changes axis, black fades top/bottom."""
+    lay = Image.new('RGBA', (W, H), (0, 0, 0, 0)); cards = s['cards']; th = s.get('tile_h', 330); cols = s.get('cols', 4)
+    gx, gy = s.get('gap_x', 262), th * 1.06; dr = s.get('drift', [0, -260]); p = prog(u, 0, d + .5)
+    ox, oy = dr[0] * p, dr[1] * p
+    for r_ in range(-2, 9):
+        for k_ in range(-1, cols + 1):
+            idx = (r_ * (cols + 2) + k_) % len(cards); x = 540 + (k_ - (cols - 1) / 2) * gx + ox + (gx / 2 if r_ % 2 else 0); y = 160 + r_ * gy + oy
+            if -th < y < H + th and -200 < x < W + 200:
+                ap = prog(u, .02 * ((r_ + 2) * 3 + k_ + 1), .02 * ((r_ + 2) * 3 + k_ + 1) + .35)
+                put(lay, cards[idx], x, y - OY, th, alpha=ap, shadow=False, role='fx')
+    tl = s.get('tilt', {}); tx = lerp(tl.get('tx0', 0), tl.get('tx1', 0), eio(p)); ty = lerp(tl.get('ty0', .12), tl.get('ty1', .05), eio(p))
+    c.alpha_composite(project_layer(lay, tx, ty, cover=False, f=1900))
+    yy = np.linspace(0, 1, H)[:, None]; fade = np.clip(np.maximum((.22 - yy) / .22, (yy - .7) / .3), 0, 1) ** 1.2
+    fl = Image.new('RGBA', (W, H), (10, 10, 10, 0)); fl.putalpha(Image.fromarray((np.repeat(fade, W, 1) * 255).astype(np.uint8))); c.alpha_composite(fl)
+    FRAME_BOXES[:] = [bx for bx in FRAME_BOXES if bx[0] != 'card']
+
+def card_wall_sfx(d, s): return []
+def card_wall_keys(d, s): return [(d * .3, 'wall'), (d * .9, 'wall end')]
 
 def slam(c, u, d, s):
     """Big word slams in (scale-down + shake), over dimmed grey cards. words: [..], cards: [imgs]."""
@@ -687,7 +805,7 @@ def wall_keys(d, s):
     xs = s.get('x_at', 2.2); g = s.get('glitch', [[d - 1, d - .8]])[0]
     return [(1.0, 'counter'), (xs + .9, 'disqualified'), ((g[0] + g[1]) / 2, 'glitch')]
 
-SCENE_TYPES = ['slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
+SCENE_TYPES = ['card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
                'featured_cards', 'stat_chart', 'cta_product', 'end_card']
 SCENES = {k: (globals()[k], globals()[k + '_sfx']) for k in SCENE_TYPES}
 KEYS = {k: globals()[k + '_keys'] for k in SCENE_TYPES}
@@ -949,7 +1067,7 @@ def caption_panel(c, text, size, alpha):
     im = caption_img(text, size); bb = im.getbbox() or (0, 0, im.width, im.height)
     bw_, bh_ = bb[2] - bb[0] + 70, bb[3] - bb[1] + 50
     pan = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    ImageDraw.Draw(pan).rounded_rectangle([W / 2 - bw_ / 2, CAPTION_Y - bh_ / 2, W / 2 + bw_ / 2, CAPTION_Y + bh_ / 2], 28, fill=(12, 8, 26, int(215 * alpha)))
+    ImageDraw.Draw(pan).rounded_rectangle([W / 2 - bw_ / 2, CAPTION_Y - bh_ / 2, W / 2 + bw_ / 2, CAPTION_Y + bh_ / 2], 28, fill=(10, 10, 10, int(215 * alpha)))
     c.alpha_composite(pan)
 
 def frame(t):
@@ -967,6 +1085,14 @@ def frame(t):
         if tr == 'whip':   # whip pan: the new shot slides in from the right as one continuous move, heavy motion blur mid-way
             off = int(W * mix); fr = Image.new('RGBA', (W, H)); fr.paste(prev, (-off, 0)); fr.paste(c, (W - off, 0)); c = fr; bl = math.sin(math.pi * mix)
             if bl > .05: c = Image.blend(c, c.resize((max(8, int(W / (1 + 45 * bl))), H), Image.BILINEAR).resize((W, H), Image.BILINEAR), min(1, bl * 1.3))
+        elif tr == 'glitch':   # digital glitch cut: RGB split + band tears, hard switch mid-way
+            c = prev if mix < .5 else c; c = glitch(c, 10 + 46 * math.sin(math.pi * mix), int(u * 60))
+        elif tr == 'zoom':     # punch-zoom: old shot rushes toward camera and fades, new one settles from slightly large
+            z1 = 1 + .35 * mix; z2 = 1.18 - .18 * mix
+            def zs(im, z):
+                cw, ch = W / z, H / z; return im.transform((W, H), Image.EXTENT, ((W - cw) / 2, (H - ch) / 2, (W + cw) / 2, (H + ch) / 2), Image.BILINEAR)
+            c = Image.blend(zs(prev, z1), zs(c, z2), mix); bl = math.sin(math.pi * mix)
+            if bl > .1: c = Image.blend(c, c.resize((W // 6, H // 6), Image.BILINEAR).resize((W, H), Image.BILINEAR), bl * .5)
         else: c = Image.blend(prev, c, mix)
         if tr == 'leak':   # warm light-leak flare across the cut
             c.alpha_composite(leak_layer(int(math.sin(math.pi * mix) * 20)))
@@ -1159,7 +1285,7 @@ DESC = {'hook_mystery': 'Starburst; known versions pop in with ✗; blacked-out 
         'card_grid': 'Grid of cards flies in', 'card_lineup': 'Cards fanned side by side with labels',
         'reveal_zoom': 'Wipe to card, circle + arrow, zoom into detail + tag', 'artist': 'Artist avatar centred, name, role, handle',
         'featured_cards': 'Each card full-size one by one, then fan', 'stat_chart': 'Bar chart + counter, then full-screen highlight',
-        'slam': 'Big words slam in over dimmed cards, red tint, shake', 'wall': 'Wall of 300 blacked-out finalists on a tilted plane, counter, ✗ stamps, AI glitch', 'macro3d': '3D macro close-up: tilted card plane, depth of field, camera drift', 'cta_product': 'Product slides in + stamp', 'broll': 'Slow left-to-right pan across the card', 'end_card': 'Full-bleed FOLLOW US! call-to-action poster (store badges)'}
+        'slam': 'Big words slam in over dimmed cards, red tint, shake', 'wall': 'Wall of 300 blacked-out finalists on a tilted plane, counter, ✗ stamps, AI glitch', 'macro3d': '3D macro close-up: tilted card plane, depth of field, camera drift', 'cta_product': 'Product slides in + stamp', 'broll': 'Slow left-to-right pan across the card', 'card_wall': 'Full-screen wall of cards on black, slow drift, 3D tilt, black fades top/bottom', 'end_card': 'Full-bleed FOLLOW US! call-to-action poster (store badges)'}
 
 def scene_rows():
     rows = []
@@ -1200,6 +1326,9 @@ def cmd_page(outdir, video=None):
 def load(p):
     global CFG, BASE
     CFG = json.load(open(p)); BASE = os.path.dirname(os.path.abspath(p))
+    if CFG.get('mono_ui'):
+        global YELLOW, PINK, RED, GREEN
+        YELLOW = PINK = RED = GREEN = PAPER
 
 if __name__ == '__main__':
     if len(sys.argv) < 3: print(__doc__); sys.exit(1)

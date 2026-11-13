@@ -1,0 +1,1027 @@
+{
+ "title": "Example — Video 11 Mitsuhiro Arita (editorial, engine v3.2)",
+ "assets_dir": "assets",
+ "sfx_dir": "sfx",
+ "logo": "07_kard_logo.png",
+ "caption_mode": "chunks",
+ "chunk_words": 4,
+ "highlight_words": [],
+ "forbidden_words": [
+  "TGA"
+ ],
+ "sfx_gain": 0.6,
+ "sfx_style": "soft",
+ "xfade": 0.35,
+ "stock_confirmed": false,
+ "ig_handle": "",
+ "cover": {
+  "img": "01_charizard_base_1st_psa10.png",
+  "title": "Kontrak 6 bulan, lalu jadi legenda 🔥"
+ },
+ "open_decisions": [
+  "Approve stills",
+  "Confirm Arita stock"
+ ],
+ "bokeh": [
+  [
+   250,
+   250,
+   250
+  ],
+  [
+   150,
+   150,
+   150
+  ],
+  [
+   210,
+   210,
+   210
+  ]
+ ],
+ "highlight_sfx_once": true,
+ "camera": {
+  "punch": 0.03,
+  "punch_t": 0.5,
+  "breathe": 0.01,
+  "drift": 4,
+  "base": 1.02,
+  "grade": {
+   "sat": 1.1,
+   "contrast": 1.08
+  }
+ },
+ "badge_sfx": "shutter",
+ "cut_sfx": "swoosh",
+ "caption_style": "plain",
+ "caption_size": 50,
+ "post_caption": "Kontrak 6 bulan, lalu jadi legenda 🔥\n\n1999 Pokémon Base Set 1st Edition 4/102 Charizard Holo — illus. Mitsuhiro Arita (@MitsuhiroArita)\n\nKartu-kartu Arita di @[Kard Avenue IG] · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #pokemon #pokemontcg #pokemonindonesia",
+ "scenes": [
+  {
+   "beat": "Hook",
+   "vo": "Dulu, pelukis Charizard ini takut kerjaannya nggak bertahan lama.",
+   "caption": "The man who painted this Charizard once feared his job wouldn't last.",
+   "dur": 2.92,
+   "vo_window": [
+    0.12,
+    2.69
+   ],
+   "type": "macro3d",
+   "img": "30_reshiram_charizard_gx_unbroken_bonds.png",
+   "dof": 12,
+   "focus": {
+    "axis": "y",
+    "at": 0.72,
+    "at1": 0.5,
+    "width": 0.42
+   },
+   "from": {
+    "fx": 0.56,
+    "fy": 0.72,
+    "h": 1500,
+    "rot": 6,
+    "tx": 0.16,
+    "ty": 1.35
+   },
+   "to": {
+    "fx": 0.44,
+    "fy": 0.3,
+    "h": 3000,
+    "rot": 1,
+    "tx": 0.02,
+    "ty": 0.22
+   },
+   "caption_bg": true,
+   "cover": false,
+   "plane": 2.2,
+   "focal": 2600
+  },
+  {
+   "beat": "Hook",
+   "vo": "Kontraknya cuma enam bulan, dan game Pokémon-nya bahkan belum rilis.",
+   "caption": "A six-month contract, and the Pokémon games weren't even out yet.",
+   "dur": 4.06,
+   "type": "macro3d",
+   "img": "art_04.png",
+   "dof": 0,
+   "focus": {
+    "axis": "y",
+    "at": 0.5,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.43,
+    "h": 2580,
+    "rot": -2,
+    "tx": -0.08,
+    "ty": 0.1
+   },
+   "to": {
+    "fx": 0.3,
+    "fy": 0.475,
+    "h": 2700,
+    "rot": 1,
+    "tx": 0.06,
+    "ty": 0.03
+   },
+   "card": false,
+   "highlight": [
+    {
+     "box": [
+      0.017,
+      0.463,
+      0.482,
+      0.495
+     ],
+     "t0": 0.12,
+     "dur": 1.32
+    },
+    {
+     "box": [
+      0.257,
+      0.429,
+      0.683,
+      0.461
+     ],
+     "t0": 1.73,
+     "dur": 2.0
+    }
+   ],
+   "badges": [
+    {
+     "text": "SOURCE: JOURNAL DU JAPON, 2022",
+     "at": 0.25
+    }
+   ],
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.35
+    ],
+    [
+     1.39,
+     "swoosh",
+     0.22
+    ],
+    [
+     0.12,
+     "hl_sweep_132",
+     0.12
+    ],
+    [
+     1.73,
+     "hl_sweep_200",
+     0.12
+    ]
+   ],
+   "vo_window": [
+    0.12,
+    3.84
+   ],
+   "caption_bg": true,
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1000,
+    "h": 330,
+    "dark": 0.92,
+    "flicker": 0.06
+   },
+   "dim": 0.35
+  },
+  {
+   "beat": "Artist",
+   "vo": "Namanya Mitsuhiro Arita, dari Fukuoka, Jepang.",
+   "caption": "Meet Mitsuhiro Arita, from Fukuoka, Japan.",
+   "dur": 3.2,
+   "type": "artist",
+   "cutout": true,
+   "avatar": "22_avatar_arita.png",
+   "photo_crop": [
+    0,
+    0.02,
+    1,
+    0.72
+   ],
+   "photo_h": 700,
+   "photo_y": 600,
+   "name_y": 1130,
+   "name": "Mitsuhiro Arita",
+   "handle": "@MitsuhiroArita",
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "sfx": [
+    [
+     0.1,
+     "shutter",
+     0.5
+    ]
+   ],
+   "vo_window": [
+    0.12,
+    2.97
+   ]
+  },
+  {
+   "beat": "Origin",
+   "vo": "Dia sarjana teknik elektro, dan menolak kerja di perusahaan ayahnya.",
+   "caption": "An electronics engineering grad who turned down a job at his dad's company.",
+   "dur": 3.72,
+   "type": "macro3d",
+   "img": "art_03.png",
+   "dof": 0,
+   "focus": {
+    "axis": "x",
+    "at": 0.5,
+    "width": 0.6
+   },
+   "from": {
+    "fx": 0.38,
+    "fy": 0.26,
+    "h": 2580,
+    "rot": 1.5,
+    "tx": 0.14,
+    "ty": 0.02
+   },
+   "to": {
+    "fx": 0.32,
+    "fy": 0.34,
+    "h": 2700,
+    "rot": -1,
+    "tx": -0.08,
+    "ty": 0.06
+   },
+   "card": false,
+   "highlight": [
+    {
+     "box": [
+      0.162,
+      0.252,
+      0.582,
+      0.284
+     ],
+     "t0": 0.13,
+     "dur": 1.39
+    },
+    {
+     "box": [
+      0.016,
+      0.351,
+      0.364,
+      0.383
+     ],
+     "t0": 1.68,
+     "dur": 1.74
+    }
+   ],
+   "badges": [
+    {
+     "text": "SOURCE: JOURNAL DU JAPON, 2022",
+     "at": 0.25
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "vo_window": [
+    0.12,
+    3.49
+   ],
+   "caption_bg": true,
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1000,
+    "h": 330,
+    "dark": 0.92,
+    "flicker": 0.06
+   },
+   "dim": 0.35,
+   "sfx": [
+    [
+     1.47,
+     "swoosh",
+     0.22
+    ],
+    [
+     0.13,
+     "hl_sweep_139",
+     0.12
+    ],
+    [
+     1.68,
+     "hl_sweep_174",
+     0.12
+    ]
+   ]
+  },
+  {
+   "beat": "Origin",
+   "vo": "Dia memilih belajar menggambar sendiri, tanpa sekolah seni.",
+   "caption": "He chose to teach himself art. No art school.",
+   "dur": 3.05,
+   "type": "macro3d",
+   "img": "w_12_nature_sketch.png",
+   "dof": 9,
+   "focus": {
+    "axis": "y",
+    "at": 0.3,
+    "at1": 0.6,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.3,
+    "h": 2100,
+    "rot": 0,
+    "tx": 0,
+    "ty": -0.15
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.62,
+    "h": 2000,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0.12
+   },
+   "card": false,
+   "badges": [
+    {
+     "text": "SELF-TAUGHT",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "vo_window": [
+    0.12,
+    2.82
+   ]
+  },
+  {
+   "beat": "Detail",
+   "vo": "Referensi pertamanya? Cuma sprite Game Boy yang kotak-kotak.",
+   "caption": "His first reference? Just pixelated Game Boy sprites.",
+   "dur": 3.06,
+   "type": "macro3d",
+   "img": "24_sprite_charizard.png",
+   "card": false,
+   "cover": false,
+   "dof": 3,
+   "focus": {
+    "axis": "y",
+    "at": 0.5,
+    "width": 0.8
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 950,
+    "rot": 4,
+    "tx": -0.2,
+    "ty": -0.05
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 1050,
+    "rot": -3,
+    "tx": 0.2,
+    "ty": 0.06
+   },
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "badges": [
+    {
+     "text": "POKÉMON RED & GREEN · GAME BOY",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.4
+    ]
+   ],
+   "vo_window": [
+    0.12,
+    2.84
+   ]
+  },
+  {
+   "beat": "Detail",
+   "vo": "Dari situ lahir Charizard, Pikachu, dan Venusaur di Base Set.",
+   "caption": "That gave us Base Set Charizard, Pikachu and Venusaur.",
+   "dur": 4.01,
+   "type": "featured_cards",
+   "cards": [
+    {
+     "img": "08_charizard_base.png"
+    },
+    {
+     "img": "09_pikachu_base.png"
+    },
+    {
+     "img": "10_venusaur_base.png"
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "vo_window": [
+    0.12,
+    3.78
+   ]
+  },
+  {
+   "beat": "Detail",
+   "vo": "Dia juga yang mendesain simbol-simbol energi pertama.",
+   "caption": "He also designed the very first Energy symbols.",
+   "dur": 2.69,
+   "type": "reveal_zoom",
+   "img": "32_moltres_zapdos_articuno_gx_hidden_fates.png",
+   "zoom": {
+    "fx": 0.2,
+    "fy": 0.645,
+    "tag": "ENERGY SYMBOLS",
+    "zoom_h": 3400,
+    "pan": 0.02
+   },
+   "zoom_at": 0.9,
+   "trans": "zoom",
+   "xfade_in": 0.35,
+   "vo_window": [
+    0.12,
+    2.26
+   ],
+   "caption_bg": true
+  },
+  {
+   "beat": "Twist",
+   "vo": "Tapi setelah kontraknya habis, hampir tiga tahun hidupnya pas-pasan.",
+   "caption": "But after the contract, he barely got by for about three years.",
+   "dur": 4.37,
+   "type": "macro3d",
+   "img": "art_04.png",
+   "dof": 0,
+   "focus": {
+    "axis": "y",
+    "at": 0.5,
+    "width": 0.35
+   },
+   "from": {
+    "fx": 0.24,
+    "fy": 0.541,
+    "h": 2400,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "to": {
+    "fx": 0.24,
+    "fy": 0.541,
+    "h": 2940,
+    "rot": -1.5,
+    "tx": -0.04,
+    "ty": 0.03
+   },
+   "card": false,
+   "highlight": [
+    {
+     "box": [
+      0.017,
+      0.463,
+      0.482,
+      0.495
+     ],
+     "t0": 0.12,
+     "dur": 1.9
+    },
+    {
+     "box": [
+      0.018,
+      0.528,
+      0.433,
+      0.56
+     ],
+     "t0": 2.35,
+     "dur": 1.7
+    }
+   ],
+   "dim": 0.35,
+   "badges": [
+    {
+     "text": "3 YEARS",
+     "at": 0.2,
+     "hl": true
+    }
+   ],
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.35
+    ],
+    [
+     1.97,
+     "swoosh",
+     0.22
+    ],
+    [
+     0.12,
+     "hl_sweep_190",
+     0.12
+    ],
+    [
+     2.35,
+     "hl_sweep_170",
+     0.12
+    ]
+   ],
+   "vo_window": [
+    0.12,
+    4.14
+   ],
+   "caption_bg": true,
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1000,
+    "h": 330,
+    "dark": 0.92,
+    "flicker": 0.06
+   }
+  },
+  {
+   "beat": "Twist",
+   "vo": "Pelan-pelan kerjaan datang,",
+   "caption": "Slowly, work came:",
+   "dur": 1.54,
+   "type": "card_grid",
+   "card_h": 400,
+   "cols": 3,
+   "soft": 0.1,
+   "cards": [
+    "w_03_arms_and_armor.png",
+    "w_05_devil_children_card.png",
+    "w_06_culdcept_card.png",
+    "w_08_guardians_of_gahoole_cover.png",
+    "w_02_naval_battle.png",
+    "w_11_dark_knight.png"
+   ],
+   "trans": "leak",
+   "xfade_in": 0.4,
+   "vo_window": [
+    0.12,
+    1.33
+   ]
+  },
+  {
+   "beat": "Twist",
+   "vo": "dari Power Rangers",
+   "caption": "from Power Rangers",
+   "dur": 0.91,
+   "type": "macro3d",
+   "img": "w_04_rangers_strike_card.png",
+   "dof": 8,
+   "focus": {
+    "axis": "x",
+    "at": 0.35,
+    "at1": 0.6,
+    "width": 0.45
+   },
+   "from": {
+    "fx": 0.3,
+    "fy": 0.35,
+    "h": 2300,
+    "rot": -4,
+    "tx": -0.18,
+    "ty": 0.1
+   },
+   "to": {
+    "fx": 0.62,
+    "fy": 0.3,
+    "h": 2500,
+    "rot": 2,
+    "tx": 0.12,
+    "ty": 0
+   },
+   "card": false,
+   "badges": [
+    {
+     "text": "POWER RANGERS CARD GAME",
+     "at": 0.1,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.25,
+   "vo_window": [
+    0.12,
+    0.9
+   ]
+  },
+  {
+   "beat": "Twist",
+   "vo": "sampai Final Fantasy XI.",
+   "caption": "to Final Fantasy XI.",
+   "dur": 1.82,
+   "type": "macro3d",
+   "img": "w_07_ffxi_watercolor_title.png",
+   "card": false,
+   "cover": false,
+   "dof": 0,
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 480,
+    "rot": -3,
+    "tx": 0.18,
+    "ty": -0.08
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 540,
+    "rot": 2,
+    "tx": -0.12,
+    "ty": 0.06
+   },
+   "badges": [
+    {
+     "text": "FINAL FANTASY XI",
+     "at": 0.1,
+     "hl": true
+    }
+   ],
+   "trans": "zoom",
+   "xfade_in": 0.3,
+   "crowd": {
+    "cards": [
+     "w_11_dark_knight.png",
+     "w_02_naval_battle.png",
+     "w_10_digital_sketch.png",
+     "w_04_rangers_strike_card.png",
+     "w_06_culdcept_card.png",
+     "w_05_devil_children_card.png"
+    ],
+    "h": 520,
+    "cols": 3,
+    "alpha": 0.3,
+    "speed": 50,
+    "blur": 3,
+    "tilt": -6
+   },
+   "vo_window": [
+    0.12,
+    1.53
+   ]
+  },
+  {
+   "beat": "Fun fact",
+   "vo": "Pokémon favoritnya? Mewtwo.",
+   "caption": "His favorite Pokémon? Mewtwo.",
+   "dur": 1.84,
+   "type": "hero_stamp",
+   "img": "17_team_rockets_mewtwo_ex_sir.png",
+   "h": 900,
+   "reflect": true,
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "badges": [
+    {
+     "text": "FAVORITE POKÉMON",
+     "at": 0.25,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.3
+    ],
+    [
+     0.1,
+     "reveal",
+     0.6
+    ]
+   ],
+   "vo_window": [
+    0.12,
+    1.62
+   ]
+  },
+  {
+   "beat": "Fun fact",
+   "vo": "Di kartu Mewtwo-GX ini, Mewtwo terkurung di laboratorium.",
+   "caption": "On this Mewtwo-GX, Mewtwo is trapped in a lab.",
+   "dur": 3.39,
+   "type": "macro3d",
+   "img": "15_mewtwo_gx_shining_legends.png",
+   "dof": 9,
+   "focus": {
+    "axis": "y",
+    "at": 0.25,
+    "at1": 0.55,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.18,
+    "h": 2400,
+    "rot": 0,
+    "tx": 0,
+    "ty": -0.16
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.36,
+    "h": 2600,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0.1
+   },
+   "badges": [
+    {
+     "text": "MEWTWO-GX · SHINING LEGENDS",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "vo_window": [
+    0.12,
+    3.16
+   ]
+  },
+  {
+   "beat": "Fun fact",
+   "vo": "Lalu di Mewtwo & Mew-GX, Mew datang menyelamatkannya.",
+   "caption": "Then in Mewtwo & Mew-GX, Mew comes to the rescue.",
+   "dur": 3.47,
+   "type": "macro3d",
+   "img": "16_mewtwo_mew_gx.png",
+   "dof": 9,
+   "focus": {
+    "axis": "x",
+    "at": 0.6,
+    "at1": 0.4,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.62,
+    "fy": 0.3,
+    "h": 2600,
+    "rot": 5,
+    "tx": 0.18,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.38,
+    "fy": 0.28,
+    "h": 2300,
+    "rot": -2,
+    "tx": -0.12,
+    "ty": 0.07
+   },
+   "badges": [
+    {
+     "text": "MEWTWO & MEW-GX · UNIFIED MINDS",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "vo_window": [
+    0.12,
+    3.24
+   ]
+  },
+  {
+   "beat": "Fun fact",
+   "vo": "Ceritanya dia tambahkan sendiri!",
+   "caption": "A story he added himself!",
+   "dur": 1.8,
+   "type": "card_lineup",
+   "cards": [
+    {
+     "img": "15_mewtwo_gx_shining_legends.png",
+     "label": "TRAPPED"
+    },
+    {
+     "img": "16_mewtwo_mew_gx.png",
+     "label": "RESCUED"
+    }
+   ],
+   "heading": "ONE STORY, TWO CARDS",
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "vo_window": [
+    0.12,
+    1.57
+   ]
+  },
+  {
+   "beat": "Proof",
+   "vo": "Sekarang, dia sudah menggambar lebih dari enam ratus kartu,",
+   "caption": "Today: over 600 cards,",
+   "dur": 3.03,
+   "type": "card_wall",
+   "cards": [
+    "30_reshiram_charizard_gx_unbroken_bonds.png",
+    "19i_gyarados_base.png",
+    "19_pikachu_zekrom_gx.png",
+    "19k_articuno_fossil.png",
+    "16_mewtwo_mew_gx.png",
+    "49_moltres_fossil.png",
+    "33_gengar_mimikyu_gx_team_up.png",
+    "50_zapdos_fossil.png",
+    "32_moltres_zapdos_articuno_gx_hidden_fates.png",
+    "19j_dark_blastoise_team_rocket.png",
+    "19r_celebi_venusaur_gx.png",
+    "18_dark_dragonite.png",
+    "19s_charizard_braixen_gx.png",
+    "19x_dark_typhlosion_neo_destiny.png",
+    "19t_arceus_dialga_palkia_gx.png",
+    "46_raikou_skyridge.png",
+    "31_blastoise_piplup_gx_cosmic_eclipse.png",
+    "19m_rayquaza_delta_holon_phantoms.png",
+    "34_raichu_alolan_raichu_gx_unified_minds.png",
+    "19o_garchomp_supreme_victors.png",
+    "35_espeon_deoxys_gx_unified_minds.png",
+    "12_blastoise_ex_sir_151.png",
+    "36_venusaur_snivy_gx_cosmic_eclipse.png",
+    "17_team_rockets_mewtwo_ex_sir.png",
+    "37_rowlet_alolan_exeggutor_gx_unified_minds.png",
+    "19w_lugia_v_silver_tempest.png",
+    "38_slowpoke_psyduck_gx_unified_minds.png",
+    "19v_origin_dialga_v_astral_radiance.png",
+    "19af_pheromosa_buzzwole_gx.png",
+    "19ac_salamence_ex_dragon.png"
+   ],
+   "tile_h": 330,
+   "cols": 4,
+   "drift": [
+    -60,
+    -300
+   ],
+   "tilt": {
+    "tx0": -0.12,
+    "tx1": 0.1,
+    "ty0": 0.15,
+    "ty1": 0.06
+   },
+   "trans": "zoom",
+   "xfade_in": 0.35,
+   "badges": [
+    {
+     "text": "600+ CARDS",
+     "at": 0.4,
+     "hl": true
+    }
+   ],
+   "vo_window": [
+    0.12,
+    2.7
+   ]
+  },
+  {
+   "beat": "Proof",
+   "vo": "dan Charizard ini laku lebih dari satu juta dolar.",
+   "caption": "and this Charizard sold for over $1 million.",
+   "dur": 3.36,
+   "type": "hero_stamp",
+   "img": "01_charizard_base_1st_psa10.png",
+   "h": 900,
+   "reflect": true,
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "badges": [
+    {
+     "text": "1ST EDITION PSA 10 · $1M+ (OCT 2026)",
+     "at": 0.4,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.3
+    ],
+    [
+     0.05,
+     "reveal",
+     0.8
+    ]
+   ],
+   "vo_window": [
+    0.12,
+    3.13
+   ]
+  },
+  {
+   "beat": "Payoff",
+   "vo": "Kamu suka karyanya? Cari kartu-kartu Arita di Kard Avenue!",
+   "caption": "Love his work? Find Arita cards at Kard Avenue!",
+   "dur": 3.2,
+   "type": "card_grid",
+   "card_h": 470,
+   "cols": 3,
+   "soft": 0.3,
+   "cards": [
+    "30_reshiram_charizard_gx_unbroken_bonds.png",
+    "19_pikachu_zekrom_gx.png",
+    "16_mewtwo_mew_gx.png",
+    "33_gengar_mimikyu_gx_team_up.png",
+    "32_moltres_zapdos_articuno_gx_hidden_fates.png",
+    "19r_celebi_venusaur_gx.png"
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "crowd": {
+    "cards": [
+     "19s_charizard_braixen_gx.png",
+     "19t_arceus_dialga_palkia_gx.png",
+     "31_blastoise_piplup_gx_cosmic_eclipse.png",
+     "34_raichu_alolan_raichu_gx_unified_minds.png",
+     "35_espeon_deoxys_gx_unified_minds.png",
+     "36_venusaur_snivy_gx_cosmic_eclipse.png",
+     "37_rowlet_alolan_exeggutor_gx_unified_minds.png",
+     "38_slowpoke_psyduck_gx_unified_minds.png",
+     "19af_pheromosa_buzzwole_gx.png",
+     "19i_gyarados_base.png",
+     "19k_articuno_fossil.png",
+     "49_moltres_fossil.png",
+     "50_zapdos_fossil.png",
+     "19j_dark_blastoise_team_rocket.png",
+     "18_dark_dragonite.png"
+    ],
+    "h": 420,
+    "cols": 4,
+    "alpha": 0.3,
+    "speed": 60,
+    "blur": 2,
+    "tilt": -8
+   },
+   "vo_window": [
+    0.12,
+    2.97
+   ]
+  },
+  {
+   "beat": "End card",
+   "vo": "Follow Kard Avenue untuk cerita kartu lainnya, dan download aplikasinya sekarang.",
+   "caption": "Follow Kard Avenue for more card stories, and download the app now.",
+   "type": "end_card",
+   "dur": 4.47,
+   "img": "23_follow_us_cta.jpg",
+   "punch": 0.4,
+   "vo_window": [
+    0.12,
+    3.98
+   ]
+  }
+ ],
+ "bg_color": [
+  [
+   26,
+   26,
+   26
+  ],
+  [
+   10,
+   10,
+   10
+  ]
+ ],
+ "mono_ui": true,
+ "slam_tint": [
+  20,
+  20,
+  20
+ ],
+ "slam_color": [
+  250,
+  250,
+  250
+ ],
+ "leak_color": [
+  250,
+  250,
+  250
+ ],
+ "voiceover_offset": 0,
+ "voiceover": "vo_final.wav"
+}

@@ -312,3 +312,34 @@ Supersedes §14 colours and sounds; all §14 motion rules still apply.
 - **Voiceover over 60s:** shorten silent gaps (never speed up the voice), keep ~0.1s between phrases.
 - **Timing without a transcription tool:** use `ffmpeg silencedetect` (n=-32dB, d=0.07–0.12) to find phrase boundaries, then set each scene's start and `vo_window` to the phrase it shows.
 
+
+## 16. APPROVED STYLE UPGRADE — Video 11 Mitsuhiro Arita (engine v3.2), approved 13 Nov 2026
+Builds on §15 (brand mono) and §14 motion. Reference config: `engine/example_editorial_arita.json`.
+
+### Engine v3.2: new features and config keys
+| Key / type | Where | What it does |
+|---|---|---|
+| `"trans": "glitch"` | any scene | Digital glitch cut (RGB split + torn bands, hard switch mid-way). Pair with `sfx [0,"bit8",.35]`. `xfade_in` .25–.3 |
+| `"trans": "zoom"` | any scene | Punch-zoom cut: old shot rushes at camera, new one settles in. `xfade_in` .3–.35 |
+| `macro3d` `"card": false` | scene | Use the image flat (no rounded card corners) — for article screenshots, artworks, sprites |
+| `macro3d` `"highlight": [{box:[x0,y0,x1,y1], t0, dur}]` | scene | **Editorial highlighter**: bright yellow marker sweeps across the words (multiply, text stays black). Boxes are fractions of the image — **measure them with OCR (tesseract), never estimate** |
+| `"follow": true` | macro3d + highlight | Camera glides along each line in sync with the marker, then to the next line. Set each `t0/dur` to the VO phrase (silencedetect) |
+| `"noir": true` | macro3d + highlight | Detective look: page drained + darkened; only the line being marked is bright, lightly bold and yellow |
+| `"spot": {w, h, dark, flicker}` | macro3d | Spotlight on the line + heavy shadow closing in from the edges |
+| `macro3d` `"plane": 2.2, "cover": false, "focal": 2600` | scene | **Fly-over**: card lying almost flat (`ty` ≈ 1.35) seen from its bottom edge, camera rises and pushes forward to near-frontal (`ty` ≈ .2, bigger `h`) |
+| `artist` `"cutout": true` | scene | Artist photo as a scissor-cut paper cut-out (`photo_crop`, `photo_h`, `photo_y`, `name_y`) |
+| `card_wall` | scene type | Full-screen wall of cards on black, slow drift, 3D tilt that changes axis, black fades top/bottom (`cards`, `tile_h`, `cols`, `drift`, `tilt:{tx0,tx1,ty0,ty1}`) |
+| `mono_ui: true` | global | Now also turns every accent (yellow/pink/red role text, callout circle and tag) white; navy/purple tints removed engine-wide |
+
+### Rules learned on Video 11
+- **Opening shot:** the fly-over above (bottom-right → top-left, steep flat angle → close near-frontal). No lens flare.
+- **Mix the cards:** never repeat the same card scene after scene; use many TAG TEAM GX cards and other eras.
+- **Vary the 3D moves by axis:** yaw swing, pitch tilt-down/up, roll, diagonal push, turntable, straight push-in — and move the focus. Mix transitions (glitch / zoom / whip / leak), never the same twice in a row.
+- **Editorial beats (articles/interviews):** zoom close (text large), detective noir + spotlight, yellow marker exactly on the words (OCR boxes), camera follows the text with the voice, highlighted line lightly bold only. Paint out cursors in screenshots. Credit the source on screen (`SOURCE: … , YEAR`) and get permission before posting.
+- **Highlight sound:** one smooth, quiet, bright sweep (no bass, no scratchy texture) lasting exactly the marker stroke; soft swoosh when the camera moves to the next line.
+- **Callouts:** zoom exactly on the detail (e.g. energy symbols); prefer a card where the detail is most interesting (mixed energy types on a TAG TEAM card).
+- **Strictly black/white UI and backgrounds;** colour only from the art (and the yellow highlighter).
+- **Trial Reel:** different hook + hook edit only; slower opening shots; no cover needed.
+
+### Cover (main Reel only)
+Yuka Morii / Atsuko Nishida layout: two big glowing cards (mirrored ±8°) running off the edges behind a **large** artist photo (starts just under the logo, objects fill ~y 370–1300), soft fade to black, ARTIST SPOTLIGHT pill, NAME in uppercase, light Bahasa tagline. **Background must differ from earlier covers** and never feel empty: Video 11 used TAG TEAM GX cards flying at different depths + soft light rays + particles, kept dim.
