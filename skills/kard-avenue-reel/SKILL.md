@@ -32,7 +32,7 @@ The files come from one of these places. Use the first that exists:
 
 If none of these is available, ask the user to attach the skill zip.
 
-**Default style (approved, keep until the user says otherwise):** the Video 11 editorial style in playbook §16, on top of the Video 06 "brand mono" base in §15 (black #0a0a0a / white #fafafa, the user's sound pack), built from `engine/example_editorial_arita.json` (engine v3.2: glitch + zoom transitions, `macro3d` with `"card": false`, editorial `highlight` with `follow` camera, `noir` + `spot` detective look, fly-over `plane` mode, artist `cutout`, `card_wall` scene; `mono_ui` turns all accents white, no navy/purple tints). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
+**Default style (approved, keep until the user says otherwise):** the Video 11 editorial style in playbook §16, on top of the Video 06 "brand mono" base in §15 (black #0a0a0a / white #fafafa, the user's sound pack), built from `engine/example_editorial_arita.json` (engine v3.3, which keeps the v3.2 features: glitch + zoom transitions, `macro3d` with `"card": false`, editorial `highlight` with `follow` camera, `noir` + `spot` detective look, fly-over `plane` mode, artist `cutout`, `card_wall` scene; `mono_ui` turns all accents white, no navy/purple tints). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
 
 **A different pattern per topic (playbook §17).** Keep the pillar and the approved look, but do not repeat the previous video's pattern: pick Artist Spotlight, Set preview or Ranked Countdown by topic, and build at least one motion that is new for this video. Engine v3.3 adds `rank`, `bar_race`, `leaderboard`, `coverflow`, `deal` and `conveyor`. Use the `card_wall` / moving `crowd` look at most once per video. `"max_len": 75` allows a longer cut when the user asks for one.
 
@@ -107,7 +107,7 @@ The MP4, the cover, the editor page (link or zip), the script doc and the post c
 - Kard Avenue logo centred at the top on every scene except the end card (same size and position as on the FOLLOW US! poster). No draft tags in deliverables.
 - Transitions per playbook §14 motion rules: whip pans and soft white light leaks (`leak_color`, §15), 0.25–0.45s; at most one white flash, no other coloured flashes.
 - Never stretch any card, pack or image; 3D tilts use true rotation. Cut white scan corners before use.
-- Keep the approved Video 11 style (playbook §16 on top of §15, with §14 motion) until the user updates it: black #0a0a0a / white #fafafa only, white captions, a moving `crowd` behind any empty scene, one scene per product.
+- Keep the approved Video 11 style (playbook §16 on top of §15, with §14 motion) until the user updates it: black #0a0a0a / white #fafafa only, white captions, one scene per product. Never leave a scene empty, but use the `card_wall` / moving `crowd` look at most once per video (§17).
 - Never draw Pokémon characters or store badges. Use the real card art and the official FOLLOW US! poster.
 - Always end on the FOLLOW US! poster (`end_card`, `23_follow_us_cta.jpg`). All text in Telegraf.
 - No music baked in. Sound effects come only from the user's pack in `assets/sfx/` (sound map in playbook §15); no synthesized sounds.
