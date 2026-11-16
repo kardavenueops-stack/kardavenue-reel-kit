@@ -343,3 +343,33 @@ Builds on §15 (brand mono) and §14 motion. Reference config: `engine/example_e
 
 ### Cover (main Reel only)
 Yuka Morii / Atsuko Nishida layout: two big glowing cards (mirrored ±8°) running off the edges behind a **large** artist photo (starts just under the logo, objects fill ~y 370–1300), soft fade to black, ARTIST SPOTLIGHT pill, NAME in uppercase, light Bahasa tagline. **Background must differ from earlier covers** and never feel empty: Video 11 used TAG TEAM GX cards flying at different depths + soft light rays + particles, kept dim.
+
+## 17. MOTION LIBRARY — Video 12 "Ranked Countdown" (engine v3.3), added 16 Nov 2026
+Builds on §16. Same pillar (verified card stories, brand-mono look), a different pattern per topic. Reference config: `engine/example_countdown_most_graded.json` (its card file names are placeholders; swap in real scans). Status: layouts built and checked with placeholder cards; not yet approved on a finished video.
+
+### Pick a pattern per topic (never the same one twice in a row)
+| Pattern | Use for | Reference |
+|---|---|---|
+| Artist Spotlight | one illustrator's story | `example_editorial_arita.json` (§16) |
+| Set preview | a new set and its products | `example_brand_mono_delta_reign.json` (§15) |
+| Ranked Countdown | top-N lists, data stories | `example_countdown_most_graded.json` (this section) |
+
+### Engine v3.3: new scene types
+| Type | Use | Key fields |
+|---|---|---|
+| `rank` | One countdown beat: giant outlined rank numeral behind a card that swings in in true 3D; the counter rolls to the exact count | `n`, `img`, `count`, `unit`, `enter` (left/right/top/bottom), `side` (1/-1: where the numeral peeks out), `swing: [tx0, ty0, tx1, ty1]`, `h`, `count_at`, `count_dur` |
+| `bar_race` | Comparing two numbers: bars grow at the same speed, so the bigger one visibly overtakes | `bars: [{label, value, win}]`, `img` (card above), `race_dur`, `start`, `source` |
+| `leaderboard` | Ranking board the video keeps returning to; the bar scale can "zoom out" | `rows: [{rank, name, value, lit, hide, at}]`, `title`, `bars`, `max0` → `max1`, `scale_at`, `scale_dur`, `step`, `source` |
+| `coverflow` | 3D carousel: centre card faces the camera, neighbours turn away; advances card by card | `cards`, `labels` (big text over the centre card), `step`, `h` |
+| `deal` | Cards dealt from the corners slap down onto a centre pile, each at its own angle | `cards`, `step`, `start`, `h` |
+| `conveyor` | "One every N seconds": cards ride a belt in perspective; a ring timer restarts and a counter ticks per card | `cards`, `period`, `h`, `ring: {secs, unit}`, `counter: {label}`, `tilt` |
+
+Also new: `"max_len": 75` in the config raises the 60s limit for one video; `check` now accepts `mystery:` / `flip:` image prefixes.
+
+### Rules learned on Video 12
+- **Do not overuse the card wall.** `card_wall` and the moving `crowd` background read as the same frame. Use that look at most once per video; pick `deal`, `coverflow`, `conveyor`, `rank` or a `macro3d` move for the other "many cards" beats.
+- **Every repeated beat gets a different entrance.** In a countdown, each `rank` scene uses a different `enter`, `side`, `swing` axis and transition.
+- **Longer cut on request:** up to 75s when the user asks, so each scene holds 3–6s and transitions are not rushed. Add pauses, not words; never speed up the voice.
+- **Data stories:** exact counts, the month and source on screen ("PSA · JUNE 2026"), and a monthly figure is never presented as all-time. Derived numbers (e.g. "one every 18 seconds") are labelled as averages in the voiceover.
+- **Comparisons with athletes or other real people:** names as text only, no photos.
+- **Hooks for lists:** never tell the viewer they already know the answer; lead with the surprise in the middle of the list.

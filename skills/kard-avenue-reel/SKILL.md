@@ -9,7 +9,7 @@ Produces a 9:16, 45–60s card-story Reel for Kard Avenue in the thefinecard sty
 
 ## 0. Load the house rules and engine (do this first, once per chat)
 
-**Before starting any reel:** read the project memory file `areas/kard-avenue-reels.md` and playbook §16. **After the user approves a video:** write what was learned (revisions asked for, what worked) back to that memory file and to the playbook, so the same revision never has to be asked twice.
+**Before starting any reel:** read the project memory file `areas/kard-avenue-reels.md` and playbook §16–§17. **After the user approves a video:** write what was learned (revisions asked for, what worked) back to that memory file and to the playbook, so the same revision never has to be asked twice.
 
 The files come from one of these places. Use the first that exists:
 
@@ -21,10 +21,11 @@ The files come from one of these places. Use the first that exists:
 | File (skill folder) | Save locally as |
 |---|---|
 | `references/kard-reel-playbook.md` (also `claude/kard-reel-playbook.md` in the Project) | read only — all rules (layout, branding, script, sound, checklist) |
-| `engine/kard_reel.py` (v3.2) | `work/kard_reel.py` |
+| `engine/kard_reel.py` (v3.3) | `work/kard_reel.py` |
 | `engine/editor_template.html` | `work/editor_template.html` |
 | `assets/sfx/*.wav` (the user's sound pack) | copy into `work/sfx/` (no synthesized sounds; never run an old make_sfx.py) |
 | `engine/example_editorial_arita.json` | `work/example.json` (**default pattern to copy**, approved Video 11 editorial style) |
+| `engine/example_countdown_most_graded.json` | reference for top-N / data-story reels (Video 12 "Ranked Countdown"; card file names are placeholders) |
 | `engine/example_brand_mono_delta_reign.json` | reference only (Video 06) |
 | `engine/example_3d_illustration_contest.json` | reference only (Video 05) |
 | `references/reference-thefinecard-style.md` | read only — script structure reference |
@@ -32,6 +33,8 @@ The files come from one of these places. Use the first that exists:
 If none of these is available, ask the user to attach the skill zip.
 
 **Default style (approved, keep until the user says otherwise):** the Video 11 editorial style in playbook §16, on top of the Video 06 "brand mono" base in §15 (black #0a0a0a / white #fafafa, the user's sound pack), built from `engine/example_editorial_arita.json` (engine v3.2: glitch + zoom transitions, `macro3d` with `"card": false`, editorial `highlight` with `follow` camera, `noir` + `spot` detective look, fly-over `plane` mode, artist `cutout`, `card_wall` scene; `mono_ui` turns all accents white, no navy/purple tints). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
+
+**A different pattern per topic (playbook §17).** Keep the pillar and the approved look, but do not repeat the previous video's pattern: pick Artist Spotlight, Set preview or Ranked Countdown by topic, and build at least one motion that is new for this video. Engine v3.3 adds `rank`, `bar_race`, `leaderboard`, `coverflow`, `deal` and `conveyor`. Use the `card_wall` / moving `crowd` look at most once per video. `"max_len": 75` allows a longer cut when the user asks for one.
 
 **The playbook always wins.** Old script docs (`claude/video-NN-*.md`) are content records only (facts, lines, asset lists). Voice, register ("kamu"), format, layout and workflow always come from the playbook, even where an old doc says otherwise (e.g. Video 01's "Zandhira" voice and "lo"). If this SKILL.md and the playbook differ, follow the playbook.
 
