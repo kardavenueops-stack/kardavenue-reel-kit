@@ -371,5 +371,22 @@ Also new: `"max_len": 75` in the config raises the 60s limit for one video; `che
 - **Every repeated beat gets a different entrance.** In a countdown, each `rank` scene uses a different `enter`, `side`, `swing` axis and transition.
 - **Longer cut on request:** up to 75s when the user asks, so each scene holds 3–6s and transitions are not rushed. Add pauses, not words; never speed up the voice.
 - **Data stories:** exact counts, the month and source on screen ("PSA · JUNE 2026"), and a monthly figure is never presented as all-time. Derived numbers (e.g. "one every 18 seconds") are labelled as averages in the voiceover.
-- **Comparisons with athletes or other real people:** names as text only, no photos.
+- **Comparisons with athletes or other real people:** the user may supply real cards of that person (Video 12 used three Michael Jordan cards the user supplied). Show them as graded collectibles only; don't search for or add photos of people yourself.
 - **Hooks for lists:** never tell the viewer they already know the answer; lead with the surprise in the middle of the list.
+
+### Engine v3.3.1 (Video 12 final, approved 18 Nov 2026)
+| Key / type | Where | What it does |
+|---|---|---|
+| `logo_stat` | scene type | A supplied logo on a white plate pops in, then up to three stat lines rise in under it; optional `cards` (two big cards behind, mirrored ±8°, `cards_alpha`). `img`, `w`, `lines`, `at`, `cy` |
+| `deal` `logo: {img, at, w}` | scene | A supplied logo on a white plate lands on top of the pile |
+| `rank` `enter_at` | scene | The numeral shows first; the card swings in at `enter_at` (used for the #1 reveal on the name) |
+| `chunk_at` + `chunk_text` | any scene | Explicit caption chunks and their start times, e.g. "And #1…" until the name is spoken, so captions never spoil a reveal |
+| `"mystery_art": .025` | global | How much card art shows through `mystery:` cards. Keep it very low when the hidden card is the answer |
+
+### Rules learned finishing Video 12
+- **Opening needs real images, not only motion.** Blacked-out cards plus logos and text felt "too plain". Fill the hook with real, topic-related images (supplied cards, official logos), while still hiding the answer.
+- **Don't make the answer obvious in the hook.** Ranked items stay hidden (`mystery:` cards, low `mystery_art`); captions follow the same rule (`chunk_at`).
+- **Third-party logos** (PSA, Pokémon TCG) are shown as supplied, original colours, on a white plate; never redrawn or recoloured.
+- **Fitting a fast voiceover:** splice extra pauses between lines (at the silence midpoints, 15 ms fades); never stretch or speed up the voice. Match lines to pauses by syllable count when no transcription tool is available (steady TTS runs ~6–8 syllables/s). Cut each scene ~0.3 s before its line; start counters when the number is spoken.
+- **Length:** the user asked for "over 60 s, nothing too fast", then trimmed the final to 1:05. For a countdown, aim for about 65 s; Windows shows whole seconds rounded down, so 64.9 s reads as 1:04.
+- **Cover (countdown / data topics):** card-focused layout, hero item centred in front, two cards mirrored ±8° behind running off the edges, dim background of large outlined rank numerals + rays + particles. Measure the spacing: centre the whole block (cards + pill + title + tagline) in the frame, keep the gap from cards to text tight (~60 px), keep text gaps even. Don't put the top answers on the cover.
