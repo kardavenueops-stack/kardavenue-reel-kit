@@ -2,7 +2,7 @@
  "assets_dir": "assets",
  "sfx_dir": "sfx",
  "logo": "07_kard_logo.png",
- "caption_mode": "lines",
+ "caption_mode": "chunks",
  "chunk_words": 4,
  "highlight_words": [],
  "forbidden_words": [
@@ -74,7 +74,7 @@
   250,
   250
  ],
- "voiceover_offset": 0,
+ "voiceover_offset": 0.35,
  "title": "Video 12 — Pokémon Paling Banyak Di-grade (Ranked Countdown)",
  "max_len": 75,
  "cover": {
@@ -82,9 +82,8 @@
   "title": "5 Pokémon paling banyak di-grade"
  },
  "open_decisions": [
-  "Real card images",
-  "Voiceover MP3",
-  "Approve stills"
+  "Swap in your own voiceover file name",
+  "Set ig_handle"
  ],
  "post_caption": "4 Pokémon ngalahin Michael Jordan 🏆\n\nPSA Most Graded Subjects, Juni 2026 — #1 Pikachu 140,773 · #2 Charizard 118,417 · #3 Gengar 51,851 · #4 Dragonite 32,562 · #5 Mew 26,117\n\nCari kartu jagoanmu di @[Kard Avenue IG] · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #pokemon #pokemontcg #pokemonindonesia",
  "scenes": [
@@ -92,107 +91,150 @@
    "beat": "Hook",
    "vo": "Bulan Juni lalu, empat Pokémon ngalahin Michael Jordan.",
    "caption": "Last June, four Pokémon beat Michael Jordan.",
-   "dur": 4.0,
+   "dur": 2.25,
+   "type": "deal",
+   "cards": [
+    "mystery:08_dragonite_v_192.png",
+    "mystery:05_gengar_vmax_271.png",
+    "mystery:04_charizard_ex_199.png",
+    "mystery:01_pikachu_grey_felt_hat.png"
+   ],
+   "step": 0.2,
+   "start": 0.05,
+   "h": 800,
+   "logo": {
+    "img": "25_pokemon_tcg_logo.png",
+    "at": 1.6,
+    "w": 700
+   },
+   "sfx": [
+    [
+     1.6,
+     "shutter",
+     0.45
+    ]
+   ],
+   "vo_window": [
+    0.54,
+    3.63
+   ]
+  },
+  {
+   "beat": "Hook",
+   "caption": "Last June, four Pokémon beat Michael Jordan.",
+   "continue_caption": true,
+   "dur": 1.95,
    "type": "macro3d",
-   "img": "mystery:08_dragonite_v_192.png",
-   "dof": 12,
+   "img": "27_mj_exquisite.png",
+   "card": false,
+   "dof": 9,
    "focus": {
     "axis": "y",
-    "at": 0.72,
-    "at1": 0.5,
-    "width": 0.42
-   },
-   "from": {
-    "fx": 0.56,
-    "fy": 0.72,
-    "h": 1500,
-    "rot": 6,
-    "tx": 0.16,
-    "ty": 1.35
-   },
-   "to": {
-    "fx": 0.46,
-    "fy": 0.36,
-    "h": 2600,
-    "rot": 1,
-    "tx": 0.02,
-    "ty": 0.22
+    "at": 0.35,
+    "width": 0.6
    },
    "caption_bg": true,
-   "cover": false,
-   "plane": 2.2,
-   "focal": 2600
+   "trans": "whip",
+   "xfade_in": 0.25,
+   "from": {
+    "fx": 0.4,
+    "fy": 0.62,
+    "h": 2500,
+    "rot": -4,
+    "tx": -0.14,
+    "ty": 0.16
+   },
+   "to": {
+    "fx": 0.4,
+    "fy": 0.34,
+    "h": 2300,
+    "rot": 0,
+    "tx": -0.03,
+    "ty": 0.03
+   }
   },
   {
    "beat": "Hook",
    "vo": "Bukan di lapangan, tapi di PSA.",
    "caption": "Not on the court. At PSA.",
-   "dur": 3.0,
-   "type": "deal",
-   "cards": [
-    "21_psa_slab_a.png",
-    "21_psa_slab_b.png",
-    "21_psa_slab_c.png",
-    "21_psa_slab_b.png",
-    "21_psa_slab_a.png"
-   ],
-   "step": 0.5,
-   "h": 820,
-   "trans": "glitch",
+   "dur": 2.67,
+   "type": "macro3d",
+   "img": "28_mj_ud_slab.png",
+   "card": false,
+   "dof": 8,
+   "focus": {
+    "axis": "y",
+    "at": 0.4,
+    "at1": 0.09,
+    "width": 0.5
+   },
+   "caption_bg": true,
+   "trans": "zoom",
    "xfade_in": 0.3,
    "sfx": [
     [
-     0,
-     "bit8",
-     0.3
+     1.8,
+     "shutter",
+     0.4
     ]
+   ],
+   "from": {
+    "fx": 0.5,
+    "fy": 0.42,
+    "h": 2300,
+    "rot": 4,
+    "tx": 0.14,
+    "ty": 0.1
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.1,
+    "h": 4300,
+    "rot": 0,
+    "tx": 0.0,
+    "ty": 0.02
+   },
+   "vo_window": [
+    0.3,
+    2.37
    ]
   },
   {
    "beat": "Setup",
    "vo": "PSA itu perusahaan grading kartu terbesar di dunia.",
    "caption": "PSA is the world's biggest card grader.",
-   "dur": 3.5,
-   "type": "macro3d",
-   "img": "21_psa_slab_a.png",
-   "dof": 10,
-   "focus": {
-    "axis": "y",
-    "at": 0.12,
-    "width": 0.4
-   },
-   "from": {
-    "fx": 0.4,
-    "fy": 0.14,
-    "h": 2600,
-    "rot": -3,
-    "tx": -0.14,
-    "ty": 0.12
-   },
-   "to": {
-    "fx": 0.6,
-    "fy": 0.12,
-    "h": 2900,
-    "rot": 1,
-    "tx": 0.08,
-    "ty": 0.04
-   },
-   "caption_bg": true,
+   "dur": 3.46,
+   "type": "logo_stat",
+   "img": "24_psa_logo.png",
+   "w": 720,
+   "lines": [
+    "72%",
+    "OF ALL CARDS",
+    "GRADED IN 2025"
+   ],
    "trans": "whip",
    "xfade_in": 0.3,
    "badges": [
     {
-     "text": "72% OF ALL CARDS GRADED IN 2025",
-     "at": 0.9,
-     "hl": true
+     "text": "SOURCE: GEMRATE",
+     "at": 1.4
     }
+   ],
+   "cards": [
+    "26_mj_fleer_slab.png",
+    "mystery:11_mew_vmax_269.png"
+   ],
+   "cards_alpha": 0.42,
+   "vo_window": [
+    0.3,
+    3.18
    ]
   },
   {
    "beat": "Setup",
    "vo": "Dan ini lima Pokémon yang paling banyak di-grade dalam satu bulan.",
    "caption": "The 5 most-graded Pokémon in a single month.",
-   "dur": 4.0,
+   "dur": 4.47,
    "type": "coverflow",
    "cards": [
     "mystery:10_mew_ex_205.png",
@@ -208,8 +250,7 @@
     "2",
     "1"
    ],
-   "step": 0.78,
-   "h": 760,
+   "step": 0.82,
    "trans": "leak",
    "xfade_in": 0.45,
    "badges": [
@@ -217,13 +258,17 @@
      "text": "PSA · JUNE 2026",
      "at": 0.4
     }
+   ],
+   "vo_window": [
+    0.3,
+    3.79
    ]
   },
   {
    "beat": "#5",
    "vo": "Nomor lima, Mew: dua puluh enam ribu seratus tujuh belas kartu.",
    "caption": "#5 Mew: 26,117 cards",
-   "dur": 5.5,
+   "dur": 3.81,
    "type": "rank",
    "n": 5,
    "img": "10_mew_ex_205.png",
@@ -232,13 +277,19 @@
    "enter": "left",
    "side": 1,
    "trans": "zoom",
-   "xfade_in": 0.35
+   "xfade_in": 0.35,
+   "vo_window": [
+    0.3,
+    3.52
+   ],
+   "count_at": 1.48,
+   "count_dur": 2.15
   },
   {
    "beat": "#5",
    "vo": "Sedikit lagi, dia juga menyusul Michael Jordan.",
    "caption": "Just short of Michael Jordan.",
-   "dur": 3.5,
+   "dur": 3.02,
    "type": "bar_race",
    "img": "11_mew_vmax_269.png",
    "bars": [
@@ -254,13 +305,19 @@
    ],
    "source": "PSA · JUNE 2026",
    "trans": "whip",
-   "xfade_in": 0.3
+   "xfade_in": 0.3,
+   "vo_window": [
+    0.3,
+    2.48
+   ],
+   "start": 0.45,
+   "race_dur": 1.93
   },
   {
    "beat": "#4",
    "vo": "Nomor empat, Dragonite: tiga puluh dua ribu lima ratus enam puluh dua.",
    "caption": "#4 Dragonite: 32,562",
-   "dur": 5.5,
+   "dur": 4.23,
    "type": "rank",
    "n": 4,
    "img": "08_dragonite_v_192.png",
@@ -282,13 +339,19 @@
      "bit8",
      0.3
     ]
-   ]
+   ],
+   "vo_window": [
+    0.3,
+    3.94
+   ],
+   "count_at": 1.9,
+   "count_dur": 2.14
   },
   {
    "beat": "#4",
    "vo": "Lebih banyak dari semua kartu Michael Jordan bulan itu.",
    "caption": "More than every Michael Jordan card that month.",
-   "dur": 3.5,
+   "dur": 3.22,
    "type": "bar_race",
    "img": "09_dark_dragonite.png",
    "bars": [
@@ -304,13 +367,19 @@
    ],
    "source": "PSA · JUNE 2026",
    "trans": "leak",
-   "xfade_in": 0.45
+   "xfade_in": 0.45,
+   "vo_window": [
+    0.3,
+    2.7
+   ],
+   "start": 0.45,
+   "race_dur": 2.15
   },
   {
    "beat": "#3",
    "vo": "Nomor tiga, Gengar: lima puluh satu ribu delapan ratus lima puluh satu.",
    "caption": "#3 Gengar: 51,851",
-   "dur": 5.5,
+   "dur": 4.37,
    "type": "rank",
    "n": 3,
    "img": "05_gengar_vmax_271.png",
@@ -325,16 +394,22 @@
     0
    ],
    "trans": "whip",
-   "xfade_in": 0.3
+   "xfade_in": 0.3,
+   "vo_window": [
+    0.3,
+    4.11
+   ],
+   "count_at": 1.82,
+   "count_dur": 2.38
   },
   {
    "beat": "#3",
    "vo": "Dia ngalahin Shohei Ohtani.",
    "caption": "It beat Shohei Ohtani.",
-   "dur": 2.5,
+   "dur": 2.26,
    "type": "bar_race",
    "img": "06_gengar_fossil.png",
-   "race_dur": 1.3,
+   "race_dur": 1.2,
    "bars": [
     {
      "label": "GENGAR",
@@ -348,20 +423,25 @@
    ],
    "source": "PSA · JUNE 2026",
    "trans": "zoom",
-   "xfade_in": 0.35
+   "xfade_in": 0.35,
+   "vo_window": [
+    0.3,
+    1.56
+   ],
+   "start": 0.45
   },
   {
    "beat": "Twist",
    "vo": "Tapi dua besar ada di level yang berbeda.",
    "caption": "But the top two are on another level.",
-   "dur": 3.5,
+   "dur": 2.75,
    "type": "leaderboard",
    "title": "MOST-GRADED POKÉMON",
    "source": "PSA · JUNE 2026",
    "max0": 56000,
    "max1": 150000,
-   "scale_at": 1.0,
-   "scale_dur": 1.6,
+   "scale_at": 1.28,
+   "scale_dur": 1.2,
    "step": 0,
    "rows": [
     {
@@ -410,13 +490,17 @@
      "impact",
      0.4
     ]
+   ],
+   "vo_window": [
+    0.3,
+    2.2
    ]
   },
   {
    "beat": "#2",
    "vo": "Nomor dua, Charizard: seratus delapan belas ribu empat ratus tujuh belas.",
    "caption": "#2 Charizard: 118,417",
-   "dur": 5.5,
+   "dur": 4.7,
    "type": "rank",
    "n": 2,
    "img": "04_charizard_ex_199.png",
@@ -438,13 +522,19 @@
      "fire",
      0.35
     ]
-   ]
+   ],
+   "vo_window": [
+    0.3,
+    4.15
+   ],
+   "count_at": 1.84,
+   "count_dur": 2.41
   },
   {
    "beat": "#1",
    "vo": "Dan nomor satu, Pikachu: seratus empat puluh ribu tujuh ratus tujuh puluh tiga.",
-   "caption": "#1 Pikachu: 140,773",
-   "dur": 6.0,
+   "caption": "And #1… Pikachu: 140,773",
+   "dur": 4.77,
    "type": "rank",
    "n": 1,
    "img": "01_pikachu_grey_felt_hat.png",
@@ -458,24 +548,37 @@
     0.04,
     0
    ],
-   "count_at": 0.9,
-   "count_dur": 2.0,
+   "count_at": 2.11,
+   "count_dur": 2.39,
    "h": 840,
    "trans": "zoom",
    "xfade_in": 0.35,
    "sfx": [
     [
-     0.1,
+     1.46,
      "reveal",
      0.6
     ]
+   ],
+   "vo_window": [
+    0.3,
+    4.39
+   ],
+   "enter_at": 1.46,
+   "chunk_text": [
+    "And #1…",
+    "Pikachu: 140,773"
+   ],
+   "chunk_at": [
+    0.3,
+    1.56
    ]
   },
   {
    "beat": "Proof",
    "vo": "Artinya, rata-rata tiap delapan belas detik, ada satu kartu Pikachu yang di-grade.",
    "caption": "That's one Pikachu graded every 18 seconds.",
-   "dur": 5.5,
+   "dur": 4.8,
    "type": "conveyor",
    "cards": [
     "01_pikachu_grey_felt_hat.png",
@@ -491,13 +594,17 @@
     "label": "PIKACHU GRADED"
    },
    "trans": "whip",
-   "xfade_in": 0.3
+   "xfade_in": 0.3,
+   "vo_window": [
+    0.3,
+    4.58
+   ]
   },
   {
    "beat": "Proof",
    "vo": "Enam dari sepuluh besar PSA bulan itu adalah Pokémon.",
    "caption": "Six of PSA's top ten that month were Pokémon.",
-   "dur": 4.0,
+   "dur": 3.72,
    "type": "leaderboard",
    "title": "PSA TOP 10 · JUNE 2026",
    "step": 0.07,
@@ -565,15 +672,19 @@
      "bit8",
      0.3
     ]
+   ],
+   "vo_window": [
+    0.3,
+    3.37
    ]
   },
   {
    "beat": "Payoff",
    "vo": "Jagoanmu nomor berapa? Cari kartunya di Kard Avenue!",
    "caption": "Where does your favorite rank? Find it at Kard Avenue!",
-   "dur": 4.0,
+   "dur": 3.22,
    "type": "card_grid",
-   "card_h": 450,
+   "card_h": 400,
    "cols": 3,
    "soft": 0.28,
    "cards": [
@@ -604,16 +715,27 @@
     "speed": 22,
     "blur": 3,
     "tilt": 0.1
-   }
+   },
+   "col_gap": 312,
+   "vo_window": [
+    0.3,
+    2.94
+   ]
   },
   {
    "beat": "End card",
    "vo": "Follow Kard Avenue untuk cerita kartu lainnya, dan download aplikasinya sekarang.",
    "caption": "Follow Kard Avenue for more card stories, and download the app now.",
    "type": "end_card",
-   "dur": 4.5,
+   "dur": 5.63,
    "img": "23_follow_us_cta.jpg",
-   "punch": 0.4
+   "punch": 0.4,
+   "vo_window": [
+    0.3,
+    4.13
+   ]
   }
- ]
+ ],
+ "mystery_art": 0.025,
+ "voiceover": "voiceover.mp3"
 }

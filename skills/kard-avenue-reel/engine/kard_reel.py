@@ -27,6 +27,7 @@ Scene types (see the scene functions' docstrings for fields):
   broll, hook_mystery, hero_stamp, product_intro, card_grid, card_lineup, reveal_zoom,
   artist, featured_cards, stat_chart, cta_product, end_card
   v3.3 (Video 12 'Ranked Countdown'): rank, bar_race, leaderboard, coverflow, deal, conveyor.
+  v3.3.1 (Video 12 final): logo_stat, deal "logo", rank "enter_at", per-scene "chunk_at"/"chunk_text", global "mystery_art".
   Config: "max_len" overrides the 60s length limit for one video (e.g. 75).
 """
 import math, os, sys, json, subprocess, functools, wave, re, shutil, multiprocessing as mp
@@ -103,7 +104,7 @@ def img(name, card=True):
 
 def make_mystery(im):
     a = im.split()[3]; art = np.asarray(im.convert('RGB')).astype(float)
-    dark = np.full_like(art, (20, 20, 20)) * .86 + art * .14
+    k_ = CFG.get('mystery_art', .14); dark = np.full_like(art, (20, 20, 20)) * (1 - k_) + art * k_
     m = Image.fromarray(dark.astype(np.uint8)).convert('RGBA'); m.putalpha(a)
     pad = 40; g = Image.new('L', (im.width + pad * 2, im.height + pad * 2), 0); g.paste(a, (pad, pad))
     g = g.filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.GaussianBlur(14))
@@ -823,14 +824,14 @@ def rank(c, u, d, s):
     """Countdown beat. Giant outlined rank numeral behind a card that swings in in true 3D; the counter rolls to the exact count.
     n, img, count, unit (small line under the count), enter: left|right|top|bottom, side: 1|-1 (which side the numeral peeks out),
     swing: [tx0, ty0, tx1, ty1], h, count_at, count_dur."""
-    side = s.get('side', 1); hh = s.get('h', 800); p = eo3(prog(u, 0, .75))
+    side = s.get('side', 1); hh = s.get('h', 800); ea = s.get('enter_at', 0); p = eo3(prog(u, ea, ea + .75))
     num = outline_num(str(s['n']), s.get('num_size', 900))
     nx = 540 + side * lerp(250, 205, prog(u, 0, d)); na = .34 * prog(u, 0, .4)
     paste_safe(c, with_alpha(num, na), int(nx - num.width / 2), int(640 + OY - num.height / 2))
     ex, ey = {'left': (-950, 0), 'right': (950, 0), 'top': (0, -1350), 'bottom': (0, 1350)}[s.get('enter', 'left')]
     lay = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    put(lay, s['img'], 540 - side * 105 + ex * (1 - p), 660 + ey * (1 - p), hh + 26 * prog(u, 0, d), sweep=prog(u, 1.0, 1.9))
-    sw = s.get('swing', [.32 * side, 0, .05 * side, 0]); q = eio(prog(u, 0, min(d, 2.4)))
+    if p > 0: put(lay, s['img'], 540 - side * 105 + ex * (1 - p), 660 + ey * (1 - p), hh + 26 * prog(u, 0, d), sweep=prog(u, ea + 1.0, ea + 1.9))
+    sw = s.get('swing', [.32 * side, 0, .05 * side, 0]); q = eio(prog(u, ea, ea + min(d - ea, 2.4)))
     c.alpha_composite(project_layer(lay, lerp(sw[0], sw[2], q), lerp(sw[1], sw[3], q), cover=False, f=2000))
     t0 = s.get('count_at', .55); cp = prog(u, t0, t0 + s.get('count_dur', 1.7))
     if cp > 0:
@@ -847,8 +848,8 @@ def bar_race(c, u, d, s):
     bars = s['bars']; mx = s.get('max', max(b['value'] for b in bars) * 1.04); t0 = s.get('start', .45)
     speed = max(b['value'] for b in bars) / s.get('race_dur', 2.0); x0, x1 = 110, 970; bh = 74
     has = bool(s.get('img'))
-    if has: put(c, s['img'], 540, 420 + 14 * math.sin(u * 1.1), s.get('h', 560) + 18 * prog(u, 0, d), alpha=prog(u, 0, .35))
-    base = (820 if has else 600); step = 215; dd = ImageDraw.Draw(c)
+    if has: put(c, s['img'], 540, s.get('cy', 440) + 14 * math.sin(u * 1.1), s.get('h', 590) + 18 * prog(u, 0, d), alpha=prog(u, 0, .35))
+    base = s.get('base', 880 if has else 600); step = 215; dd = ImageDraw.Draw(c)
     for i, b in enumerate(bars):
         a = eo3(prog(u, .1 + i * .12, .5 + i * .12))
         if a <= 0: continue
@@ -908,7 +909,7 @@ def yaw_card(name, h, yaw):
 def coverflow(c, u, d, s):
     """3D carousel: the centre card faces the camera, neighbours turn away and recede; it advances one card per `step` seconds.
     cards, labels (optional big text over the centre card, one per card), step, h."""
-    cards = s['cards']; n = len(cards); st = s.get('step', d / n); hh = s.get('h', 760)
+    cards = s['cards']; n = len(cards); st = s.get('step', d / n); hh = s.get('h', 820)
     k = min(n - 1, int(u / st)); pos = k + (eio(prog(u, k * st + st * .55, (k + 1) * st)) if k < n - 1 else 0) - .7 * (1 - eo3(prog(u, 0, .7)))
     fade = prog(u, 0, .35)
     for i in sorted(range(n), key=lambda i: -abs(i - pos)):
@@ -916,12 +917,12 @@ def coverflow(c, u, d, s):
         if a > 2.7: continue
         sg = 1 if o > 0 else -1; x = 540 + sg * (min(a, 1) * 350 + max(a - 1, 0) * 150); yaw = round(-max(-1, min(1, o)) * 58 / 2) * 2
         h = int(lerp(hh, hh * .7, min(a, 1)) / 2) * 2; im = yaw_card(cards[i], h, yaw)
-        al = fade * lerp(1, .42, min(a, 1)) * (1 if a < 1.7 else max(0, 2.7 - a))
-        x0, y0 = int(x - im.width / 2), int(700 + OY - im.height / 2); paste_safe(c, with_alpha(im, al), x0, y0)
+        al = fade * lerp(1, s.get('side_alpha', .62), min(a, 1)) * (1 if a < 1.7 else max(0, 2.7 - a))
+        cy = s.get('cy', 740); x0, y0 = int(x - im.width / 2), int(cy + OY - im.height / 2); paste_safe(c, with_alpha(im, al), x0, y0)
         if a < .5:
             FRAME_BOXES.append(('card', x0, y0, x0 + im.width, y0 + im.height, h, False))
             lb = s.get('labels')
-            if lb and lb[i]: put_text(c, lb[i], x, 700, F_BLACK, s.get('label_size', 300), alpha=fade * (1 - 2 * a), record=False)
+            if lb and lb[i]: put_text(c, lb[i], x, cy, F_BLACK, s.get('label_size', 300), alpha=fade * (1 - 2 * a), record=False)
 
 def coverflow_sfx(d, s): return []
 def coverflow_keys(d, s):
@@ -934,8 +935,11 @@ def deal(c, u, d, s):
         p = prog(u, t0 + i * st, t0 + i * st + .4)
         if p <= 0: break
         e = eo3(p); af = ((i * 37) % 19 - 9) * 1.4; sx = 900 if i % 2 else -900; sy = -760 if i % 3 else 760
-        put(c, name, lerp(540 + sx, 540 + ((i * 53) % 41 - 20), e), lerp(700 + sy, 700 + ((i * 29) % 31 - 15), e), lerp(hh * 1.45, hh, e),
+        put(c, name, lerp(540 + sx, 540 + ((i * 53) % 41 - 20), e), lerp(s.get('cy', 740) + sy, s.get('cy', 740) + ((i * 29) % 31 - 15), e), lerp(hh * 1.45, hh, e),
             angle=lerp(af + (22 if i % 2 else -22), af, e), alpha=min(1, p * 3), role='fx')
+
+    lg = s.get('logo')
+    if lg: put_plate(c, lg['img'], 540, s.get('cy', 740), lg.get('w', 620), prog(u, lg.get('at', d * .55), lg.get('at', d * .55) + .4))
 
 def deal_sfx(d, s): return []
 def deal_keys(d, s):
@@ -971,7 +975,36 @@ def conveyor_sfx(d, s): return []
 def conveyor_keys(d, s):
     per = s.get('period', 1.1); return [(per * 1.3, 'timer running'), (per * 2.75, 'belt sliding'), (d - .1, 'counter')]
 
-SCENE_TYPES = ['coverflow', 'deal', 'conveyor', 'rank', 'bar_race', 'leaderboard', 'card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
+
+@functools.lru_cache(maxsize=64)
+def plate_img(name, w):
+    """A supplied logo on a white rounded plate (keeps the logo's own colours; never redraw or recolour a third-party logo)."""
+    lg = Image.open(apath(name)).convert('RGBA'); wb = Image.new('RGBA', lg.size, (255, 255, 255, 255)); wb.alpha_composite(lg); lg = wb.convert('RGB'); lw = int(w * .84); lg = lg.resize((lw, int(lg.height * lw / lg.width)), Image.LANCZOS)
+    h = lg.height + int(w * .12); im = Image.new('RGBA', (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle([0, 0, w - 1, h - 1], int(h * .16), fill=(255, 255, 255, 255)); im.paste(lg, ((w - lw) // 2, (h - lg.height) // 2)); return im
+
+def put_plate(c, name, cx, cy, w, p):
+    if p <= 0: return
+    k = lerp(.55, 1, eback(min(1, p))); im = plate_img(name, int(w / 2) * 2)
+    im = im.resize((max(2, int(im.width * k)), max(2, int(im.height * k))), Image.LANCZOS)
+    x, y = int(cx - im.width / 2), int(cy + OY - im.height / 2); paste_safe(c, with_alpha(im, min(1, p * 2.5)), x, y)
+    if p >= 1: FRAME_BOXES.append(('text', x, y, x + im.width, y + im.height, 0, False))
+
+def logo_stat(c, u, d, s):
+    """A supplied logo on a white plate pops in, then stat lines rise in under it. img, w, lines: [big, small, small], at."""
+    for j, name in enumerate(s.get('cards', [])[:2]):   # two big cards behind the plate, mirrored, running off the frame edges
+        sg = -1 if j == 0 else 1; e = eo3(prog(u, .05 + j * .12, .7 + j * .12))
+        put(c, name, 540 + sg * lerp(760, 330, e) + sg * 14 * prog(u, 0, d), s.get('cards_y', 700), s.get('cards_h', 980), angle=-sg * 8, alpha=s.get('cards_alpha', .3) * e, shadow=False, role='fx')
+    t0 = s.get('at', .15); put_plate(c, s['img'], 540, s.get('cy', 520) - 12 * prog(u, 0, d), s.get('w', 700), prog(u, t0, t0 + .45))
+    spec = [(190, 0), (64, 150), (64, 232)]
+    for i, ln in enumerate(s.get('lines', [])[:3]):
+        sz, dy = spec[i]; q = eo3(prog(u, t0 + .55 + i * .22, t0 + 1.0 + i * .22))
+        if q > 0: put_text(c, ln, 540, s.get('cy', 520) + 330 + dy + 40 * (1 - q), F_BLACK, sz, alpha=q)
+
+def logo_stat_sfx(d, s): return []
+def logo_stat_keys(d, s): return [(s.get('at', .15) + .3, 'logo in'), (min(d - .05, s.get('at', .15) + 1.9), 'stat')]
+
+SCENE_TYPES = ['logo_stat', 'coverflow', 'deal', 'conveyor', 'rank', 'bar_race', 'leaderboard', 'card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
                'featured_cards', 'stat_chart', 'cta_product', 'end_card']
 SCENES = {k: (globals()[k], globals()[k + '_sfx']) for k in SCENE_TYPES}
 KEYS = {k: globals()[k + '_keys'] for k in SCENE_TYPES}
@@ -1000,10 +1033,11 @@ def soft_sfx(d, s):
     elif t == 'wall':
         ev = [(.15, 'typing', .45)] + [(s.get('x_at', 2.2) + j * s.get('x_step', .17), 'stamp', .4) for j in range(len(s.get('x_tiles', [])))]
         ev += [(g0, 'tick', .6) for g0, _ in s.get('glitch', [])]
+    elif t == 'logo_stat': ev = [(s.get('at', .15), 'shutter', .45)]
     elif t == 'coverflow': ev = [(i * s.get('step', d / len(s['cards'])) + s.get('step', d / len(s['cards'])) * .55, 'swoosh', .3) for i in range(len(s['cards']) - 1)]
     elif t == 'deal': ev = [(s.get('start', .15) + i * s.get('step', .5) + .3, 'tap', .45) for i in range(len(s['cards'])) if s.get('start', .15) + i * s.get('step', .5) + .3 < d]
     elif t == 'conveyor': ev = [((i + .45) * s.get('period', 1.1), 'shutter', .3) for i in range(int(d / s.get('period', 1.1)))]
-    elif t == 'rank': ev = [(0, 'swoosh', .55), (s.get('count_at', .55) + s.get('count_dur', 1.7), 'shutter', .4)]
+    elif t == 'rank': ev = [(s.get('enter_at', 0), 'swoosh', .55), (s.get('count_at', .55) + s.get('count_dur', 1.7), 'shutter', .4)]
     elif t == 'bar_race': ev = [(s.get('start', .45), 'swoosh', .3), (s.get('start', .45) + s.get('race_dur', 2.0), 'coin', .35)]
     elif t == 'leaderboard': ev = [(r.get('at', .12 + i * s.get('step', .1)), 'tap', .3) for i, r in enumerate(s['rows'])]
     bsx = CFG.get('badge_sfx')
@@ -1091,6 +1125,12 @@ def caption_for(s, u, d):
     if CFG.get('caption_mode', 'lines') != 'chunks': return cap, .3 if s is CFG['scenes'][0] else 0, 60, d
     a, b = s.get('vo_window', [.1, d - .15]); parts = chunks(cap, CFG.get('chunk_words', 4))
     if u < a - .05: return None
+    if s.get('chunk_at'):                                 # explicit chunk start times (local seconds), e.g. to hold back a reveal
+        parts = s.get('chunk_text') or parts; st = s['chunk_at']
+        for i, p_ in enumerate(parts):
+            end = st[i + 1] if i + 1 < len(parts) else max(b + .25, st[i] + .6)
+            if st[i] - .05 <= u < end: return p_, st[i], 72, end
+        return None
     L = sum(len(p) for p in parts); t = a
     for i, p in enumerate(parts):
         dt = (b - a) * len(p) / L
@@ -1454,7 +1494,8 @@ def cmd_check():
     print('OK — no errors' if not errs else f'{len(errs)} error(s)')
     return not errs
 
-DESC = {'coverflow': '3D carousel: centre card faces camera, neighbours turn away; advances card by card', 'deal': 'Cards dealt from the corners slap down onto a centre pile', 'conveyor': 'Cards ride a belt in perspective; ring timer restarts and counter ticks per card',
+DESC = {'logo_stat': 'Supplied logo on a white plate pops in, stat lines rise in under it',
+        'coverflow': '3D carousel: centre card faces camera, neighbours turn away; advances card by card', 'deal': 'Cards dealt from the corners slap down onto a centre pile', 'conveyor': 'Cards ride a belt in perspective; ring timer restarts and counter ticks per card',
         'rank': 'Giant outlined rank numeral behind a card swinging in in 3D; counter rolls to the exact count', 'bar_race': 'Bars race at the same speed; the bigger one overtakes', 'leaderboard': 'Ranking board: rows rise in, bars grow, scale zooms out',
         'hook_mystery': 'Starburst; known versions pop in with ✗; blacked-out mystery card + ?; flash reveal',
         'hero_stamp': 'Hero card push-in + stamp', 'product_intro': 'Box + pack fly in, date types out',
