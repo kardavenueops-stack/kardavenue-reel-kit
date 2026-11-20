@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Kard Avenue Reel engine v3.3 — config-driven. v3 adds the approved Video 05 3D style (macro3d, slam, wall, whip/leak, reflect, glitch, camera, plain captions).
+Kard Avenue Reel engine v3.6 — config-driven. v3 adds the approved Video 05 3D style (macro3d, slam, wall, whip/leak, reflect, glitch, camera, plain captions).
 
 A new video = one JSON config (script + images + scene types). No code edits.
 
@@ -393,7 +393,7 @@ def card_lineup(c, u, d, s):
     for j in order:
         k = cards[j]; x = {2: [330, 750], 3: [255, 540, 825]}[n][j]; a = {2: [5, -5], 3: [6, 0, -6]}[n][j]
         p = eo3(prog(u, j * .12, .6 + j * .12)); put(c, k['img'], x, lerp(2000, 790, p), h, angle=a)
-        lt = .8 + j * (d - 1.6) / max(1, n)
+        lt = k.get('at', .8 + j * (d - 1.6) / max(1, n))
         if k.get('label'): put_chip(c, k['label'], x, 790 + h / 2 + 50, prog(u, lt, lt + .25), size=28)
     if s.get('heading'): put_text(c, s['heading'], 540, heading_y(790 - h / 2 + OY), F_BLACK, 64, stroke=6, alpha=prog(u, .6, 1.))
     if s.get('credit'): put_text(c, s['credit'], 540, 790 + h / 2 + 130, F_B, 36, fill=(220, 220, 235), alpha=prog(u, 1., 1.5))
@@ -768,8 +768,35 @@ def card_wall(c, u, d, s):
 def card_wall_sfx(d, s): return []
 def card_wall_keys(d, s): return [(d * .3, 'wall'), (d * .9, 'wall end')]
 
+def rain_time(u, s):
+    """Slow-motion beat: time runs at `slow` speed for `slow_len` s after the words land."""
+    r = s['rain']; t0 = s.get('at', .05) + (len(s['words']) - 1) * .22 + .1; sl = r.get('slow', .3); ln = r.get('slow_len', .9)
+    if u <= t0: return u
+    return t0 + min(u - t0, ln) * sl + max(0, u - t0 - ln)
+
+def rain(c, u, s, front):
+    """v3.4 falling cards: real cards dropping from the top with air drag (terminal speed), 3D flutter + tumble, sideways sway;
+    three depth layers behind the words and a few big blurred cards in front. rain: {cards, n, h, alpha, front, seed, slow, slow_len}."""
+    r = s['rain']; names = r['cards']; n = r.get('n', 18); hh = r.get('h', 420); rng = np.random.default_rng(r.get('seed', 5)); tt = rain_time(u, s)
+    nf = r.get('front', 3)
+    for k in range(n + nf):
+        x0, ph, sp, t_in, nm = rng.uniform(-60, W + 60), rng.uniform(0, 6.28), rng.uniform(.8, 1.25), rng.uniform(-1.6, 1.2), names[k % len(names)]
+        is_front = k >= n
+        if is_front != front: continue
+        z = 3 if is_front else (k % 3)                       # 0 far, 1 mid, 2 near, 3 in front of the words
+        sc, al, bl = [(.5, .3, 2), (.75, .5, 1), (1., .7, 0), (1.55, .8, 7)][z]; ch = int(hh * sc / 8) * 8
+        vt = (520 + 260 * z) * sp                            # terminal speed: bigger (closer) cards move faster
+        tl = max(0., tt - t_in); y = -ch + vt * (tl - .35 * (1 - math.exp(-tl / .35)))   # accelerate, then terminal speed (air drag)
+        if y > H + ch or tl <= 0: continue
+        x = x0 + 70 * math.sin(tl * 1.6 + ph) * (1 + .3 * z); yaw = int(round(55 * math.sin(tl * 2.3 + ph) / 8)) * 8
+        im = yaw_card(nm, ch, yaw); ang = int(round((25 * math.sin(tl * 1.1 + ph * 2) + 40 * tl * (1 if k % 2 else -1)) / 3)) * 3
+        im = im.rotate(ang, expand=True, resample=Image.BILINEAR)
+        if bl: im = im.filter(ImageFilter.GaussianBlur(bl))
+        paste_safe(c, with_alpha(im, al * r.get('alpha', 1.) * prog(u, 0, .25)), int(x - im.width / 2), int(y - im.height / 2))
+
 def slam(c, u, d, s):
-    """Big word slams in (scale-down + shake), over dimmed grey cards. words: [..], cards: [imgs]."""
+    """Big word slams in (scale-down + shake), over dimmed grey cards. words: [..], cards: [imgs]. rain: falling cards (v3.4)."""
+    if s.get('rain'): rain(c, u, s, False)
     for j, name in enumerate(s.get('cards', [])):
         x = 540 + (j - (len(s['cards']) - 1) / 2) * 300; put(c, name, x, 760 + 20 * math.sin(u * 2 + j), 400, angle=(j - 1) * 4, alpha=.55, role='fx')
     c.alpha_composite(tint_layer(tuple(CFG.get('slam_tint', (150, 10, 25))), .55))
@@ -777,6 +804,7 @@ def slam(c, u, d, s):
         t0 = s.get('at', .05) + j * .22; p = prog(u, t0, t0 + .16)
         fs = min(170, int(170 * 940 / max(1, font(F_BLACK, 170).getlength(w_))))
         if p > 0: put_text(c, w_, 540, 700 + j * 190 - (len(s['words']) - 1) * 95, F_BLACK, int(lerp(fs * 1.5, fs, eo3(p))), fill=tuple(CFG.get('slam_color', (255, 70, 80))) if j == len(s['words']) - 1 else PAPER, stroke=10, alpha=p, record=False)
+    if s.get('rain'): rain(c, u, s, True)
 
 def wall(c, u, d, s):
     """The 'top 300' wall: rows of blacked-out finalist cards scrolling on a tilted plane; counter; rapid ✗ stamps; AI glitch bursts."""
@@ -826,7 +854,7 @@ def rank(c, u, d, s):
     side = s.get('side', 1); hh = s.get('h', 800); p = eo3(prog(u, 0, .75))
     num = outline_num(str(s['n']), s.get('num_size', 900))
     nx = 540 + side * lerp(250, 205, prog(u, 0, d)); na = .34 * prog(u, 0, .4)
-    paste_safe(c, with_alpha(num, na), int(nx - num.width / 2), int(640 + OY - num.height / 2))
+    paste_safe(c, with_alpha(num, s.get('num_alpha', 1) * na), int(nx - num.width / 2), int(s.get('num_y', 640) + OY - num.height / 2))
     ex, ey = {'left': (-950, 0), 'right': (950, 0), 'top': (0, -1350), 'bottom': (0, 1350)}[s.get('enter', 'left')]
     lay = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     put(lay, s['img'], 540 - side * 105 + ex * (1 - p), 660 + ey * (1 - p), hh + 26 * prog(u, 0, d), sweep=prog(u, 1.0, 1.9))
@@ -895,9 +923,9 @@ def leaderboard_keys(d, s):
 
 # ---------------------------------------------------------------- v3.3 extra motions (alternatives to card_wall / crowd)
 @functools.lru_cache(maxsize=500)
-def yaw_card(name, h, yaw):
+def yaw_card(name, h, yaw, card=True):
     """A card turned about its vertical axis in true perspective (no stretching). yaw in degrees."""
-    im = scaled(name, h); w, hh = im.size; f = 1500.; th = math.radians(yaw); pts = []
+    im = scaled(name, h, 0, card); w, hh = im.size; f = 1500.; th = math.radians(yaw); pts = []
     for X, Y in [(-w / 2, -hh / 2), (w / 2, -hh / 2), (w / 2, hh / 2), (-w / 2, hh / 2)]:
         x1, z = X * math.cos(th), X * math.sin(th); k = f / (f + z); pts.append((x1 * k, Y * k))
     mnx, mny = min(q[0] for q in pts), min(q[1] for q in pts)
@@ -909,6 +937,7 @@ def coverflow(c, u, d, s):
     """3D carousel: the centre card faces the camera, neighbours turn away and recede; it advances one card per `step` seconds.
     cards, labels (optional big text over the centre card, one per card), step, h."""
     cards = s['cards']; n = len(cards); st = s.get('step', d / n); hh = s.get('h', 760)
+    u = u - s.get('start', 0)
     k = min(n - 1, int(u / st)); pos = k + (eio(prog(u, k * st + st * .55, (k + 1) * st)) if k < n - 1 else 0) - .7 * (1 - eo3(prog(u, 0, .7)))
     fade = prog(u, 0, .35)
     for i in sorted(range(n), key=lambda i: -abs(i - pos)):
@@ -921,7 +950,7 @@ def coverflow(c, u, d, s):
         if a < .5:
             FRAME_BOXES.append(('card', x0, y0, x0 + im.width, y0 + im.height, h, False))
             lb = s.get('labels')
-            if lb and lb[i]: put_text(c, lb[i], x, 700, F_BLACK, s.get('label_size', 300), alpha=fade * (1 - 2 * a), record=False)
+            if lb and lb[i]: put_text(c, lb[i], x, s.get('label_y', 700), F_BLACK, s.get('label_size', 300), alpha=fade * (1 - 2 * a), record=False)
 
 def coverflow_sfx(d, s): return []
 def coverflow_keys(d, s):
@@ -936,6 +965,11 @@ def deal(c, u, d, s):
         e = eo3(p); af = ((i * 37) % 19 - 9) * 1.4; sx = 900 if i % 2 else -900; sy = -760 if i % 3 else 760
         put(c, name, lerp(540 + sx, 540 + ((i * 53) % 41 - 20), e), lerp(700 + sy, 700 + ((i * 29) % 31 - 15), e), lerp(hh * 1.45, hh, e),
             angle=lerp(af + (22 if i % 2 else -22), af, e), alpha=min(1, p * 3), role='fx')
+    ct = s.get('counter')
+    if ct:   # v3.4: counter ticks up as each card lands
+        n = sum(1 for i in range(len(cards)) if u >= t0 + i * st + .38); a = prog(u, t0 + .3, t0 + .6)
+        if n: put_text(c, str(n), 540, ct.get('y', 1170), F_BLACK, 130, alpha=a, scale=1 + .14 * (1 - eo3(prog(u, t0 + (n - 1) * st + .38, t0 + (n - 1) * st + .6))))
+        if ct.get('label'): put_text(c, ct['label'], 540, ct.get('y', 1170) + 92, F_B, 30, fill=(200, 200, 200), alpha=a)
 
 def deal_sfx(d, s): return []
 def deal_keys(d, s):
@@ -971,7 +1005,186 @@ def conveyor_sfx(d, s): return []
 def conveyor_keys(d, s):
     per = s.get('period', 1.1); return [(per * 1.3, 'timer running'), (per * 2.75, 'belt sliding'), (d - .1, 'counter')]
 
-SCENE_TYPES = ['coverflow', 'deal', 'conveyor', 'rank', 'bar_race', 'leaderboard', 'card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
+
+# ---------------------------------------------------------------- v3.4 / v3.5 scenes (Video 13 + Video 14 Riftbound)
+def versus_rows(c, u, d, s):
+    """Two face-offs stacked: rows: [{cards, joiner, at}] each row appears at its own time (when that pair is spoken)."""
+    for k, r in enumerate(s['rows']):
+        if u < r.get('at', 0): continue
+        rs = dict(r); rs.setdefault('h', s.get('h', 500)); rs['y'] = [480, 1040][k] if len(s['rows']) == 2 else 740; rs['t0'] = r.get('at', 0)
+        versus(c, u, d, rs)
+
+def versus_rows_sfx(d, s): return []
+def versus_rows_keys(d, s): return [(s['rows'][-1].get('at', 0) - .05, 'first pair'), (d - .1, 'both pairs')]
+
+def versus(c, u, d, s):
+    """Pair face-off: two cards slide in from opposite edges, turned toward each other in true 3D, and meet as equals.
+    cards: [A, B], labels, joiner ('VS', '+', '?' or ''), h, gap, joiner_at, label_at, enter: sides|vertical, card (False for products)."""
+    u = u - s.get('t0', 0); YC = s.get('y', 740)
+    A, B = s['cards']; hh = s.get('h', 640); gap = s.get('gap', 40); cd = s.get('card', True); p = eo3(prog(u, 0, s.get('in_dur', .7))); dr = prog(u, 0, d)
+    vert = s.get('enter') == 'vertical'
+    ws = [hh * img(n_, cd).width / img(n_, cd).height for n_ in (A, B)]; tot = ws[0] + gap + ws[1]; seam = 540 - tot / 2 + ws[0] + gap / 2   # balanced on the pair's total width
+    for j, nm in enumerate((A, B)):
+        sg = -1 if j == 0 else 1; w = ws[j]
+        yaw = int(round(lerp(sg * -48, sg * -14, p) + sg * -4 * math.sin(u * 1.3)) / 2) * 2
+        im = yaw_card(nm, int(hh + 30 * dr) // 2 * 2, yaw, cd)
+        tx = seam + sg * (w / 2 + gap / 2 + 10 * dr); ty = YC
+        if vert: x, y = tx, ty + sg * 1500 * (1 - p)
+        else: x, y = tx + sg * 900 * (1 - p), ty + sg * 18 * math.sin(u * 1.1)
+        sh, pad = shadow_of(nm, hh, 0, cd); paste_safe(c, with_alpha(sh, min(1, p * 2)), int(x - sh.width / 2 + 10), int(y + OY - sh.height / 2 + 24))
+        x0, y0 = int(x - im.width / 2), int(y + OY - im.height / 2); paste_safe(c, with_alpha(im, min(1, p * 2)), x0, y0)
+        FRAME_BOXES.append(('card', x0, y0, x0 + im.width, y0 + im.height, hh, False))
+        lb = s.get('labels')
+        if lb and lb[j]: put_chip(c, lb[j], tx, YC + hh / 2 + 70, prog(u, s.get('label_at', .7), s.get('label_at', .7) + .3), size=s.get('label_size', 30))
+    jn = s.get('joiner', 'VS'); ja = s.get('joiner_at', .55)
+    if jn:
+        dl = eio(prog(u, ja - .2, ja + .3)); dd = ImageDraw.Draw(c); L = hh * .55 * dl
+        if dl > 0: dd.rectangle([seam - 2, YC + OY - L, seam + 2, YC + OY + L], fill=PAPER + (200,))
+        jp = prog(u, ja, ja + .25)
+        if jp > 0:
+            ci = Image.new('RGBA', (170, 170), (0, 0, 0, 0)); ImageDraw.Draw(ci).ellipse([4, 4, 166, 166], fill=INK + (255,), outline=PAPER, width=6)
+            sc = lerp(1.8, 1, eo3(jp)); ci = ci.resize((int(170 * sc), int(170 * sc)), Image.LANCZOS); paste_safe(c, with_alpha(ci, jp), int(seam - ci.width / 2), int(YC + OY - ci.height / 2))
+            put_text(c, jn, seam, YC, F_BLACK, int(70 * sc), alpha=jp, record=False)
+
+def versus_sfx(d, s): return []
+def versus_keys(d, s): return [(.35, 'sliding in'), (d - .1, 'face-off')]
+
+@functools.lru_cache(maxsize=8)
+def joined_img(a, b):
+    """Two connecting-art cards butted edge to edge as one painting: the inner rounded corners are filled, the outer ones kept."""
+    A, B = Image.open(apath(a)).convert('RGBA'), Image.open(apath(b)).convert('RGBA'); B = B.resize((int(B.width * A.height / B.height), A.height), Image.LANCZOS)
+    r = int(A.width * .07)
+    for im, xs in ((A, (A.width - r, A.width)), (B, (0, r))):
+        for y0, y1, src in ((0, r, r), (im.height - r, im.height, im.height - 2 * r)):   # copy a strip from just inside the card over the transparent corner
+            strip = im.crop((xs[0], src, xs[1], src + r)); im.paste(strip.convert('RGBA'), (xs[0], y0))
+    out = Image.new('RGBA', (A.width + B.width, A.height), (0, 0, 0, 0)); out.paste(A, (0, 0)); out.paste(B, (A.width, 0)); return out
+
+def diptych(c, u, d, s):
+    """v3.5 'two cards, one painting': the two halves fly in from the sides turned away, straighten, and slide together until the
+    art joins into one picture; a light sweep crosses the seam, then a slow push-in. cards: [left, right], h, join_at, label, label_at."""
+    L, R = s['cards']; hh = s.get('h', 700); ja = s.get('join_at', 1.6); ap = s.get('approach', 1.5); p = eio(prog(u, max(0, ja - ap), ja)); ent = eo3(prog(u, 0, .6)); dr = prog(u, ja, d + .4)
+    if u < ja:
+        for j, nm in enumerate((L, R)):
+            sg = -1 if j == 0 else 1; w = hh * img(nm, False).width / img(nm, False).height
+            yaw = int(round(lerp(sg * 34, 0, p) / 2)) * 2; im = yaw_card(nm, hh, yaw, False)
+            x = 540 + sg * (w / 2 + lerp(lerp(700, s.get('rest_gap', 70), ent) + 18 * math.sin(u * .9), 0, p)); y = 740 + lerp(sg * 40, 0, p)
+            ang = lerp(sg * 9, 0, p); im = im.rotate(ang, expand=True, resample=Image.BICUBIC) if abs(ang) > .2 else im
+            paste_safe(c, with_alpha(im, min(1, prog(u, 0, .3))), int(x - im.width / 2), int(y + OY - im.height / 2))
+    else:
+        jn = joined_img(L, R); h2 = int((hh + 50 * eo3(dr)) / 2) * 2; key = '__join__'
+        sc = h2 / jn.height; im = jn.resize((int(jn.width * sc), h2), Image.LANCZOS)
+        sw = prog(u, ja, ja + .9)
+        if 0 < sw < 1:   # light sweep across the seam
+            band = Image.new('L', im.size, 0); bd = ImageDraw.Draw(band); x = lerp(-im.width * .3, im.width * 1.3, sw)
+            bd.polygon([(x - 80, 0), (x + 40, 0), (x - 80 + im.height * .4, im.height), (x - 200 + im.height * .4, im.height)], fill=140)
+            band = Image.fromarray(np.minimum(np.asarray(band.filter(ImageFilter.GaussianBlur(28))), np.asarray(im.split()[3])).astype(np.uint8))
+            wh = Image.new('RGBA', im.size, (255, 255, 255, 0)); wh.putalpha(band); im = im.copy(); im.alpha_composite(wh)
+        x0, y0 = int(540 - im.width / 2), int(740 + OY - im.height / 2)
+        sh = Image.new('L', (im.width + 120, im.height + 120), 0); sh.paste(im.split()[3], (60, 60)); sh = sh.filter(ImageFilter.GaussianBlur(26))
+        shl = Image.new('RGBA', sh.size, (0, 0, 0, 0)); shl.putalpha(sh.point(lambda v: int(v * .6))); paste_safe(c, shl, x0 - 50, y0 - 36)
+        paste_safe(c, im, x0, y0); FRAME_BOXES.append(('card', x0, y0, x0 + im.width, y0 + im.height, h2, False))
+        sg_ = prog(u, ja - .05, ja + .35)   # soft seam glow at the moment of joining (not a full-frame flash)
+        if 0 < sg_ < 1:
+            g = Image.new('L', (60, im.height), 0); ImageDraw.Draw(g).rectangle([22, 0, 38, im.height], fill=int(230 * math.sin(math.pi * sg_))); g = g.filter(ImageFilter.GaussianBlur(10))
+            gl = Image.new('RGBA', g.size, PAPER + (0,)); gl.putalpha(g); paste_safe(c, gl, 540 - 30, y0)
+    if s.get('label'): put_chip(c, s['label'], 540, 740 + hh / 2 + 80, prog(u, s.get('label_at', ja + .4), s.get('label_at', ja + .4) + .3), size=30)
+
+def diptych_sfx(d, s): return []
+def diptych_keys(d, s): ja = s.get('join_at', 1.6); return [(ja * .55, 'halves approaching'), (ja + .45, 'joined + sweep'), (d - .1, 'one painting')]
+
+
+# ---------------------------------------------------------------- v3.6 scenes (Video 15 Vendetta Rivals)
+def shadow_clones(c, u, d, s):
+    """Card in colour; at clone_at, dark shadow copies of it slide out to the sides with ghost trails, the edges darken.
+    img, h, clone_at, clones (pairs, default 2), spread (px), tint [r,g,b] (rim colour of the shadows)."""
+    nm = s['img']; hh = s.get('h', 820); ca = s.get('clone_at', .6); p = eo3(prog(u, ca, ca + .7)); dr = prog(u, 0, d)
+    base = scaled(nm, int((hh + 40 * dr) / 2) * 2)
+    tint = tuple(s.get('tint', [180, 20, 30]))
+    def shadow_of_card(im, a):
+        al = im.split()[3]; dark = Image.new('RGBA', im.size, (8, 8, 12, 0)); dark.putalpha(al.point(lambda v: int(v * a)))
+        rim = al.filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.GaussianBlur(6)); rl = Image.new('RGBA', im.size, tint + (0,)); rl.putalpha(rim.point(lambda v: int(v * a * .55)))
+        rl.alpha_composite(dark); g = im.convert('L').point(lambda v: int(v * .55)); gl = Image.merge('RGBA', (g, g.point(lambda v: int(v * .8)), g.point(lambda v: int(v * .8)), al.point(lambda v: int(v * a * .55)))); rl.alpha_composite(gl); return rl
+    npairs = s.get('clones', 2); spread = s.get('spread', 300)
+    if p > 0:
+        for k in range(npairs, 0, -1):
+            im = scaled(nm, int(hh * (1 - .14 * k) / 2) * 2); al = im.split()[3]
+            dk = ImageEnhance.Brightness(im.convert('RGB')).enhance(.38); rr = Image.new('RGB', im.size, tint)
+            dk = Image.blend(dk, rr, .28).convert('RGBA'); dk.putalpha(al)
+            for sg in (-1, 1):
+                off = sg * spread * (.55 + .5 * (k - 1)) * p
+                for tr in range(3, -1, -1):   # ghost trail back toward the centre
+                    f = tr / 3.; x = 540 + off * (1 - .35 * f); a = (.9 if tr == 0 else .22 * (1 - f)) * p
+                    paste_safe(c, with_alpha(dk, a), int(x - dk.width / 2), int(740 + OY - dk.height / 2 + 14 * k))
+    x0, y0 = int(540 - base.width / 2), int(740 + OY - base.height / 2)
+    sh_, pad = shadow_of(nm, hh, 0, True); paste_safe(c, sh_, x0 - pad + 12, y0 - pad + 26)
+    paste_safe(c, base, x0, y0); FRAME_BOXES.append(('card', x0, y0, x0 + base.width, y0 + base.height, hh, False))
+    if p > 0:   # shadows creeping in from the frame edges
+        Y, X = np.ogrid[0:H, 0:W]; v = np.clip(np.hypot((X - 540) / 560, (Y - 860) / 980) - (1.05 - .35 * p), 0, 1)
+        vl = Image.new('RGBA', (W, H), (4, 4, 6, 0)); vl.putalpha(Image.fromarray((np.clip(v * 2.2, 0, 1) * 235 * p).astype(np.uint8))); c.alpha_composite(vl)
+
+def shadow_clones_sfx(d, s): return []
+def shadow_clones_keys(d, s): ca = s.get('clone_at', .6); return [(max(.05, ca - .1), 'Zed alone'), (min(d - .05, ca + .9), 'shadow clones out')]
+
+@functools.lru_cache(maxsize=2)
+def stone_tex(seed=4):
+    """Dark sandstone slab texture (procedural): layered noise, faint horizontal strata, carved border lines."""
+    rng = np.random.default_rng(seed); acc = np.zeros((H, W))
+    for sc, wgt in ((8, .5), (32, .3), (128, .2)):
+        n = rng.random((H // sc + 2, W // sc + 2)); acc += wgt * np.asarray(Image.fromarray((n * 255).astype(np.uint8)).resize((W, H), Image.BICUBIC), float) / 255
+    y = np.arange(H)[:, None]; acc += .06 * np.sin(y / 23.0 + 3 * acc)
+    v = np.clip((acc - acc.mean()) * 150 + 38, 0, 255)
+    base = Image.fromarray(np.stack([v * 1.0, v * .84, v * .64], -1).astype(np.uint8))
+    emb = Image.fromarray(v.astype(np.uint8)).filter(ImageFilter.EMBOSS)
+    base = ImageChops.add(base, Image.merge('RGB', (emb, emb, emb)).point(lambda q: int(max(0, q - 128) * .5)))
+    im = base.convert('RGBA'); d = ImageDraw.Draw(im); GOLD = (176, 138, 64, 255)
+    for half in (0, W // 2):
+        x0, x1 = half + 60, half + W // 2 - 60
+        d.rectangle([x0, 160, x1, H - 160], outline=(6, 5, 4, 255), width=10); d.rectangle([x0 + 12, 172, x1 - 12, H - 172], outline=GOLD, width=3)
+        cx = (x0 + x1) // 2
+        for yy in (H // 2 - 220, H // 2, H // 2 + 220):   # carved sun discs
+            d.ellipse([cx - 60, yy - 60, cx + 60, yy + 60], outline=GOLD, width=3); d.ellipse([cx - 22, yy - 22, cx + 22, yy + 22], fill=(120, 92, 40, 255))
+    Y, X = np.mgrid[0:H, 0:W]; sh = np.clip(np.abs((X % (W // 2)) - W / 4) / (W / 4), 0, 1) ** 2 * .45   # darker toward each door's edges
+    shl = Image.new('RGBA', (W, H), (0, 0, 0, 0)); shl.putalpha(Image.fromarray((sh * 255).astype(np.uint8))); im.alpha_composite(shl)
+    return im
+
+@functools.lru_cache(maxsize=4)
+def door_tex(name):
+    im = Image.open(apath(name)).convert('RGB'); s_ = max(W / im.width, H / im.height) * 1.1
+    im = im.resize((int(im.width * s_), int(im.height * s_)), Image.LANCZOS).crop((0, 0, W, H)).filter(ImageFilter.GaussianBlur(5))
+    im = ImageEnhance.Color(im).enhance(.35); im = ImageEnhance.Brightness(im).enhance(.32); return im.convert('RGBA')
+
+def seal(c, u, d, s):
+    """Tomb doors. mode 'close': two stone doors slam shut over the card at seal_at (impact, dust, a last thread of light at the seam).
+    mode 'open': the doors start shut and grind apart at open_at with light pouring from the seam, revealing the card.
+    img, h, mode, seal_at / open_at, tex (image used as the stone texture), push."""
+    nm = s['img']; hh = s.get('h', 860); dr = prog(u, 0, d); mode = s.get('mode', 'close')
+    base = scaled(nm, int((hh + s.get('push', 40) * dr) / 2) * 2); x0, y0 = int(540 - base.width / 2), int(740 + OY - base.height / 2)
+    if mode == 'close': t0 = s.get('seal_at', 1.0); q = prog(u, t0 - .55, t0); q = q * q * q   # accelerates into the slam
+    else: t0 = s.get('open_at', .5); q = 1 - eio(prog(u, t0, t0 + 1.4))
+    sh_, pad = shadow_of(nm, hh, 0, True); paste_safe(c, sh_, x0 - pad + 12, y0 - pad + 26); paste_safe(c, base, x0, y0)
+    FRAME_BOXES.append(('card', x0, y0, x0 + base.width, y0 + base.height, hh, False))
+    if mode == 'open' and q < 1:   # light pouring from the opening seam
+        gw = int(40 + 700 * (1 - q)); g = Image.new('L', (W, H), 0); ImageDraw.Draw(g).rectangle([540 - gw // 2, 0, 540 + gw // 2, H], fill=int(200 * q + 40))
+        g = g.filter(ImageFilter.GaussianBlur(60)); gl = Image.new('RGBA', (W, H), (255, 236, 205, 0)); gl.putalpha(g.point(lambda v: int(v * .55 * max(q, .15)))); c.alpha_composite(gl)
+    if q > 0:
+        tex = stone_tex(); gap = int((W / 2) * (1 - q))
+        L = tex.crop((0, 0, W // 2, H)); R = tex.crop((W // 2, 0, W, H))
+        for im_, x, ex in ((L.copy(), -gap, W // 2 - 4), (R.copy(), W // 2 + gap, 0)):
+            ImageDraw.Draw(im_).rectangle([ex, 0, ex + 3, H], fill=(30, 26, 22, 255)); paste_safe(c, im_, x, 0)
+        if mode == 'close' and u >= t0:   # dust burst + thin line of light at the seam
+            k = prog(u, t0, t0 + 1.2); rng = np.random.default_rng(3); dd = ImageDraw.Draw(c)
+            for _ in range(60):
+                yy = rng.uniform(150, H - 150); vx = rng.uniform(80, 420) * (1 if rng.random() > .5 else -1); r = rng.uniform(2, 6)
+                xx = 540 + vx * eo3(k); a = int(170 * (1 - k)); dd.ellipse([xx - r, yy - r + 60 * k, xx + r, yy + r + 60 * k], fill=(200, 180, 150, a))
+            sl = Image.new('L', (40, H), 0); ImageDraw.Draw(sl).rectangle([18, 0, 21, H], fill=int(230 * (1 - prog(u, t0, t0 + 1.6)))); sl = sl.filter(ImageFilter.GaussianBlur(4))
+            sll = Image.new('RGBA', (40, H), (255, 225, 180, 0)); sll.putalpha(sl); c.alpha_composite(sll, (520, 0))
+
+def seal_sfx(d, s): return []
+def seal_keys(d, s):
+    if s.get('mode', 'close') == 'close': t0 = s.get('seal_at', 1.0); return [(max(.05, t0 - .3), 'doors closing'), (min(d - .05, t0 + .4), 'sealed')]
+    t0 = s.get('open_at', .5); return [(t0 + .3, 'doors opening'), (min(d - .05, t0 + 1.5), 'revealed')]
+
+SCENE_TYPES = ['shadow_clones', 'seal', 'versus_rows', 'versus', 'diptych', 'coverflow', 'deal', 'conveyor', 'rank', 'bar_race', 'leaderboard', 'card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
                'featured_cards', 'stat_chart', 'cta_product', 'end_card']
 SCENES = {k: (globals()[k], globals()[k + '_sfx']) for k in SCENE_TYPES}
 KEYS = {k: globals()[k + '_keys'] for k in SCENE_TYPES}
@@ -1003,6 +1216,11 @@ def soft_sfx(d, s):
     elif t == 'coverflow': ev = [(i * s.get('step', d / len(s['cards'])) + s.get('step', d / len(s['cards'])) * .55, 'swoosh', .3) for i in range(len(s['cards']) - 1)]
     elif t == 'deal': ev = [(s.get('start', .15) + i * s.get('step', .5) + .3, 'tap', .45) for i in range(len(s['cards'])) if s.get('start', .15) + i * s.get('step', .5) + .3 < d]
     elif t == 'conveyor': ev = [((i + .45) * s.get('period', 1.1), 'shutter', .3) for i in range(int(d / s.get('period', 1.1)))]
+    elif t == 'shadow_clones': ev = [(s.get('clone_at', .6) - .05, 'metal_whoosh', .45), (s.get('clone_at', .6) + .1, 'swoosh', .4)]
+    elif t == 'seal': ev = ([(s.get('seal_at', 1.) - .5, 'metal_whoosh', .5), (s.get('seal_at', 1.), 'fire', .5)] if s.get('mode', 'close') == 'close' else [(s.get('open_at', .5), 'metal_whoosh', .5), (s.get('open_at', .5) + .4, 'reveal', .45)])
+    elif t == 'versus_rows': ev = [(r.get('at', 0), 'swoosh', .5) for r in s['rows']] + [(r.get('at', 0) + r.get('joiner_at', .5), 'shutter', .35) for r in s['rows']]
+    elif t == 'versus': ev = [(0, 'swoosh', .5), (s.get('joiner_at', .55), 'shutter', .4)] if s.get('joiner', 'VS') else [(0, 'swoosh', .5)]
+    elif t == 'diptych': ev = [(0, 'swoosh', .45), (s.get('join_at', 1.6) - .05, 'tap', .6), (s.get('join_at', 1.6) + .05, 'reveal', .45)]
     elif t == 'rank': ev = [(0, 'swoosh', .55), (s.get('count_at', .55) + s.get('count_dur', 1.7), 'shutter', .4)]
     elif t == 'bar_race': ev = [(s.get('start', .45), 'swoosh', .3), (s.get('start', .45) + s.get('race_dur', 2.0), 'coin', .35)]
     elif t == 'leaderboard': ev = [(r.get('at', .12 + i * s.get('step', .1)), 'tap', .3) for i, r in enumerate(s['rows'])]
@@ -1071,6 +1289,14 @@ def caption_plain(text, size):
         t = ' '.join(ln); x = (im.width - f.getlength(t)) / 2; y = 20 + i * lh
         ds.text((x, y + 3), t, font=f, fill=200, stroke_width=3); d.text((x, y), t, font=f, fill=PAPER + (255,))
     shadow = Image.new('RGBA', im.size, (0, 0, 0, 0)); shadow.putalpha(sh.filter(ImageFilter.GaussianBlur(6)))
+    if CFG.get('caption_shadow') == 'strong':   # v3.5: no box; wide soft dark glow + tight drop shadow keep white text readable on bright art
+        gl = Image.new('L', im.size, 0); gd = ImageDraw.Draw(gl); tg = Image.new('L', im.size, 0); td = ImageDraw.Draw(tg)
+        for i, ln in enumerate(lines):
+            t = ' '.join(ln); x = (im.width - f.getlength(t)) / 2; y = 20 + i * lh
+            gd.text((x, y + 2), t, font=f, fill=255, stroke_width=10); td.text((x + 1, y + 4), t, font=f, fill=255, stroke_width=2)
+        out = Image.new('RGBA', im.size, (0, 0, 0, 0)); out.putalpha(gl.filter(ImageFilter.GaussianBlur(16)).point(lambda v: int(v * .78)))
+        t2 = Image.new('RGBA', im.size, (0, 0, 0, 0)); t2.putalpha(tg.filter(ImageFilter.GaussianBlur(2.5)).point(lambda v: int(v * .9)))
+        out.alpha_composite(t2); out.alpha_composite(im); return out
     shadow.alpha_composite(im); return shadow
 
 def chunks(text, maxw=4):
@@ -1454,7 +1680,7 @@ def cmd_check():
     print('OK — no errors' if not errs else f'{len(errs)} error(s)')
     return not errs
 
-DESC = {'coverflow': '3D carousel: centre card faces camera, neighbours turn away; advances card by card', 'deal': 'Cards dealt from the corners slap down onto a centre pile', 'conveyor': 'Cards ride a belt in perspective; ring timer restarts and counter ticks per card',
+DESC = {'shadow_clones': 'Zed card in colour; dark shadow copies slide out to both sides with ghost trails, shadows creep in from the edges', 'seal': 'Stone tomb doors slam shut over the card (dust, last thread of light) or grind open with light pouring from the seam', 'versus_rows': 'Two face-offs stacked: each pair slides in, turned toward each other in 3D, as it is spoken', 'versus': 'Pair face-off: two cards slide in from opposite edges, turned toward each other in 3D, joiner in the middle', 'diptych': 'Two connecting-art cards fly in and slide together until the art joins into one painting, light sweep across the seam', 'coverflow': '3D carousel: centre card faces camera, neighbours turn away; advances card by card', 'deal': 'Cards dealt from the corners slap down onto a centre pile', 'conveyor': 'Cards ride a belt in perspective; ring timer restarts and counter ticks per card',
         'rank': 'Giant outlined rank numeral behind a card swinging in in 3D; counter rolls to the exact count', 'bar_race': 'Bars race at the same speed; the bigger one overtakes', 'leaderboard': 'Ranking board: rows rise in, bars grow, scale zooms out',
         'hook_mystery': 'Starburst; known versions pop in with ✗; blacked-out mystery card + ?; flash reveal',
         'hero_stamp': 'Hero card push-in + stamp', 'product_intro': 'Box + pack fly in, date types out',

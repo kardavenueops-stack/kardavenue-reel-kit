@@ -373,3 +373,61 @@ Also new: `"max_len": 75` in the config raises the 60s limit for one video; `che
 - **Data stories:** exact counts, the month and source on screen ("PSA · JUNE 2026"), and a monthly figure is never presented as all-time. Derived numbers (e.g. "one every 18 seconds") are labelled as averages in the voiceover.
 - **Comparisons with athletes or other real people:** names as text only, no photos.
 - **Hooks for lists:** never tell the viewer they already know the answer; lead with the surprise in the middle of the list.
+
+
+## 18. Video 13 "TAG TEAM GX" (engine v3.4), approved 16 Nov 2026
+Builds on §16–§17. (v3.4 features were rebuilt in engine v3.5/v3.6, see §19.)
+
+### Engine v3.4: new features
+| Key / type | Where | What it does |
+|---|---|---|
+| `versus` | scene type | Pair face-off: two cards slide in from opposite edges, turned toward each other in true 3D, meet as equals; divider + joiner ("+"), name chips. `cards: [A, B]`, `labels`, `joiner`, `h`, `gap`, `joiner_at`, `label_at` |
+| `deal` `counter: {label}` | scene | Counter ticks up as each card lands (e.g. "9 · NEW TAG TEAM-GX") |
+| `slam` `rain: {cards, n, h, alpha, front, seed, slow, slow_len}` | scene | Cards dropping from the top like real cards (air drag + terminal speed, 3D flutter/tumble, sway, spin), 3 depth layers + blurred foreground cards in front of the words, motion blur, slow-motion beat when the words land |
+| `hl_bold: false` | macro3d + highlight | Marked text keeps its normal weight (no bold) |
+
+### Rules learned on Video 13
+- **Editorial highlight:** one continuous marker stroke per spoken line, camera sweeping smoothly with it. No step-by-step "cut cut" camera moves between short strokes. Marked text stays normal weight (`hl_bold: false`).
+- **Editorial on card text works:** noir + spot + marker on a card's rule line (OCR boxes from a 5× upscale of the scan).
+- **Slams can feel empty.** Use the falling-cards `rain` on at most one slam; for other dramatic beats prefer a different motion (e.g. a `rank`-style giant outlined numeral behind a card).
+- **Don't repeat the same card scans close together:** when a card is named again later, show the Japanese print instead.
+- **Fact wording on screen must not overclaim:** say "considered" when a source says "explored"; say "standard art" when only regular prints are by the artist.
+- **Don't reuse facts** already used in an earlier video on the same artist.
+- **Cover:** artist photo with background cut out (flood fill from edges), solid until ~83% height then a short fade; two glowing TAG TEAM cards mirrored ±8°; dim multi-depth TAG TEAM background.
+
+
+## 19. Videos 14–15 Riftbound (engine v3.5 → v3.6), approved 18–20 Nov 2026
+Builds on §16–§18. Engine: `engine/kard_reel.py` v3.6; reference config `engine/example_rivalry_lore_vendetta.json`.
+
+### New pattern: Rivalry Lore (Video 15)
+One story per reel. Teammate feedback on Video 14: visuals and card zooms great, but a "two sets in 75s" overview script reads like a spec sheet. Split broad topics into separate reels (Vendetta rivals → K/DA → Heartsteel), each with lore/story, then the product.
+
+### Engine v3.5 / v3.6: new scene types and keys
+| Key / type | Where | What it does |
+|---|---|---|
+| `versus` | scene | Pair face-off (v3.4, rebuilt): two cards slide in turned toward each other, joiner (`VS`, `+`, `?`, or ''), labels; balanced on the pair's total width; `card: false` for products; `enter: vertical`; `in_dur` (entrance speed, default .7) |
+| `versus_rows` | scene | Two face-offs stacked; each row appears at its own `at` (when that pair is spoken). Use when a line names two pairs fast ("Zed lawan Shen. Nasus lawan Renekton!") |
+| `diptych` | scene | Two connecting-art cards (Riftbound Rival/Connecting Overnumbers) drift in, slide together and join into one painting, light sweep over the seam. `join_at` (on the spoken words), `approach` (1.5s), `rest_gap`, `label`, `label_at` |
+| `shadow_clones` | scene | Card in colour; darkened red-tinted copies fan out to both sides with ghost trails, shadows creep in from the edges. `clone_at`, `spread`, `tint` |
+| `seal` | scene | Procedural carved stone doors (Shurima gold inlay) slam shut over a card (`mode: close`, `seal_at`, dust + thread of light) or grind open with light from the seam (`mode: open`, `open_at`) |
+| `slam` `rain` | scene | Falling-cards background (v3.4, rebuilt) — at most one rain slam per video |
+| `deal` `counter: {label, y}` | scene | Counter ticks up as each card lands |
+| `coverflow` `start`, `label_y` | scene | Delay the carousel so each centred card matches its spoken name; labels below the card |
+| `card_lineup` cards `at` | scene | Per-card label time (e.g. each mechanic label on its word) |
+| `rank` `num_y`, `num_alpha` | scene | Move the outlined numeral above a wide (landscape) card |
+| `"caption_shadow": "strong"` | global | **Default from now on:** white captions with a wide soft dark glow + tight drop shadow, **no box** (`caption_bg` removed everywhere) |
+
+### Rules learned on Videos 14–15
+- **VO sync (critical):** never estimate where lines fall from expected durations. Map every script line to the real audio: `silencedetect` pauses + syllable-beat counts per speech segment (band-passed envelope peaks), matched to each line's syllable count; landmarks (lists of names, short bursts) confirm the map. Then verify after the render: no speech may cross a scene cut except a deliberate mid-sentence split, and check frames at cue words (names, joins, counters) in the final MP4. Video 14 v1 slipped one line from the 3rd line on and had to be redone.
+- **Fast VO beats:** if a line is spoken faster than its visuals can enter (e.g. 1.2s for two pairs), start the shot earlier by shortening the previous shot and speed the entrance (`in_dur` ≈ .35–.45) so cards are fully in before the name is said.
+- **Opening shot (updates §16):** reversed fly-over — the card starts close on the viewer's side, then pulls back and tips away (Video 14 feedback).
+- **Captions:** plain white + strong shadow, never a box.
+- **Blurry scans that get zoomed:** upscale with Real-ESRGAN x4 (weights from the GitHub release, CPU torch) before close-ups/signature zooms.
+- **Signed cards:** when the VO mentions signatures, show the signed card and zoom onto the signature, tagged with the artist's signature name.
+- **Lore facts:** check against the official biography text (League wiki mirrors of universe.leagueoflegends.com) plus 2 more sources; prefer official product copy for product claims. Keep the simple official version of a story (no later retcons) unless asked.
+- **Diptych/connecting cards:** confirm both halves line up before building; place the join on the words "satu lukisan" / the payoff question.
+- **Highlight on yellow text** (e.g. Riftbound title bars): use `noir` so the marker is visible.
+- **Landscape battlefield cards** show upside-down text in macro shots — use a portrait card for close-ups.
+- **Cover (card-focused, Video 14/15):** balanced spacing — in the 3:4 grid crop the gap above the cards equals the gap below the title; two-line title lines tight (≈100px apart at 112px). Background: split blurred art of the two sides (left/right) + soft stage rays + mirrored floating cards + sparkles. Product box can be the hero in front of two tilted signed cards. Title in Bahasa question form ("KAMU TIM ZED / ATAU TIM SHEN?").
+- **Trial Reel:** user records only the new hook lines; splice them in front of the main VO from line 3 on, with a slower opening (longer lead and pauses); re-verify sync; publish a trial editor page too.
+- **No prices in Riftbound reels** (user request); "segera hadir" until stock arrives.
