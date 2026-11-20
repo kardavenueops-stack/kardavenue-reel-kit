@@ -1,0 +1,986 @@
+{
+ "title": "Video 15 — Vendetta Rivals (Riftbound)",
+ "assets_dir": "assets",
+ "sfx_dir": "sfx",
+ "logo": "07_kard_logo.png",
+ "caption_mode": "chunks",
+ "chunk_words": 4,
+ "highlight_words": [],
+ "forbidden_words": [
+  "TGA"
+ ],
+ "sfx_gain": 0.6,
+ "sfx_style": "soft",
+ "xfade": 0.35,
+ "stock_confirmed": false,
+ "ig_handle": "@kardavenue",
+ "cover": {
+  "img": "05_zed_rival_left.png",
+  "title": "Tim Zed atau Tim Shen?"
+ },
+ "open_decisions": [
+  "Approve stills"
+ ],
+ "bokeh": [
+  [
+   250,
+   250,
+   250
+  ],
+  [
+   150,
+   150,
+   150
+  ],
+  [
+   210,
+   210,
+   210
+  ]
+ ],
+ "highlight_sfx_once": true,
+ "camera": {
+  "punch": 0.03,
+  "punch_t": 0.5,
+  "breathe": 0.01,
+  "drift": 4,
+  "base": 1.02,
+  "grade": {
+   "sat": 1.1,
+   "contrast": 1.08
+  }
+ },
+ "badge_sfx": "shutter",
+ "cut_sfx": "swoosh",
+ "caption_style": "plain",
+ "caption_size": 50,
+ "post_caption": "Dibesarkan seperti saudara, sekarang musuh bebuyutan ⚔️\n\nRiftbound: League of Legends TCG — Vendetta (Set 4) · Showdown Deck Zed vs Shen\n\nSegera hadir di @[Kard Avenue IG] · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #riftbound #riftboundtcg #tcgindonesia",
+ "bg_color": [
+  [
+   26,
+   26,
+   26
+  ],
+  [
+   10,
+   10,
+   10
+  ]
+ ],
+ "mono_ui": true,
+ "slam_tint": [
+  20,
+  20,
+  20
+ ],
+ "slam_color": [
+  250,
+  250,
+  250
+ ],
+ "leak_color": [
+  250,
+  250,
+  250
+ ],
+ "voiceover_offset": 0,
+ "voiceover": "vo_final.wav",
+ "max_len": 75,
+ "caption_shadow": "strong",
+ "scenes": [
+  {
+   "beat": "Hook",
+   "dur": 2.59,
+   "vo": "Mereka dibesarkan seperti saudara.",
+   "caption": "They were raised like brothers.",
+   "vo_window": [
+    0.15,
+    2.37
+   ],
+   "type": "macro3d",
+   "img": "04_shen_overnumber.png",
+   "dof": 12,
+   "focus": {
+    "axis": "y",
+    "at": 0.4,
+    "at1": 0.68,
+    "width": 0.42
+   },
+   "from": {
+    "fx": 0.46,
+    "fy": 0.3,
+    "h": 3000,
+    "rot": 1,
+    "tx": 0.02,
+    "ty": 0.18
+   },
+   "to": {
+    "fx": 0.54,
+    "fy": 0.6,
+    "h": 1700,
+    "rot": 5,
+    "tx": 0.14,
+    "ty": 1.1
+   },
+   "cover": false,
+   "plane": 2.2,
+   "focal": 2600
+  },
+  {
+   "beat": "Hook",
+   "dur": 3.16,
+   "vo": "Sekarang, mereka musuh bebuyutan.",
+   "caption": "Now, they're sworn enemies.",
+   "vo_window": [
+    0.23,
+    2.91
+   ],
+   "type": "macro3d",
+   "img": "01_zed_legend.png",
+   "dof": 9,
+   "focus": {
+    "axis": "x",
+    "at": 0.6,
+    "at1": 0.4,
+    "width": 0.42
+   },
+   "from": {
+    "fx": 0.62,
+    "fy": 0.3,
+    "h": 2700,
+    "rot": -4,
+    "tx": -0.2,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.42,
+    "fy": 0.33,
+    "h": 2450,
+    "rot": 2,
+    "tx": 0.1,
+    "ty": 0.07
+   },
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.35
+    ]
+   ]
+  },
+  {
+   "beat": "Origin",
+   "dur": 3.53,
+   "vo": "Di set Riftbound Vendetta, setiap Legend punya rival.",
+   "caption": "In Riftbound Vendetta, every Legend has a rival.",
+   "vo_window": [
+    0.24,
+    3.24
+   ],
+   "type": "macro3d",
+   "img": "03_vendetta_display.png",
+   "card": false,
+   "cover": false,
+   "dof": 0,
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 760,
+    "rot": -3,
+    "tx": -0.24,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 820,
+    "rot": 1,
+    "tx": 0.2,
+    "ty": 0.02
+   },
+   "badges": [
+    {
+     "text": "VENDETTA · SET 4",
+     "at": 0.2
+    },
+    {
+     "text": "EVERY LEGEND HAS A RIVAL",
+     "at": 1.9,
+     "hl": true
+    }
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "sfx": [
+    [
+     0.1,
+     "metal_whoosh",
+     0.4
+    ]
+   ]
+  },
+  {
+   "beat": "Detail",
+   "dur": 3.6,
+   "vo": "Zed dan Shen berlatih bersama di bawah Master Kusho, ayah Shen.",
+   "caption": "Zed and Shen trained together under Master Kusho, Shen's father.",
+   "vo_window": [
+    0.28,
+    3.34
+   ],
+   "type": "versus",
+   "cards": [
+    "09_zed_cards.png",
+    "13_shen_cards.png"
+   ],
+   "labels": [
+    "ZED",
+    "SHEN"
+   ],
+   "joiner": "+",
+   "h": 620,
+   "in_dur": 0.45,
+   "joiner_at": 0.45,
+   "label_at": 0.6,
+   "badges": [
+    {
+     "text": "STUDENTS OF MASTER KUSHO",
+     "at": 2.2,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Detail",
+   "dur": 3.8,
+   "vo": "Tugas mereka: menjaga keseimbangan dunia fisik dan dunia roh.",
+   "caption": "Their duty: keep balance between the physical and spirit worlds.",
+   "vo_window": [
+    0.26,
+    3.4
+   ],
+   "type": "card_lineup",
+   "cards": [
+    {
+     "img": "11_shen_cards.png"
+    },
+    {
+     "img": "15_kinkou_shadow.png"
+    },
+    {
+     "img": "16_kinkou_shadow.png"
+    }
+   ],
+   "heading": "THE KINKOU ORDER",
+   "card_h": 520,
+   "trans": "zoom",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Twist",
+   "dur": 2.22,
+   "vo": "Tapi Zed memilih kekuatan bayangan.",
+   "caption": "But Zed chose the power of shadows.",
+   "vo_window": [
+    0.4,
+    2.03
+   ],
+   "type": "shadow_clones",
+   "img": "07_zed_cards.png",
+   "h": 700,
+   "clone_at": 1.2,
+   "spread": 440,
+   "trans": "leak",
+   "xfade_in": 0.45
+  },
+  {
+   "beat": "Twist",
+   "dur": 2.59,
+   "vo": "Dia kembali ke kuil, dan membunuh Kusho.",
+   "caption": "He returned to the temple and killed Kusho.",
+   "vo_window": [
+    0.19,
+    2.31
+   ],
+   "type": "slam",
+   "words": [
+    "THE",
+    "BETRAYAL"
+   ],
+   "at": 1.25,
+   "shake": 1,
+   "shake_at": 1.5,
+   "rain": {
+    "cards": [
+     "17_kinkou_shadow.png",
+     "18_kinkou_shadow.png",
+     "10_zed_cards.png",
+     "08_zed_cards.png",
+     "14_shen_cards.png",
+     "12_shen_cards.png",
+     "16_kinkou_shadow.png",
+     "15_kinkou_shadow.png"
+    ],
+    "n": 18,
+    "h": 420,
+    "alpha": 1,
+    "front": 3,
+    "seed": 11,
+    "slow": 0.3,
+    "slow_len": 0.7
+   },
+   "trans": "glitch",
+   "xfade_in": 0.25,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.3
+    ],
+    [
+     1.25,
+     "fire",
+     0.45
+    ]
+   ]
+  },
+  {
+   "beat": "Detail",
+   "dur": 1.87,
+   "vo": "Zed mendirikan Order of Shadow.",
+   "caption": "Zed founded the Order of Shadow.",
+   "vo_window": [
+    0.28,
+    1.76
+   ],
+   "type": "macro3d",
+   "img": "03_zed_overnumber.png",
+   "dof": 10,
+   "focus": {
+    "axis": "y",
+    "at": 0.25,
+    "at1": 0.45,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.2,
+    "h": 2500,
+    "rot": 0,
+    "tx": 0,
+    "ty": -0.16
+   },
+   "to": {
+    "fx": 0.52,
+    "fy": 0.36,
+    "h": 2700,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0.1
+   },
+   "badges": [
+    {
+     "text": "ORDER OF SHADOW",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Detail",
+   "dur": 3.48,
+   "vo": "Shen mewarisi pedang ayahnya, dan gelar Eye of Twilight.",
+   "caption": "Shen took his father's blade, and the title Eye of Twilight.",
+   "vo_window": [
+    0.1,
+    3.08
+   ],
+   "type": "macro3d",
+   "img": "02_shen_legend.png",
+   "dof": 0,
+   "card": true,
+   "from": {
+    "fx": 0.62,
+    "fy": 0.22,
+    "h": 2400,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "to": {
+    "fx": 0.33,
+    "fy": 0.72,
+    "h": 2900,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "highlight": [
+    {
+     "box": [
+      0.105,
+      0.7,
+      0.535,
+      0.755
+     ],
+     "t0": 1.45,
+     "dur": 1.0
+    }
+   ],
+   "follow": true,
+   "hl_bold": false,
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "noir": true,
+   "spot": {
+    "w": 1.0,
+    "h": 0.35,
+    "dark": 0.55
+   }
+  },
+  {
+   "beat": "Rival 2",
+   "dur": 1.66,
+   "vo": "Rival kedua lebih tragis:",
+   "caption": "The second rivalry is more tragic:",
+   "vo_window": [
+    0.4,
+    1.52
+   ],
+   "type": "macro3d",
+   "img": "26_shurima.png",
+   "dof": 8,
+   "focus": {
+    "axis": "y",
+    "at": 0.3,
+    "at1": 0.45,
+    "width": 0.45
+   },
+   "from": {
+    "fx": 0.45,
+    "fy": 0.28,
+    "h": 2400,
+    "rot": -2,
+    "tx": -0.12,
+    "ty": 0.06
+   },
+   "to": {
+    "fx": 0.55,
+    "fy": 0.35,
+    "h": 2600,
+    "rot": 1,
+    "tx": 0.1,
+    "ty": 0
+   },
+   "badges": [
+    {
+     "text": "RIVALRY 2 · SHURIMA",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.3
+    ]
+   ]
+  },
+  {
+   "beat": "Rival 2",
+   "dur": 3.01,
+   "vo": "Nasus dan Renekton, kakak beradik dari Shurima.",
+   "caption": "Nasus and Renekton, brothers from Shurima.",
+   "vo_window": [
+    0.14,
+    2.75
+   ],
+   "type": "versus",
+   "cards": [
+    "19_nasus_legend.png",
+    "24_renekton_rival_right.png"
+   ],
+   "labels": [
+    "NASUS",
+    "RENEKTON"
+   ],
+   "joiner": "+",
+   "h": 620,
+   "in_dur": 0.4,
+   "joiner_at": 0.4,
+   "label_at": 0.55,
+   "badges": [
+    {
+     "text": "BROTHERS",
+     "at": 1.7,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Rival 2",
+   "dur": 2.36,
+   "vo": "Renekton menyeret Xerath ke Tomb of the Emperors,",
+   "caption": "Renekton dragged Xerath into the Tomb of the Emperors,",
+   "vo_window": [
+    0.26,
+    2.35
+   ],
+   "type": "macro3d",
+   "img": "20_renekton_legend.png",
+   "dof": 10,
+   "focus": {
+    "axis": "x",
+    "at": 0.4,
+    "at1": 0.62,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.4,
+    "fy": 0.3,
+    "h": 2500,
+    "rot": -3,
+    "tx": -0.18,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.58,
+    "fy": 0.35,
+    "h": 2700,
+    "rot": 2,
+    "tx": 0.14,
+    "ty": 0.02
+   },
+   "badges": [
+    {
+     "text": "TOMB OF THE EMPERORS",
+     "at": 1.2,
+     "hl": true
+    }
+   ],
+   "trans": "zoom",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Rival 2",
+   "dur": 1.8,
+   "vo": "dan meminta Nasus menyegelnya.",
+   "caption": "and asked Nasus to seal it.",
+   "vo_window": [
+    0.01,
+    1.38
+   ],
+   "type": "seal",
+   "img": "22_renekton_overnumber.png",
+   "h": 860,
+   "mode": "close",
+   "seal_at": 1.25,
+   "tex": "28_shurima.png",
+   "shake": 1,
+   "shake_at": 1.25,
+   "trans": "whip",
+   "xfade_in": 0.25
+  },
+  {
+   "beat": "Twist 2",
+   "dur": 3.66,
+   "vo": "Ribuan tahun di kegelapan, Xerath meracuni pikirannya:",
+   "caption": "Thousands of years in the dark, Xerath poisoned his mind:",
+   "vo_window": [
+    0.43,
+    3.46
+   ],
+   "type": "macro3d",
+   "img": "25_xerath_freed.png",
+   "dof": 10,
+   "focus": {
+    "axis": "y",
+    "at": 0.3,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.32,
+    "h": 2300,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.3,
+    "h": 2700,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "noir": false,
+   "spot": {
+    "w": 1.1,
+    "h": 0.8,
+    "dark": 0.5,
+    "flicker": 0.06
+   },
+   "trans": "leak",
+   "xfade_in": 0.45
+  },
+  {
+   "beat": "Twist 2",
+   "dur": 2.19,
+   "vo": "kakakmu sengaja mengurungmu.",
+   "caption": "your brother locked you in on purpose.",
+   "vo_window": [
+    0.2,
+    1.86
+   ],
+   "type": "macro3d",
+   "img": "24_renekton_rival_right.png",
+   "dof": 0,
+   "card": true,
+   "from": {
+    "fx": 0.3,
+    "fy": 0.86,
+    "h": 3000,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "to": {
+    "fx": 0.33,
+    "fy": 0.885,
+    "h": 3100,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "highlight": [
+    {
+     "box": [
+      0.112,
+      0.866,
+      0.552,
+      0.903
+     ],
+     "t0": 0.25,
+     "dur": 1.35
+    }
+   ],
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1.0,
+    "h": 0.45,
+    "dark": 0.5
+   },
+   "hl_bold": false,
+   "trans": "glitch",
+   "xfade_in": 0.25,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.25
+    ]
+   ]
+  },
+  {
+   "beat": "Twist 2",
+   "dur": 3.15,
+   "vo": "Sekarang Renekton bebas, dan cuma punya satu tujuan:",
+   "caption": "Now Renekton is free, with one goal:",
+   "vo_window": [
+    0.34,
+    3.0
+   ],
+   "type": "seal",
+   "img": "22_renekton_overnumber.png",
+   "h": 860,
+   "mode": "open",
+   "open_at": 0.25,
+   "tex": "28_shurima.png",
+   "push": 80,
+   "trans": "whip",
+   "xfade_in": 0.25
+  },
+  {
+   "beat": "Twist 2",
+   "dur": 1.78,
+   "vo": "memburu kakaknya sendiri.",
+   "caption": "hunt down his own brother.",
+   "vo_window": [
+    0.15,
+    1.41
+   ],
+   "type": "versus",
+   "cards": [
+    "21_nasus_overnumber.png",
+    "20_renekton_legend.png"
+   ],
+   "labels": [
+    "NASUS",
+    "RENEKTON"
+   ],
+   "joiner": "VS",
+   "h": 620,
+   "in_dur": 0.35,
+   "joiner_at": 0.4,
+   "label_at": 0.5,
+   "enter": "vertical",
+   "trans": "zoom",
+   "xfade_in": 0.25
+  },
+  {
+   "beat": "Bonus",
+   "dur": 5.57,
+   "vo": "Bahkan kakak beradik dari Zaun, Vi dan Jinx, punya kartu yang bisa disambung jadi satu lukisan.",
+   "caption": "Even the Zaun sisters, Vi and Jinx, get cards that join into one painting.",
+   "vo_window": [
+    0.38,
+    5.28
+   ],
+   "type": "diptych",
+   "cards": [
+    "v_vi.png",
+    "v_jinx.png"
+   ],
+   "h": 600,
+   "join_at": 4.25,
+   "label": "VI + JINX · CONNECTING ART",
+   "label_at": 4.75,
+   "trans": "leak",
+   "xfade_in": 0.45
+  },
+  {
+   "beat": "Product",
+   "dur": 3.55,
+   "vo": "Rivalitas Zed dan Shen bisa kamu mainkan langsung lewat Showdown Deck,",
+   "caption": "Play the Zed vs Shen rivalry with the Showdown Deck,",
+   "vo_window": [
+    0.3,
+    3.42
+   ],
+   "type": "macro3d",
+   "img": "29_showdown_zed_shen_box.png",
+   "card": false,
+   "cover": false,
+   "dof": 0,
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 760,
+    "rot": 3,
+    "tx": 0.24,
+    "ty": -0.04
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 840,
+    "rot": -1,
+    "tx": -0.18,
+    "ty": 0.05
+   },
+   "badges": [
+    {
+     "text": "SHOWDOWN DECK · ZED VS SHEN",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "sfx": [
+    [
+     0.1,
+     "metal_whoosh",
+     0.4
+    ]
+   ]
+  },
+  {
+   "beat": "Product",
+   "dur": 2.17,
+   "vo": "produk dua pemain pertama Riftbound.",
+   "caption": "Riftbound's first two-player product.",
+   "vo_window": [
+    0.13,
+    2.01
+   ],
+   "type": "versus",
+   "cards": [
+    "08_zed_cards.png",
+    "14_shen_cards.png"
+   ],
+   "labels": [
+    "ZED DECK",
+    "SHEN DECK"
+   ],
+   "joiner": "VS",
+   "h": 600,
+   "in_dur": 0.4,
+   "joiner_at": 0.4,
+   "label_at": 0.5,
+   "badges": [
+    {
+     "text": "RIFTBOUND'S FIRST 2-PLAYER PRODUCT",
+     "at": 0.2,
+     "hl": true
+    }
+   ],
+   "trans": "zoom",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Product",
+   "dur": 3.24,
+   "vo": "Isinya dua deck siap main, dua booster pack, dan dua playmat.",
+   "caption": "Inside: two ready-to-play decks, two booster packs and two playmats.",
+   "vo_window": [
+    0.17,
+    3.04
+   ],
+   "type": "macro3d",
+   "img": "29_showdown_zed_shen_box.png",
+   "card": false,
+   "cover": false,
+   "dof": 0,
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 880,
+    "rot": -2,
+    "tx": -0.12,
+    "ty": 0.08
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 940,
+    "rot": 1,
+    "tx": 0.1,
+    "ty": 0
+   },
+   "badges": [
+    {
+     "text": "2 DECKS · 56 CARDS EACH",
+     "at": 0.27,
+     "hl": true
+    },
+    {
+     "text": "2 VENDETTA BOOSTERS",
+     "at": 1.49,
+     "hl": true
+    },
+    {
+     "text": "2 PAPER PLAYMATS",
+     "at": 2.36,
+     "hl": true
+    }
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "sfx": [
+    [
+     0.27,
+     "coin",
+     0.4
+    ],
+    [
+     1.49,
+     "coin",
+     0.4
+    ],
+    [
+     2.36,
+     "coin",
+     0.4
+    ]
+   ]
+  },
+  {
+   "beat": "Payoff",
+   "dur": 1.6,
+   "vo": "Segera hadir di Kard Avenue.",
+   "caption": "Coming soon to Kard Avenue.",
+   "vo_window": [
+    0.21,
+    1.48
+   ],
+   "type": "versus",
+   "cards": [
+    "03_vendetta_display.png",
+    "32_vendetta_booster_pack.png"
+   ],
+   "labels": [
+    "",
+    ""
+   ],
+   "joiner": "",
+   "card": false,
+   "h": 440,
+   "gap": 60,
+   "badges": [
+    {
+     "text": "COMING SOON · KARD AVENUE",
+     "at": 0.3,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Payoff",
+   "dur": 2.45,
+   "vo": "Kamu tim Zed, atau tim Shen? Tulis di komentar!",
+   "caption": "Team Zed or Team Shen? Comment below!",
+   "vo_window": [
+    0.12,
+    2.25
+   ],
+   "type": "diptych",
+   "cards": [
+    "05_zed_rival_left.png",
+    "06_shen_rival_right.png"
+   ],
+   "h": 600,
+   "join_at": 0.7,
+   "label": "TEAM ZED  or  TEAM SHEN?",
+   "label_at": 1.0,
+   "trans": "glitch",
+   "xfade_in": 0.25,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.3
+    ]
+   ]
+  },
+  {
+   "beat": "End card",
+   "dur": 4.33,
+   "vo": "Follow Kard Avenue untuk cerita kartu lainnya, dan download aplikasinya sekarang.",
+   "caption": "Follow Kard Avenue for more card stories, and download the app now.",
+   "vo_window": [
+    0.21,
+    3.88
+   ],
+   "type": "end_card",
+   "img": "23_follow_us_cta.jpg",
+   "punch": 0.4
+  }
+ ],
+ "_note": "Video 15 \"Rivalry Lore\" (Riftbound Vendetta, approved 20 Nov 2026). Card file names refer to that video's asset zip; swap in real scans. Timings are fitted to that voiceover."
+}

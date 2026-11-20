@@ -9,7 +9,7 @@ Produces a 9:16, 45–60s card-story Reel for Kard Avenue in the thefinecard sty
 
 ## 0. Load the house rules and engine (do this first, once per chat)
 
-**Before starting any reel:** read the project memory file `areas/kard-avenue-reels.md` and playbook §16–§17. **After the user approves a video:** write what was learned (revisions asked for, what worked) back to that memory file and to the playbook, so the same revision never has to be asked twice.
+**Before starting any reel:** read the project memory file `areas/kard-avenue-reels.md` and playbook §16–§19. **After the user approves a video:** write what was learned (revisions asked for, what worked) back to that memory file and to the playbook, so the same revision never has to be asked twice.
 
 The files come from one of these places. Use the first that exists:
 
@@ -21,20 +21,21 @@ The files come from one of these places. Use the first that exists:
 | File (skill folder) | Save locally as |
 |---|---|
 | `references/kard-reel-playbook.md` (also `claude/kard-reel-playbook.md` in the Project) | read only — all rules (layout, branding, script, sound, checklist) |
-| `engine/kard_reel.py` (v3.3) | `work/kard_reel.py` |
+| `engine/kard_reel.py` (v3.6) | `work/kard_reel.py` |
 | `engine/editor_template.html` | `work/editor_template.html` |
 | `assets/sfx/*.wav` (the user's sound pack) | copy into `work/sfx/` (no synthesized sounds; never run an old make_sfx.py) |
 | `engine/example_editorial_arita.json` | `work/example.json` (**default pattern to copy**, approved Video 11 editorial style) |
 | `engine/example_countdown_most_graded.json` | reference for top-N / data-story reels (Video 12 "Ranked Countdown"; card file names are placeholders) |
+| `engine/example_rivalry_lore_vendetta.json` | reference for story/lore reels (Video 15 "Rivalry Lore": `versus`, `versus_rows`, `diptych`, `shadow_clones`, `seal`, rain slam, editorial marker on card text) |
 | `engine/example_brand_mono_delta_reign.json` | reference only (Video 06) |
 | `engine/example_3d_illustration_contest.json` | reference only (Video 05) |
 | `references/reference-thefinecard-style.md` | read only — script structure reference |
 
 If none of these is available, ask the user to attach the skill zip.
 
-**Default style (approved, keep until the user says otherwise):** the Video 11 editorial style in playbook §16, on top of the Video 06 "brand mono" base in §15 (black #0a0a0a / white #fafafa, the user's sound pack), built from `engine/example_editorial_arita.json` (engine v3.3, which keeps the v3.2 features: glitch + zoom transitions, `macro3d` with `"card": false`, editorial `highlight` with `follow` camera, `noir` + `spot` detective look, fly-over `plane` mode, artist `cutout`, `card_wall` scene; `mono_ui` turns all accents white, no navy/purple tints). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
+**Default style (approved, keep until the user says otherwise):** the Video 11 editorial style in playbook §16, on top of the Video 06 "brand mono" base in §15 (black #0a0a0a / white #fafafa, the user's sound pack), built from `engine/example_editorial_arita.json` (engine v3.6, which keeps the v3.2 features: glitch + zoom transitions, `macro3d` with `"card": false`, editorial `highlight` with `follow` camera, `noir` + `spot` detective look, fly-over `plane` mode, artist `cutout`, `card_wall` scene; `mono_ui` turns all accents white, no navy/purple tints). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
 
-**A different pattern per topic (playbook §17).** Keep the pillar and the approved look, but do not repeat the previous video's pattern: pick Artist Spotlight, Set preview or Ranked Countdown by topic, and build at least one motion that is new for this video. Engine v3.3 adds `rank`, `bar_race`, `leaderboard`, `coverflow`, `deal` and `conveyor`. Use the `card_wall` / moving `crowd` look at most once per video. `"max_len": 75` allows a longer cut when the user asks for one.
+**A different pattern per topic (playbook §17).** Keep the pillar and the approved look, but do not repeat the previous video's pattern: pick Artist Spotlight, Set preview or Ranked Countdown by topic, and build at least one motion that is new for this video. Engine v3.3 adds `rank`, `bar_race`, `leaderboard`, `coverflow`, `deal` and `conveyor`; v3.4–v3.6 add `versus`, `versus_rows`, `diptych`, `shadow_clones`, `seal`, the falling-cards `rain` slam and `"caption_shadow": "strong"` (playbook §18–§19). Patterns now also include **Rivalry Lore** (one story per reel, §19). Use the `card_wall` / moving `crowd` look at most once per video. `"max_len": 75` allows a longer cut when the user asks for one.
 
 **The playbook always wins.** Old script docs (`claude/video-NN-*.md`) are content records only (facts, lines, asset lists). Voice, register ("kamu"), format, layout and workflow always come from the playbook, even where an old doc says otherwise (e.g. Video 01's "Zandhira" voice and "lo"). If this SKILL.md and the playbook differ, follow the playbook.
 
@@ -101,6 +102,11 @@ The workspace cannot download from TCGplayer, TCG Collector, X or Google Images.
 The MP4, the cover, the editor page (link or zip), the script doc and the post caption (playbook §9 format). Run the pre-posting checklist (playbook §10). Remind the user to tag the artist and add trending audio in Instagram.
 
 ## Hard rules (from past feedback)
+
+- **Voiceover sync (playbook §19, critical):** never place lines by estimated duration. Map every script line to the real recording (`silencedetect` pauses + syllable-beat counts per segment vs each line's syllables, confirmed by landmarks), build the timeline from that map, and after rendering check that no speech crosses a cut (except deliberate mid-sentence splits) and that frames at cue words show the right card.
+- **Captions:** plain white with `"caption_shadow": "strong"`, never a box (`caption_bg` off).
+- **Opening shot:** reversed fly-over — the card starts close on the viewer's side, then pulls back and tips away.
+- **Blurry scans that get zoomed:** upscale with Real-ESRGAN x4 before close-ups/signature zooms.
 
 - Content is centred, there's a ≥60px gap above the caption, headings sit midway between the logo and the cards, and nothing important goes below y≈1680.
 - Every card named in the voiceover gets its own big frame. Detail callouts zoom in. The artist scene shows the avatar alone.
