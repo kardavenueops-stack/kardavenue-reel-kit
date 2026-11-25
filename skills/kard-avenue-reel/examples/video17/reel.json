@@ -1,0 +1,899 @@
+{
+ "title": "Video 17 — HEARTSTEEL x Riftbound",
+ "assets_dir": "assets",
+ "sfx_dir": "sfx",
+ "logo": "07_kard_logo.png",
+ "caption_mode": "chunks",
+ "chunk_words": 4,
+ "highlight_words": [],
+ "forbidden_words": [],
+ "sfx_gain": 0.6,
+ "sfx_style": "soft",
+ "xfade": 0.35,
+ "stock_confirmed": false,
+ "ig_handle": "@kardavenue",
+ "cover": {
+  "img": "hs_ezreal.png",
+  "title": "HEARTSTEEL"
+ },
+ "open_decisions": [
+  "Approve storyboard"
+ ],
+ "bokeh": [
+  [
+   250,
+   250,
+   250
+  ],
+  [
+   150,
+   150,
+   150
+  ],
+  [
+   210,
+   210,
+   210
+  ]
+ ],
+ "highlight_sfx_once": true,
+ "camera": {
+  "punch": 0.03,
+  "punch_t": 0.5,
+  "breathe": 0.01,
+  "drift": 4,
+  "base": 1.02,
+  "grade": {
+   "sat": 1.1,
+   "contrast": 1.08
+  }
+ },
+ "badge_sfx": "shutter",
+ "cut_sfx": "swoosh",
+ "caption_style": "plain",
+ "caption_size": 50,
+ "post_caption": "Kartu-kartu ini muncul di music video, lima minggu sebelum dirilis 🎤🃏\n\nRiftbound: League of Legends TCG — Radiance · HEARTSTEEL Overnumbers\n\nRadiance segera hadir di @kardavenue · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #riftbound #riftboundtcg #heartsteel #tcgindonesia",
+ "bg_color": [
+  [
+   26,
+   26,
+   26
+  ],
+  [
+   10,
+   10,
+   10
+  ]
+ ],
+ "mono_ui": true,
+ "slam_tint": [
+  20,
+  20,
+  20
+ ],
+ "slam_color": [
+  250,
+  250,
+  250
+ ],
+ "leak_color": [
+  250,
+  250,
+  250
+ ],
+ "voiceover_offset": 0,
+ "voiceover": "vo_final.wav",
+ "max_len": 75,
+ "caption_shadow": "strong",
+ "scenes": [
+  {
+   "beat": "Hook",
+   "dur": 3.4,
+   "vo": "Kartu-kartu ini muncul di sebuah music video!",
+   "caption": "These cards showed up in a music video!",
+   "vo_window": [
+    0.18,
+    3.21
+   ],
+   "visual": "Kard-drawn video player plays the Live My Life art with three HEARTSTEEL cards; it freezes, brackets snap onto Ezreal and the camera dives in",
+   "type": "player_freeze",
+   "img": "15_hs_ezreal_lml.png",
+   "cards": [
+    "hs_ksante.png",
+    "hs_ezreal_up.png",
+    "hs_sett.png"
+   ],
+   "zoom_card": 1,
+   "freeze_at": 1.59,
+   "zoom_at": 2.29,
+   "card_h": 400,
+   "title": "▶  MUSIC VIDEO",
+   "y": 700,
+   "pw": 860,
+   "ph": 1080,
+   "card_y": 0.6
+  },
+  {
+   "beat": "Hook",
+   "dur": 2.21,
+   "vo": "Lima minggu sebelum dirilis.",
+   "caption": "Five weeks before release.",
+   "vo_window": [
+    0.19,
+    1.8
+   ],
+   "visual": "HEARTSTEEL Ezreal close-up; 'Sept 18 → Oct 23' / '5 weeks before release'",
+   "type": "macro3d",
+   "img": "hs_ezreal_up.png",
+   "dof": 8,
+   "focus": {
+    "axis": "y",
+    "at": 0.35,
+    "width": 0.5
+   },
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "punch": 0.5,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.35
+    ]
+   ],
+   "from": {
+    "fx": 0.5,
+    "fy": 0.36,
+    "h": 1900,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "to": {
+    "fx": 0.52,
+    "fy": 0.32,
+    "h": 2150,
+    "rot": 2,
+    "tx": 0.06,
+    "ty": 0.02
+   },
+   "badges": [
+    {
+     "text": "SEPT 18 → OCT 23",
+     "at": 0.25
+    },
+    {
+     "text": "5 WEEKS BEFORE RELEASE",
+     "at": 0.7,
+     "hl": true
+    }
+   ]
+  },
+  {
+   "beat": "Band",
+   "dur": 12.12,
+   "vo": "Music video dari Live My Life, lagu comeback HEARTSTEEL, boy band virtual dari League of Legends. Anggotanya enam champion: Ezreal, Kayn, Aphelios, Yone, K'Sante, dan Sett.",
+   "caption": "The video for Live My Life, the comeback of HEARTSTEEL, League of Legends' virtual boy band. Six champions: Ezreal, Kayn, Aphelios, Yone, K'Sante and Sett.",
+   "vo_window": [
+    0.4,
+    11.82
+   ],
+   "visual": "Group artwork; the HEARTSTEEL logo holds still, then the camera drives through it into the roll call: each member is traced and lit as he is named while the rest of the picture drops into shadow",
+   "type": "spotlight",
+   "img": "16_hs_group_art_pad.png",
+   "targets": [
+    {
+     "x": 0.255,
+     "y": 0.329,
+     "cx": 0.255,
+     "cy": 0.357,
+     "label": "EZREAL",
+     "at": 7.54,
+     "mask": "hsmask_ezreal.png",
+     "rim": "hsrim_ezreal.png"
+    },
+    {
+     "x": 0.125,
+     "y": 0.477,
+     "cx": 0.125,
+     "cy": 0.506,
+     "label": "KAYN",
+     "at": 8.42,
+     "mask": "hsmask_kayn.png",
+     "rim": "hsrim_kayn.png"
+    },
+    {
+     "x": 0.506,
+     "y": 0.313,
+     "cx": 0.506,
+     "cy": 0.342,
+     "label": "APHELIOS",
+     "at": 9.07,
+     "mask": "hsmask_aphelios.png",
+     "rim": "hsrim_aphelios.png"
+    },
+    {
+     "x": 0.652,
+     "y": 0.393,
+     "cx": 0.652,
+     "cy": 0.422,
+     "label": "YONE",
+     "at": 9.99,
+     "mask": "hsmask_yone.png",
+     "rim": "hsrim_yone.png"
+    },
+    {
+     "x": 0.843,
+     "y": 0.458,
+     "cx": 0.843,
+     "cy": 0.487,
+     "label": "K'SANTE",
+     "at": 10.7,
+     "mask": "hsmask_ksante.png",
+     "rim": "hsrim_ksante.png"
+    },
+    {
+     "x": 0.41,
+     "y": 0.488,
+     "cx": 0.41,
+     "cy": 0.516,
+     "label": "SETT",
+     "at": 11.65,
+     "mask": "hsmask_sett.png",
+     "rim": "hsrim_sett.png"
+    }
+   ],
+   "h0": 2428,
+   "fy0": 0.59,
+   "overlay": {
+    "img": "hs_logo_white.png",
+    "at": 1.0,
+    "w": 900,
+    "y": 760,
+    "out": 6.99,
+    "dur": 0.75
+   },
+   "badges": [
+    {
+     "text": "LIVE MY LIFE · SEPT 2026",
+     "at": 0.3,
+     "hl": true
+    },
+    {
+     "text": "LEAGUE OF LEGENDS · VIRTUAL BOY BAND",
+     "at": 3.0,
+     "until": 6.99
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "caption_groups": [
+    [
+     "The video for Live My Life, the comeback of HEARTSTEEL, League of Legends' virtual boy band.",
+     0.4,
+     5.39
+    ],
+    [
+     "Six champions: Ezreal, Kayn, Aphelios, Yone, K'Sante and Sett.",
+     5.95,
+     11.82
+    ]
+   ],
+   "h1": 3780,
+   "dim": 0.8,
+   "rim": 0.9,
+   "label_y": 1330
+  },
+  {
+   "beat": "Debut",
+   "dur": 5.31,
+   "vo": "Mereka debut Oktober dua ribu dua puluh tiga lewat PARANOIA, dengan suara Ezreal diisi Baekhyun dari EXO!!",
+   "caption": "They debuted in October 2023 with PARANOIA, with EXO's Baekhyun as the voice of Ezreal!",
+   "vo_window": [
+    0.31,
+    5.03
+   ],
+   "visual": "Original HEARTSTEEL Ezreal splash, PARANOIA · Oct 2023 and Baekhyun (EXO) badges",
+   "type": "macro3d",
+   "img": "14_hs_ezreal_splash.png",
+   "card": false,
+   "cover": false,
+   "dof": 0,
+   "from": {
+    "fx": 0.62,
+    "fy": 0.42,
+    "h": 2300,
+    "rot": -2,
+    "tx": -0.1,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.66,
+    "fy": 0.38,
+    "h": 2600,
+    "rot": 1,
+    "tx": 0.08,
+    "ty": 0
+   },
+   "badges": [
+    {
+     "text": "PARANOIA · OCT 2023",
+     "at": 2.22,
+     "hl": true
+    },
+    {
+     "text": "EZREAL · BAEKHYUN (EXO)",
+     "at": 4.42,
+     "hl": true
+    }
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45
+  },
+  {
+   "beat": "Worlds",
+   "dur": 3.76,
+   "vo": "Bulan berikutnya, mereka tampil live di final Worlds, di Seoul!",
+   "caption": "The next month, they performed live at the Worlds final in Seoul!",
+   "vo_window": [
+    0.28,
+    3.43
+   ],
+   "visual": "LIVE AT / WORLDS slam over falling HEARTSTEEL + Radiance cards; Seoul · Nov 2023",
+   "type": "slam",
+   "words": [
+    "LIVE AT",
+    "WORLDS"
+   ],
+   "at": 1.84,
+   "shake": 1,
+   "shake_at": 2.09,
+   "rain": {
+    "cards": [
+     "hs_ksante.png",
+     "hs_aphelios.png",
+     "hs_ezreal.png",
+     "hs_yone.png",
+     "hs_kayn.png",
+     "hs_sett.png",
+     "11_radiance_cards.png",
+     "12_radiance_cards.png",
+     "14_radiance_cards.png",
+     "16_radiance_cards.png",
+     "40_rain.png",
+     "44_rain.png"
+    ],
+    "n": 26,
+    "h": 420,
+    "alpha": 1,
+    "front": 3,
+    "seed": 17,
+    "slow": 0.3,
+    "slow_len": 0.7
+   },
+   "badges": [
+    {
+     "text": "SEOUL · NOV 2023",
+     "at": 2.76,
+     "hl": true
+    }
+   ],
+   "trans": "glitch",
+   "xfade_in": 0.25,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.3
+    ]
+   ]
+  },
+  {
+   "beat": "Comeback",
+   "dur": 3.0,
+   "vo": "Tiga tahun kemudian, September lalu, mereka comeback:",
+   "caption": "Three years later, last September, they came back:",
+   "vo_window": [
+    0.33,
+    2.79
+   ],
+   "visual": "Live My Life Ezreal art fly-over; 3 years later / Sept 2026 comeback",
+   "type": "macro3d",
+   "img": "15_hs_ezreal_lml.png",
+   "card": false,
+   "cover": false,
+   "dof": 0,
+   "from": {
+    "fx": 0.45,
+    "fy": 0.4,
+    "h": 2200,
+    "rot": -2,
+    "tx": -0.12,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.38,
+    "h": 2400,
+    "rot": 1,
+    "tx": 0.1,
+    "ty": 0
+   },
+   "badges": [
+    {
+     "text": "3 YEARS LATER",
+     "at": 0.25
+    },
+    {
+     "text": "SEPT 2026 · COMEBACK",
+     "at": 1.53,
+     "hl": true
+    }
+   ],
+   "trans": "leak",
+   "xfade_in": 0.45
+  },
+  {
+   "beat": "Comeback",
+   "dur": 4.04,
+   "vo": "Baekhyun kembali sebagai Ezreal, kali ini bareng Anderson .Paak sebagai K'Sante!",
+   "caption": "Baekhyun returns as Ezreal, now joined by Anderson .Paak as K'Sante!",
+   "vo_window": [
+    0.21,
+    3.71
+   ],
+   "visual": "Ezreal + K'Sante HEARTSTEEL cards face-off: Baekhyun + Anderson .Paak",
+   "type": "versus",
+   "cards": [
+    "hs_ezreal_up.png",
+    "hs_ksante_up.png"
+   ],
+   "labels": [
+    "BAEKHYUN",
+    "ANDERSON .PAAK"
+   ],
+   "joiner": "+",
+   "h": 680,
+   "y": 820,
+   "gap": 40,
+   "in_dur": 0.45,
+   "joiner_at": 2.66,
+   "label_at": 0.4,
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "chunk_list": [
+    "Baekhyun returns",
+    "as Ezreal,",
+    "now joined by",
+    "Anderson .Paak",
+    "as K'Sante!"
+   ]
+  },
+  {
+   "beat": "Teaser",
+   "dur": 4.5,
+   "vo": "Dan di tengah music video-nya, muncul kartu Riftbound dengan wajah mereka.",
+   "caption": "And mid-video, Riftbound cards with their faces appeared.",
+   "vo_window": [
+    0.33,
+    4.12
+   ],
+   "visual": "The video player again: HEARTSTEEL cards pop into the frame one by one",
+   "type": "player_freeze",
+   "img": "15_hs_ezreal_lml.png",
+   "cards": [
+    "hs_kayn.png",
+    "hs_aphelios.png",
+    "hs_yone.png",
+    "hs_sett.png"
+   ],
+   "card_h": 360,
+   "spread": 0.62,
+   "pop": [
+    2.19,
+    2.54,
+    2.89,
+    3.24
+   ],
+   "p0": 0.45,
+   "p1": 0.7,
+   "title": "HEARTSTEEL — LIVE MY LIFE",
+   "y": 700,
+   "pw": 860,
+   "ph": 1080,
+   "card_y": 0.6,
+   "trans": "glitch",
+   "xfade_in": 0.25,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.3
+    ]
+   ]
+  },
+  {
+   "beat": "Radiance",
+   "dur": 2.74,
+   "vo": "Oktober lalu, kartunya resmi rilis di Radiance:",
+   "caption": "Last October, they officially landed in Radiance:",
+   "vo_window": [
+    0.38,
+    2.64
+   ],
+   "visual": "Radiance display fly-over, Oct 23, 2026",
+   "type": "macro3d",
+   "img": "20_radiance_display.png",
+   "card": false,
+   "cover": false,
+   "dof": 0,
+   "from": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 820,
+    "rot": -3,
+    "tx": -0.24,
+    "ty": 0.05
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.5,
+    "h": 900,
+    "rot": 1,
+    "tx": 0.2,
+    "ty": 0.02
+   },
+   "badges": [
+    {
+     "text": "RADIANCE · OCT 23, 2026",
+     "at": 1.72,
+     "hl": true
+    }
+   ],
+   "trans": "zoom",
+   "xfade_in": 0.25
+  },
+  {
+   "beat": "Overnumbers",
+   "dur": 3.41,
+   "vo": "enam Overnumber HEARTSTEEL, pertama kalinya di Riftbound!!!!",
+   "caption": "six HEARTSTEEL Overnumbers, a Riftbound first!",
+   "vo_window": [
+    0.09,
+    3.08
+   ],
+   "visual": "Six HEARTSTEEL Overnumbers dealt onto a pile, counter 1–6; 'a Riftbound first'",
+   "type": "deal",
+   "cards": [
+    "hs_ksante.png",
+    "hs_aphelios.png",
+    "hs_ezreal.png",
+    "hs_yone.png",
+    "hs_kayn.png",
+    "hs_sett.png"
+   ],
+   "start": -0.05,
+   "step": 0.22,
+   "h": 760,
+   "y": 760,
+   "counter": {
+    "label": "HEARTSTEEL OVERNUMBERS",
+    "y": 1210
+   },
+   "badges": [
+    {
+     "text": "A RIFTBOUND FIRST",
+     "at": 1.87,
+     "hl": true
+    }
+   ],
+   "xfade_in": 0.2,
+   "punch": 0.5
+  },
+  {
+   "beat": "Makeover",
+   "dur": 3.53,
+   "vo": "Kata Riot, para member datang dengan makeover fashion modern.",
+   "caption": "Riot calls it a modern fashion makeover.",
+   "vo_window": [
+    0.33,
+    3.2
+   ],
+   "visual": "Makeover flip: original Sett, Ezreal, Yone cards turn over in 3D into their HEARTSTEEL versions",
+   "type": "flip",
+   "pairs": [
+    {
+     "from": "12_orig_sett.png",
+     "to": "hs_sett.png",
+     "at": 0.75
+    },
+    {
+     "from": "09_orig_ezreal.png",
+     "to": "hs_ezreal.png",
+     "at": 1.25
+    },
+    {
+     "from": "10_orig_yone.png",
+     "to": "hs_yone.png",
+     "at": 1.75
+    }
+   ],
+   "h": 600,
+   "gap": 360,
+   "y": 900,
+   "badges": [
+    {
+     "text": "“A MODERN FASHION MAKEOVER” — RIOT",
+     "at": 2.25,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Lyrics",
+   "dur": 3.68,
+   "vo": "Coba lihat teks kecil di bawahnya: itu potongan lirik PARANOIA!!!",
+   "caption": "Check the small text at the bottom: it's lines from PARANOIA!",
+   "vo_window": [
+    0.33,
+    3.37
+   ],
+   "visual": "Zoom into the K'Sante card's flavor text under a spotlight; yellow marker sweeps the two PARANOIA lines",
+   "type": "macro3d",
+   "img": "hs_ksante_up.png",
+   "dof": 0,
+   "from": {
+    "fx": 0.45,
+    "fy": 0.62,
+    "h": 2100,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "to": {
+    "fx": 0.389,
+    "fy": 0.74,
+    "h": 2500,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "highlight": [
+    {
+     "box": [
+      0.1,
+      0.837,
+      0.68,
+      0.87
+     ],
+     "t0": 2.06,
+     "dur": 0.5,
+     "style": "band"
+    },
+    {
+     "box": [
+      0.1,
+      0.871,
+      0.655,
+      0.899
+     ],
+     "t0": 2.61,
+     "dur": 0.5,
+     "style": "band"
+    }
+   ],
+   "follow": false,
+   "hl_bold": false,
+   "dim": 0.12,
+   "spot": {
+    "w": 1150,
+    "h": 520,
+    "dark": 0.55,
+    "y": 1290
+   },
+   "badges": [
+    {
+     "text": "PARANOIA LYRICS",
+     "at": 2.36,
+     "hl": true
+    }
+   ],
+   "trans": "leak",
+   "xfade_in": 0.4
+  },
+  {
+   "beat": "Numbers",
+   "dur": 4.8,
+   "vo": "Nomornya seratus tujuh puluh delapan sampai seratus delapan puluh tiga, dari seratus enam puluh tujuh kartu.",
+   "caption": "They're numbered 178 to 183, out of 167.",
+   "vo_window": [
+    0.3,
+    4.49
+   ],
+   "visual": "Six HEARTSTEEL cards in a 3×2 grid, number chips 178–183 pop on each card in order; '178–183 / 167'",
+   "type": "card_grid",
+   "cards": [
+    "hs_ksante.png",
+    "hs_aphelios.png",
+    "hs_ezreal.png",
+    "hs_yone.png",
+    "hs_kayn.png",
+    "hs_sett.png"
+   ],
+   "card_h": 480,
+   "col_gap": 350,
+   "row_gap": 1.08,
+   "y": 760,
+   "labels": [
+    "178",
+    "179",
+    "180",
+    "181",
+    "182",
+    "183"
+   ],
+   "label_at": [
+    0.55,
+    0.97,
+    1.39,
+    1.81,
+    2.23,
+    2.65
+   ],
+   "label_size": 44,
+   "badges": [
+    {
+     "text": "178–183 / 167",
+     "at": 2.92,
+     "hl": true
+    }
+   ],
+   "trans": "zoom",
+   "xfade_in": 0.25
+  },
+  {
+   "beat": "Signature",
+   "dur": 4.03,
+   "vo": "Dan setiap kartu punya versi Signature, dengan tanda tangan artisnya!!",
+   "caption": "And each one has a Signature version, signed by the member!",
+   "vo_window": [
+    0.3,
+    3.65
+   ],
+   "visual": "Macro onto the member's signature on the Aphelios Signature card (179*/167)",
+   "type": "macro3d",
+   "img": "02_sig_aphelios_179_up.png",
+   "dof": 9,
+   "focus": {
+    "axis": "y",
+    "at": 0.42,
+    "width": 0.4
+   },
+   "from": {
+    "fx": 0.5,
+    "fy": 0.45,
+    "h": 2100,
+    "rot": -2,
+    "tx": -0.08,
+    "ty": 0.04
+   },
+   "to": {
+    "fx": 0.66,
+    "fy": 0.42,
+    "h": 3000,
+    "rot": 1,
+    "tx": 0.04,
+    "ty": 0
+   },
+   "badges": [
+    {
+     "text": "SIGNATURE · 179*/167",
+     "at": 1.67,
+     "hl": true
+    },
+    {
+     "text": "SIGNED BY APHELIOS",
+     "at": 2.53,
+     "hl": true
+    }
+   ],
+   "trans": "whip",
+   "xfade_in": 0.3
+  },
+  {
+   "beat": "Payoff",
+   "dur": 2.25,
+   "vo": "Radiance segera hadir di Kard Avenue.",
+   "caption": "Radiance is coming soon to Kard Avenue.",
+   "vo_window": [
+    0.38,
+    2.02
+   ],
+   "visual": "Radiance display + booster pack, COMING SOON badge",
+   "type": "versus",
+   "cards": [
+    "20_radiance_display.png",
+    "20b_radiance_pack.png"
+   ],
+   "labels": [
+    "",
+    ""
+   ],
+   "joiner": "",
+   "card": false,
+   "h": 560,
+   "gap": 60,
+   "badges": [
+    {
+     "text": "COMING SOON · KARD AVENUE",
+     "at": 0.35,
+     "hl": true
+    }
+   ],
+   "trans": "leak",
+   "xfade_in": 0.4
+  },
+  {
+   "beat": "Payoff",
+   "dur": 2.82,
+   "vo": "Member HEARTSTEEL favoritmu siapa? Tulis di komentar!",
+   "caption": "Who's your favorite HEARTSTEEL member? Comment below!",
+   "vo_window": [
+    0.23,
+    2.51
+   ],
+   "visual": "Fan of all six HEARTSTEEL cards, WHO'S YOUR BIAS?",
+   "type": "card_lineup",
+   "cards": [
+    {
+     "img": "hs_ksante.png"
+    },
+    {
+     "img": "hs_aphelios.png"
+    },
+    {
+     "img": "hs_ezreal.png"
+    },
+    {
+     "img": "hs_yone.png"
+    },
+    {
+     "img": "hs_kayn.png"
+    },
+    {
+     "img": "hs_sett.png"
+    }
+   ],
+   "card_h": 430,
+   "fan": 6,
+   "spread": 172,
+   "y": 770,
+   "heading": "WHO'S YOUR BIAS?",
+   "trans": "glitch",
+   "xfade_in": 0.25,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.3
+    ]
+   ]
+  },
+  {
+   "beat": "End card",
+   "dur": 4.41,
+   "vo": "Follow Kard Avenue untuk cerita kartu lainnya, dan download aplikasinya sekarang.",
+   "caption": "Follow Kard Avenue for more card stories, and download the app now.",
+   "vo_window": [
+    0.3,
+    3.78
+   ],
+   "visual": "FOLLOW US! end card",
+   "type": "end_card",
+   "img": "23_follow_us_cta.jpg",
+   "punch": 0.4
+  }
+ ]
+}

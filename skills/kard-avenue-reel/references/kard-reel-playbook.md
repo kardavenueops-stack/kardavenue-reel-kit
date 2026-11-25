@@ -431,3 +431,70 @@ One story per reel. Teammate feedback on Video 14: visuals and card zooms great,
 - **Cover (card-focused, Video 14/15):** balanced spacing — in the 3:4 grid crop the gap above the cards equals the gap below the title; two-line title lines tight (≈100px apart at 112px). Background: split blurred art of the two sides (left/right) + soft stage rays + mirrored floating cards + sparkles. Product box can be the hero in front of two tilted signed cards. Title in Bahasa question form ("KAMU TIM ZED / ATAU TIM SHEN?").
 - **Trial Reel:** user records only the new hook lines; splice them in front of the main VO from line 3 on, with a slower opening (longer lead and pauses); re-verify sync; publish a trial editor page too.
 - **No prices in Riftbound reels** (user request); "segera hadir" until stock arrives.
+
+## 20. Video 17 HEARTSTEEL x Riftbound (engine v3.7 → v3.8.1), approved 25 Nov 2026
+Builds on §16–§19 (everything there still applies). Engine: `engine/kard_reel.py` v3.8.1. Example configs for a full Reel are in `examples/video17/`: `reel.json` is the main Reel and `reel_trial.json` is the trial. The `gen.py` / `gen_trial.py` scripts that built them are there too.
+
+### New scene types
+
+| Type | Use | Key fields |
+|---|---|---|
+| `player_freeze` | **Hook: a video player.** A drawn video-player frame plays an artwork with cards sitting in it. The picture freezes, brackets snap onto one card, and the camera dives into that card. With `pop` it works as a teaser instead: the cards pop into the frame one by one. | `img`, `cards` (list of images), `zoom_card` (index), `freeze_at`, `zoom_at`, `card_h`, `card_y` (0–1 inside the player), `title` (player bar text), `y`, `pw`/`ph` (player size). Teaser fields: `pop: [t…]`, `p0`/`p1` (camera push), `spread` |
+| `spotlight` | **Roll call on a group artwork.** The camera moves to each member as he is named. In trace mode the member is lit inside his own outline (with a rim glow), the rest of the picture drops into shadow, and a name chip appears. | `img`, `targets: [{x, y, cx, cy, label, at, mask, rim}]` (`cx`/`cy` = camera framing point; aim so head + body fit and nothing sits on the logo), `h0`/`fy0` (opening wide shot), `h1` (close-up height), `dim`, `rim`, `label_y`. **Logo drive-through:** `overlay: {img, at, w, y, out, dur}`. The logo holds still, then blurs and fades while the camera zooms "through" it, and the blackout fades in (it doesn't pop) |
+| `flip` | **Makeover / before→after.** Cards turn over in true 3D from one version to another. | `pairs: [{from, to, at}]`, `h`, `gap`, `y` |
+| `spot_groups` | **"Who's who" beat.** One continuous shot over a group artwork. At each step a *set* of members stays lit inside their outlines and the rest drops into shadow. Optional name/role chips pop under them, and the camera glides between keyframes. | `img`, `cam: [[t, fx, fy, h(, 'lin')]…]` (`'lin'` = constant-speed drift into that key; otherwise eased; keep the art covering the frame once `h` ≥ 1920 because there are no hard edge clamps), `groups: [{at, lit: [keys], chips: [{label, x, at, stay}]}]`, `dim`, `rim`, `label_y`, `mask_fmt`/`rim_fmt` (default `hsmask_{}.png` / `hsrim_{}.png`). If `h` < 1920 the picture is framed over its own blurred copy |
+| `stage_table` (v3.7) | Stage → table reveal (Video 16 K/DA). | see the Video 16 config |
+
+**Masks for `spotlight` / `spot_groups`:** use `tools/make_masks.py ART.png boxes.json --preview`.
+- `boxes.json` holds one loose box per member, in 0–1 fractions of the art. Each box must contain the whole figure; anything outside it is cut.
+- The tool uses rembg with the `isnet-anime` model for illustrations, or `isnet-general-use` for photos.
+- Always check the preview. Then re-run single members with `--only key` if a mask leaks.
+- `tools/hs_boxes.json` is the Video 17 example. It reproduces the six HEARTSTEEL masks with IoU 0.74–0.86 against the hand-tuned ones.
+
+### New options on existing scenes
+- **`card_lineup`**
+  - `rows: 2` + `row_gap`, `spread`, `fan`: two rows of 3 big cards that fill the frame (no empty band above or below).
+  - `t0` + `step`: when the cards start landing and the gap between them (the tap sound follows).
+  - `bg_img`: blurred art behind the cards instead of black.
+  - Fans of 4–5 cards are also supported.
+- **`macro3d` highlight**
+  - `style: 'band'`: a translucent marker band, for light text on dark card areas (multiply only works on dark text over light).
+  - `spot: {w, h, dark, y}`: a spotlight on the text, so a dark card isn't all dark.
+  - Measure `box` on the actual scan: draw the boxes over the image and check them before rendering.
+- **`deal`**: `y`, and `qmark_at` (a mono white "?" over a mystery card).
+- **Badges**: `until` (badge leaves early).
+- **Captions**
+  - `caption_groups: [[text, t0, t1]…]`: two caption lines inside one merged scene.
+  - `chunk_list`: hand-set caption chunks. Use it to keep a name such as "Anderson .Paak" on one line.
+  - Captions now split only on spaces, so a non-breaking space also keeps words together.
+- **Conveyor**: the ring and counter can be turned off. **`rank`**: depth entry and prefix.
+
+### Fixes
+- **Memory:** long zooms over large art grew the `scaled` cache until a render worker died and the render hung. Trace masks are now warped from a half-res copy (`trace_src`), and the cache is cleared when it holds more than 30 entries.
+- **Spotlight offset:** the spot is now drawn with the `OY` offset.
+- **`spot_groups` camera:** no hard edge clamps (they made the camera jump when the art crossed the frame size).
+
+### Workflow learned on Video 17
+- **VO retiming** (`examples/video17/retime.py`)
+  - Find speech segments with silencedetect (`n=-38dB`, `d=0.12`). Get syllable beats from `beats.py`, at about 0.77 beats per syllable.
+  - Map every script line to its segments and check each line by its beat count; one line was mis-split in Video 16.
+  - Rebuild the VO with a gap table `G` (line-to-line pauses).
+  - Scene boundaries sit at the midpoints of the gaps between speech.
+  - Cues are mapped through `M()`. Names in a roll call get gaps of at least 0.3s.
+- **Re-recorded line:** append it to the raw VO file at a fixed offset and point that line's segment at it. Match loudness with ebur128.
+- **Trial Reel:** the user records only the new hook lines (plus an optional bridge line).
+  - `retime_trial.py` puts them in front of the main segments.
+  - `gen_trial.py` execs `gen.py` with string replacements.
+  - Merge any two lines that share one image into one continuous scene.
+- **Small fixes without a full re-render**
+  - Render only the changed range: `clip OUT.mp4 a:b`, starting before the scene and ending after the next transition.
+  - Splice it in with ffmpeg, using `-t a` on the first input and `-ss b` on the third. Do not use two `trim`s on the same input; that buffers every frame and gets the process killed.
+  - Copy the audio from the original.
+- **User feedback to apply by default**
+  - Fill the frame; no big empty bands.
+  - Close-ups frame the head and body and never overlap the Kard Avenue logo.
+  - Trace or outline the subject instead of using a round spotlight.
+  - Never show the same image across two scenes in a row; make it one continuous shot.
+  - Use a glitch between hook scenes.
+  - Highlights sit exactly on the text.
+  - Camera moves never stop and start mid-beat.

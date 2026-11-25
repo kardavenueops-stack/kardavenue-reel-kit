@@ -1472,7 +1472,8 @@ def flip_keys(d, s): return [(.3, 'originals')] + [(min(d - .05, p['at'] + .55),
 
 def spot_groups(c, u, d, s):
     """v3.8 'Who sings': group art; at each step a SET of members stays lit inside their traced outlines (rest in shadow),
-    the camera glides between keyframes. img, cam: [[t, fx, fy, h]], groups: [{at, lit: [member keys], chips: [{label, x, at}]}], dim, rim."""
+    the camera glides between keyframes. img, cam: [[t, fx, fy, h]], groups: [{at, lit: [member keys], chips: [{label, x, at, stay}]}], dim, rim, label_y.
+    Masks: mask_fmt / rim_fmt (default 'hsmask_{}.png' / 'hsrim_{}.png'), full art size, made with tools/make_masks.py."""
     im = img(s['img'], False); ar = im.width / im.height; K = s['cam']
     if u <= K[0][0]: fx, fy, h = K[0][1:]
     elif u >= K[-1][0]: fx, fy, h = K[-1][1:]
@@ -1494,7 +1495,7 @@ def spot_groups(c, u, d, s):
     def union(g):
         if not g: return np.ones((H, W))
         out = np.zeros((H, W))
-        for m in g['lit']: out = np.maximum(out, np.asarray(lay_of(f'hsmask_{m}.png').split()[3]).astype(float) / 255)
+        for m in g['lit']: out = np.maximum(out, np.asarray(lay_of(s.get('mask_fmt', 'hsmask_{}.png').format(m)).split()[3]).astype(float) / 255)
         return out
     if k >= 0:
         g = G[k]; fin = eo3(prog(u, g['at'] - .22, g['at'] + .14)); prev = G[k - 1] if k > 0 else None
@@ -1504,7 +1505,7 @@ def spot_groups(c, u, d, s):
         for grp, al in ((g, fin), (prev, 1 - fin)):
             if not grp or al <= 0: continue
             for m in grp['lit']:
-                rim = lay_of(f'hsrim_{m}.png'); rim.putalpha(rim.split()[3].point(lambda v, al=al: int(v * al * s.get('rim', .9)))); c.alpha_composite(rim)
+                rim = lay_of(s.get('rim_fmt', 'hsrim_{}.png').format(m)); rim.putalpha(rim.split()[3].point(lambda v, al=al: int(v * al * s.get('rim', .9)))); c.alpha_composite(rim)
         for grp in G[:k + 1]:
             for ch in grp.get('chips', []):
                 if grp is g or ch.get('stay'):
