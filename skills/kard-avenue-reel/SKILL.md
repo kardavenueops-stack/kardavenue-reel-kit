@@ -51,7 +51,7 @@ If none of these is available, ask the user to attach the skill zip.
 
 **Call to action:** every video ends with the `end_card` scene using `23_follow_us_cta.jpg`, shown full-bleed with no burned-in caption and no logo overlay (the poster has its own). Its voiceover invites viewers to follow Kard Avenue and download the app.
 
-The engine needs Python 3, Pillow, numpy and ffmpeg. The fonts are bundled in `engine/fonts/` (keep that folder next to `kard_reel.py`). Check with a quick import, and `pip install` (add `--break-system-packages` if pip asks) anything missing.
+The engine needs Python 3, Pillow, numpy and ffmpeg (`worlds.py`, `living.py` and the trace tools also need OpenCV). The fonts are bundled in `engine/fonts/` (keep that folder next to `kard_reel.py`). Check with a quick import, and `pip install` (add `--break-system-packages` if pip asks) anything missing.
 
 **Check what this environment can do, silently, before starting:**
 
