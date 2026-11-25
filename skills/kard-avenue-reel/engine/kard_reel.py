@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Kard Avenue Reel engine v3.6 — config-driven. v3 adds the approved Video 05 3D style (macro3d, slam, wall, whip/leak, reflect, glitch, camera, plain captions).
+Kard Avenue Reel engine v3.8 — config-driven. v3 adds the approved Video 05 3D style (macro3d, slam, wall, whip/leak, reflect, glitch, camera, plain captions).
 
 A new video = one JSON config (script + images + scene types). No code edits.
 
@@ -273,7 +273,13 @@ def burst(c, t, alpha, cy=760):
     c.alpha_composite(with_alpha(lay, alpha))
 
 @functools.lru_cache(None)
+@functools.lru_cache(None)
 def qmark():
+    if CFG.get('mono_ui'):   # v3.7: brand black/white question mark (white with a soft dark shadow)
+        f = font(F_BLACK, 560); bb = f.getbbox('?'); im = Image.new('RGBA', (bb[2] - bb[0] + 160, bb[3] - bb[1] + 160), (0, 0, 0, 0))
+        d = ImageDraw.Draw(im); ox, oy = 60 - bb[0], 60 - bb[1]
+        sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).text((ox + 14, oy + 18), '?', font=f, fill=(0, 0, 0, 200)); im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(14)))
+        d.text((ox, oy), '?', font=f, fill=PAPER); return im
     f = font(F_BLACK, 560); bb = f.getbbox('?'); im = Image.new('RGBA', (bb[2] - bb[0] + 120, bb[3] - bb[1] + 120), (0, 0, 0, 0))
     d = ImageDraw.Draw(im); ox, oy = 40 - bb[0], 40 - bb[1]
     for k in range(26, 0, -2): d.text((ox + k, oy + k), '?', font=f, fill=(24, 70, 160), stroke_width=22, stroke_fill=(24, 70, 160))
@@ -367,9 +373,9 @@ def product_intro_keys(d, s): return [(min(2.2, d - .45), 'box + date')]
 
 # 4 ---------------------------------------------------------------- card_grid
 def card_grid(c, u, d, s):
-    """cards: up to 9 images, 3 per row, fly in; collapses into `keep` (index) at the end if set."""
-    cards = s['cards']; NC = s.get('cols', 3); rows = math.ceil(len(cards) / NC); h = s.get('card_h', 360); gap = h * 1.04
-    top = 760 - (rows - 1) * gap / 2; keep = s.get('keep'); co = eio(prog(u, d - .4, d)) if keep is not None else 0
+    """cards: up to 9 images, 3 per row, fly in; collapses into `keep` (index) at the end if set. v3.8: labels + label_at (chips), y, row_gap."""
+    cards = s['cards']; NC = s.get('cols', 3); rows = math.ceil(len(cards) / NC); h = s.get('card_h', 360); gap = h * s.get('row_gap', 1.04)
+    top = s.get('y', 760) - (rows - 1) * gap / 2; keep = s.get('keep'); co = eio(prog(u, d - .4, d)) if keep is not None else 0
     for i, name in enumerate(cards):
         sf = s.get('soft')
         pr = prog(u, .15 + i * sf, .15 + i * sf + .75) if sf else prog(u, .1 + i * .08, .45 + i * .08)
@@ -379,6 +385,9 @@ def card_grid(c, u, d, s):
         tx, ty = lerp(tx, 540, co), lerp(ty, 760, co)
         if sf: put(c, name, tx, ty + 140 * (1 - p), h, alpha=p * (1 - co * (i != keep)))   # one by one: soft fade + rise
         else: put(c, name, lerp(540, tx, min(1, p)), lerp(2100, ty, min(1, p)), h, alpha=1 - co * (i != keep))
+        lb = s.get('labels')
+        if lb and lb[i]:   # v3.8: chip on each card's lower edge, popping at its own time
+            la = (s.get('label_at') or [.8 + i * .3] * len(cards))[i]; put_chip(c, lb[i], tx, ty + h / 2 - 12, prog(u, la, la + .25), size=s.get('label_size', 40))
 
 def card_grid_sfx(d, s): return [(.1 + i * .08, 'flick', .7) for i in range(len(s['cards']))] + ([(d - .4, 'whoosh', .6)] if s.get('keep') is not None else [])
 def card_grid_keys(d, s):
@@ -388,18 +397,27 @@ def card_grid_keys(d, s):
 # 5 ---------------------------------------------------------------- card_lineup
 def card_lineup(c, u, d, s):
     """cards: [{img,label}] 2-3 shown fanned; heading (top); credit (under). riser: build into next scene."""
-    cards = s['cards']; n = len(cards); h = s.get('card_h', 520)
-    order = [0, 2, 1] if n == 3 else [0, 1]                               # middle card drawn last
+    cards = s['cards']; n = len(cards); h = s.get('card_h', 520); cy0 = s.get('y', 790)
+    if s.get('bg_img'): c.alpha_composite(pf_bg(s['bg_img']))   # v3.8: blurred art behind the fan instead of empty black
+    order = list(range(n)) if s.get('rows') == 2 else sorted(range(n), key=lambda j: -abs(j - (n - 1) / 2))       # middle card drawn last (v3.7: fans of 4-5 too)
     for j in order:
-        k = cards[j]; x = {2: [330, 750], 3: [255, 540, 825]}[n][j]; a = {2: [5, -5], 3: [6, 0, -6]}[n][j]
-        p = eo3(prog(u, j * .12, .6 + j * .12)); put(c, k['img'], x, lerp(2000, 790, p), h, angle=a)
+        k = cards[j]
+        if s.get('rows') == 2:   # v3.8: two staggered rows that fill the frame (no empty band above/below)
+            per = (n + 1) // 2; r, q = divmod(j, per); o = q - (per - 1) / 2
+            x = 540 + o * s.get('spread', 330) + (s.get('stagger', 0) * (1 if r else -1)); a = -o * s.get('fan', 4) + (1.5 if r else -1.5)
+            yo = (r - .5) * s.get('row_gap', 500) + abs(o) * 14
+        elif n <= 3: x = {1: [540], 2: [330, 750], 3: [255, 540, 825]}[n][j]; a = {1: [0], 2: [5, -5], 3: [6, 0, -6]}[n][j]; yo = 0
+        else: o = j - (n - 1) / 2; x = 540 + o * s.get('spread', 820 / (n - 1)); a = -o * s.get('fan', 5); yo = abs(o) ** 1.5 * 22
+        t0_, st_ = s.get('t0', 0), s.get('step', .12); p = eo3(prog(u, t0_ + j * st_, t0_ + .45 + j * st_)); put(c, k['img'], x, lerp(2000, cy0 + yo, p), h, angle=a)
         lt = k.get('at', .8 + j * (d - 1.6) / max(1, n))
-        if k.get('label'): put_chip(c, k['label'], x, 790 + h / 2 + 50, prog(u, lt, lt + .25), size=28)
-    if s.get('heading'): put_text(c, s['heading'], 540, heading_y(790 - h / 2 + OY), F_BLACK, 64, stroke=6, alpha=prog(u, .6, 1.))
-    if s.get('credit'): put_text(c, s['credit'], 540, 790 + h / 2 + 130, F_B, 36, fill=(220, 220, 235), alpha=prog(u, 1., 1.5))
+        if k.get('label'): put_chip(c, k['label'], x, cy0 + yo + h / 2 + 50, prog(u, lt, lt + .25), size=28 if n <= 3 else 24)
+    if s.get('heading'): put_text(c, s['heading'], 540, heading_y(cy0 - h / 2 + OY), F_BLACK, 64, stroke=6, alpha=prog(u, .6, 1.))
+    if s.get('credit'): put_text(c, s['credit'], 540, cy0 + h / 2 + 130, F_B, 36, fill=(220, 220, 235), alpha=prog(u, 1., 1.5))
 
 def card_lineup_sfx(d, s):
-    n = len(s['cards']); ev = [(0, 'whoosh', .5)] + [(.8 + j * (d - 1.6) / max(1, n), 'pop', .8) for j in range(n)]
+    n = len(s['cards'])
+    if 't0' in s: ev = [(s['t0'] + j * s.get('step', .12) + .3, 'tap', .45) for j in range(n)]
+    else: ev = [(0, 'whoosh', .5)] + [(.8 + j * (d - 1.6) / max(1, n), 'pop', .8) for j in range(n)]
     return ev + ([(max(0, d - 2.5), 'riser', .7)] if s.get('riser') else [])
 
 def card_lineup_keys(d, s): return [(d - .2, 'all labels')]
@@ -649,6 +667,9 @@ def highlight_src(src, s, u):
         x0, y0, x1, y1 = h_['box']; bx = (int(x0 * Wd), int(y0 * Hd), int(x1 * Wd), int(y1 * Hd))
         if pr <= 0: continue
         xe = int(bx[0] + (bx[2] - bx[0]) * pr); reg = (bx[0], bx[1], max(bx[0] + 1, xe), bx[3])
+        if h_.get('style') == 'band':   # v3.8: light text on dark art -> translucent marker band under the words, text kept bright on top
+            org = out.crop(reg).convert('RGB'); band = Image.blend(org, Image.new('RGB', org.size, tuple(h_.get('color', HL_COLOR))), .62)
+            out.paste(ImageChops.lighter(band, org).convert('RGBA'), reg[:2]); continue
         crop = bold.crop(reg).convert('RGB'); col = Image.new('RGB', crop.size, tuple(h_.get('color', HL_COLOR)))
         out.paste(ImageChops.multiply(crop, col).convert('RGBA'), reg[:2])
     return out
@@ -713,13 +734,13 @@ def macro3d(c, u, d, s):
         warped = Image.composite(sm, warped, dof_mask(fo.get('axis', 'y'), round(lerp(fo.get('at', .45), fo.get('at1', fo.get('at', .45)), p), 2), fo.get('width', .3), 0))
     c.paste(warped, (0, 0))
     if s.get('spot'):
-        sp = s['spot']; c.alpha_composite(spot_layer(sp.get('w', 1050), sp.get('h', 380), sp.get('dark', .78), round(.5 + .5 * math.sin(u * 7) * sp.get('flicker', .04), 2)))
+        sp = s['spot']; c.alpha_composite(spot_layer(sp.get('w', 1050), sp.get('h', 380), sp.get('dark', .78), round(.5 + .5 * math.sin(u * 7) * sp.get('flicker', .04), 2), sp.get('y', H // 2)))
     FRAME_BOXES[:] = [bx for bx in FRAME_BOXES if bx[0] != 'card']
 
 @functools.lru_cache(maxsize=32)
-def spot_layer(w, h, dark, fl):
+def spot_layer(w, h, dark, fl, cy=H // 2):
     """Spotlight on the line being read (frame centre) + heavy vignette closing in from the edges."""
-    q = 4; yy, xx = np.mgrid[0:H // q, 0:W // q]; x = (xx * q - W / 2) / (w / 2); y = (yy * q - H / 2) / (h / 2)
+    q = 4; yy, xx = np.mgrid[0:H // q, 0:W // q]; x = (xx * q - W / 2) / (w / 2); y = (yy * q - cy) / (h / 2)
     r = np.sqrt(x * x + y * y); m = np.clip((r - .75) / 1.6, 0, 1) ** .9
     e = np.hypot((xx * q - W / 2) / (W / 2), (yy * q - H / 2) / (H / 2)); m = np.clip(m + np.clip(e - .85, 0, 1) * .8, 0, 1)
     a = (m * 255 * (dark + (fl - .5) * .1)).clip(0, 255).astype(np.uint8)
@@ -852,19 +873,23 @@ def rank(c, u, d, s):
     n, img, count, unit (small line under the count), enter: left|right|top|bottom, side: 1|-1 (which side the numeral peeks out),
     swing: [tx0, ty0, tx1, ty1], h, count_at, count_dur."""
     side = s.get('side', 1); hh = s.get('h', 800); p = eo3(prog(u, 0, .75))
-    num = outline_num(str(s['n']), s.get('num_size', 900))
-    nx = 540 + side * lerp(250, 205, prog(u, 0, d)); na = .34 * prog(u, 0, .4)
-    paste_safe(c, with_alpha(num, s.get('num_alpha', 1) * na), int(nx - num.width / 2), int(s.get('num_y', 640) + OY - num.height / 2))
-    ex, ey = {'left': (-950, 0), 'right': (950, 0), 'top': (0, -1350), 'bottom': (0, 1350)}[s.get('enter', 'left')]
-    lay = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    put(lay, s['img'], 540 - side * 105 + ex * (1 - p), 660 + ey * (1 - p), hh + 26 * prog(u, 0, d), sweep=prog(u, 1.0, 1.9))
+    if s.get('n') is not None:
+        num = outline_num(str(s['n']), s.get('num_size', 900))
+        nx = 540 + side * lerp(250, 205, prog(u, 0, d)); na = .34 * prog(u, 0, .4)
+        paste_safe(c, with_alpha(num, s.get('num_alpha', 1) * na), int(nx - num.width / 2), int(s.get('num_y', 640) + OY - num.height / 2))
+    en = s.get('enter', 'left'); lay = Image.new('RGBA', (W, H), (0, 0, 0, 0)); cx_ = 540 - side * 105 * (s.get('n') is not None)
+    if en == 'depth':   # v3.7: card rises out of the dark, small -> full size
+        pd = eo3(prog(u, 0, 1.0)); put(lay, s['img'], cx_, s.get('card_y', 660), hh * lerp(.25, 1, pd) + 26 * prog(u, 0, d), alpha=min(1, pd * 2.5), sweep=prog(u, 1.0, 1.9))
+    else:
+        ex, ey = {'left': (-950, 0), 'right': (950, 0), 'top': (0, -1350), 'bottom': (0, 1350)}[en]
+        put(lay, s['img'], cx_ + ex * (1 - p), s.get('card_y', 660) + ey * (1 - p), hh + 26 * prog(u, 0, d), sweep=prog(u, 1.0, 1.9))
     sw = s.get('swing', [.32 * side, 0, .05 * side, 0]); q = eio(prog(u, 0, min(d, 2.4)))
     c.alpha_composite(project_layer(lay, lerp(sw[0], sw[2], q), lerp(sw[1], sw[3], q), cover=False, f=2000))
     t0 = s.get('count_at', .55); cp = prog(u, t0, t0 + s.get('count_dur', 1.7))
     if cp > 0:
         val = int(round(s['count'] * (1 - (1 - cp) ** 4)))
-        put_text(c, f'{val:,}', 540, 1190, F_BLACK, 120, alpha=prog(u, t0, t0 + .25))
-        if s.get('unit'): put_text(c, s['unit'], 540, 1278, F_B, 28, fill=(190, 190, 190), alpha=prog(u, t0 + .2, t0 + .6))
+        put_text(c, s.get('prefix', '') + f'{val:,}', 540, s.get('count_y', 1190), F_BLACK, s.get('count_size', 120), alpha=prog(u, t0, t0 + .25))
+        if s.get('unit'): put_text(c, s['unit'], 540, s.get('count_y', 1190) + 88, F_B, 28, fill=(190, 190, 190), alpha=prog(u, t0 + .2, t0 + .6))
 
 def rank_sfx(d, s): return []
 def rank_keys(d, s): return [(.45, 'card swinging in'), (min(d - .05, s.get('count_at', .55) + s.get('count_dur', 1.7) + .3), 'count settled')]
@@ -963,8 +988,11 @@ def deal(c, u, d, s):
         p = prog(u, t0 + i * st, t0 + i * st + .4)
         if p <= 0: break
         e = eo3(p); af = ((i * 37) % 19 - 9) * 1.4; sx = 900 if i % 2 else -900; sy = -760 if i % 3 else 760
-        put(c, name, lerp(540 + sx, 540 + ((i * 53) % 41 - 20), e), lerp(700 + sy, 700 + ((i * 29) % 31 - 15), e), lerp(hh * 1.45, hh, e),
+        yc = s.get('y', 700); put(c, name, lerp(540 + sx, 540 + ((i * 53) % 41 - 20), e), lerp(yc + sy, yc + ((i * 29) % 31 - 15), e), lerp(hh * 1.45, hh, e),
             angle=lerp(af + (22 if i % 2 else -22), af, e), alpha=min(1, p * 3), role='fx')
+    qa = s.get('qmark_at')
+    if qa is not None and u >= qa:   # v3.7: big '?' pops over the pile
+        put_q(c, s.get('q_x', 760), s.get('q_y', 560), eback(prog(u, qa, qa + .35)) * s.get('q_size', .42) * (1 + .05 * math.sin(u * 7)), angle=-12 + 5 * math.sin(u * 3))
     ct = s.get('counter')
     if ct:   # v3.4: counter ticks up as each card lands
         n = sum(1 for i in range(len(cards)) if u >= t0 + i * st + .38); a = prog(u, t0 + .3, t0 + .6)
@@ -984,17 +1012,19 @@ def ring_img(r, frac64, wd=16):
 
 def conveyor(c, u, d, s):
     """Cards ride a belt across the frame in perspective. Each card that reaches the centre restarts the ring timer and ticks the counter.
-    cards, period (seconds per card), h, ring: {secs, unit}, counter: {label}, tilt."""
+    cards, period (seconds per card), h, ring: {secs, unit}, counter: {label}, tilt. v3.7: y (belt height), pop (how much bigger the centre card grows); ring/counter false = belt only."""
     cards = s['cards']; n = len(cards); per = s.get('period', 1.1); hh = s.get('h', 640); gap = hh * .84
     cyc = u / per; k = int(cyc); fr = cyc - k; shift = (k + eio(prog(fr, .45, 1.))) * gap    # belt moves in steps: hold, then slide
     lay = Image.new('RGBA', (W, H), (0, 0, 0, 0)); m0 = int(shift // gap)
     for m in range(m0 - 3, m0 + 5):
         x = 540 + m * gap - shift; near = max(0, 1 - abs(x - 540) / gap)
-        put(lay, cards[m % n], x, 560, hh * (1 + .07 * near), alpha=prog(u, 0, .35) * lerp(.55, 1, near), shadow=near > .5, role='fx')
+        put(lay, cards[m % n], x, s.get('y', 560), hh * (1 + s.get('pop', .07) * eio(near)), alpha=prog(u, 0, .35) * lerp(.55, 1, near), shadow=near > .5, role='fx')
     xx = np.clip(np.minimum(np.arange(W), W - 1 - np.arange(W)) / 170., 0, 1)[None, :]   # soft fade at both belt ends
     lay.putalpha(Image.fromarray((np.asarray(lay.split()[3]) * xx).astype(np.uint8)))
     tl = s.get('tilt', [.62, .06]); c.alpha_composite(project_layer(lay, tl[0], tl[1], cover=False, f=1700))
-    rg = s.get('ring', {}); secs = rg.get('secs', 18); a = prog(u, .25, .6); r = 96
+    a = prog(u, .25, .6)
+    if s.get('ring', {}) is False and s.get('counter', {}) is False: return   # v3.7: belt only
+    rg = s.get('ring', {}) or {}; secs = rg.get('secs', 18); r = 96
     ri = with_alpha(ring_img(r, int(prog(fr, 0, .45) * 64)), a); paste_safe(c, ri, 372 - ri.width // 2, 1265 - ri.height // 2)
     put_text(c, str(int(round(secs * prog(fr, 0, .45)))), 372, 1255 - OY, F_BLACK, 62, alpha=a); put_text(c, rg.get('unit', 'SEC'), 372, 1305 - OY, F_B, 22, fill=(190, 190, 190), alpha=a)
     ct = s.get('counter', {})
@@ -1184,12 +1214,312 @@ def seal_keys(d, s):
     if s.get('mode', 'close') == 'close': t0 = s.get('seal_at', 1.0); return [(max(.05, t0 - .3), 'doors closing'), (min(d - .05, t0 + .4), 'sealed')]
     t0 = s.get('open_at', .5); return [(t0 + .3, 'doors opening'), (min(d - .05, t0 + 1.5), 'revealed')]
 
-SCENE_TYPES = ['shadow_clones', 'seal', 'versus_rows', 'versus', 'diptych', 'coverflow', 'deal', 'conveyor', 'rank', 'bar_race', 'leaderboard', 'card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
+
+# v3.7 --------------------------------------------------------------- stage_table (Video 16 'Stage -> Table')
+@functools.lru_cache(maxsize=24)
+def st_img(name): return img(name, True)
+
+@functools.lru_cache(maxsize=24)
+def st_shadow(name):
+    im = st_img(name); pad = int(im.height * .12); sh = Image.new('RGBA', (im.width + 2 * pad, im.height + 2 * pad), (0, 0, 0, 0))
+    a = Image.new('L', sh.size, 0); a.paste(im.split()[3], (pad, pad)); a = a.filter(ImageFilter.GaussianBlur(pad * .45)).point(lambda v: int(v * .8))
+    sh.putalpha(a); return sh, pad
+
+@functools.lru_cache(maxsize=2)
+def st_table(seed=3):
+    """Dark table top seen from above: soft felt grain + a pool of light in the middle (black/white only)."""
+    S = 1024; rng = np.random.default_rng(seed); n = rng.normal(0, 1, (S // 4, S // 4))
+    n = np.asarray(Image.fromarray(((n - n.min()) / (n.max() - n.min()) * 255).astype(np.uint8)).resize((S, S), Image.BICUBIC)).astype(float) / 255
+    fine = rng.normal(0, 1, (S, S)) * .025
+    yy, xx = np.mgrid[0:S, 0:S]; r = np.hypot(xx - S / 2, yy - S * .54) / (S / 2)
+    pool = np.clip(1 - r * 2.3, 0, 1) ** 1.6
+    v = 14 + 10 * n + 255 * fine + 46 * pool
+    return Image.fromarray(np.clip(v, 0, 255).astype(np.uint8)).convert('RGBA')
+
+def st_cam(tg, az, el, R, Fc):
+    """Screen <- table-plane (X, Y, 1) homography for a camera at azimuth az / elevation el (deg), distance R, looking at tg."""
+    a, e = math.radians(az), math.radians(el)
+    f = np.array([math.sin(a) * math.cos(e), math.cos(a) * math.cos(e), -math.sin(e)]); r = np.array([math.cos(a), -math.sin(a), 0.])
+    up = np.cross(r, f); p = np.array([tg[0], tg[1], 0.]) - R * f
+    M3 = np.array([[r[0], r[1], -r @ p], [up[0], up[1], -up @ p], [f[0], f[1], -f @ p]])
+    return np.array([[Fc, 0, W / 2], [0, -Fc, H / 2], [0, 0, 1.]]) @ M3
+
+def st_draw(c, Hs, im, cx, cy, th, wu):
+    """Warp one flat image lying on the table (centre cx, cy; rotation th deg; width wu world units) into the frame."""
+    k = wu / im.width; t = math.radians(th)
+    A = np.array([[1, 0, cx], [0, 1, cy], [0, 0, 1.]]) @ np.array([[math.cos(t), -math.sin(t), 0], [math.sin(t), math.cos(t), 0], [0, 0, 1.]]) \
+        @ np.array([[k, 0, 0], [0, -k, 0], [0, 0, 1.]]) @ np.array([[1, 0, -im.width / 2], [0, 1, -im.height / 2], [0, 0, 1.]])
+    M = Hs @ A
+    cs = M @ np.array([[0, im.width, im.width, 0], [0, 0, im.height, im.height], [1, 1, 1, 1.]])
+    if (cs[2] <= 1).any(): return
+    xs, ys = cs[0] / cs[2], cs[1] / cs[2]
+    if xs.max() < -50 or xs.min() > W + 50 or ys.max() < -50 or ys.min() > H + 50: return
+    Mi = np.linalg.inv(M); Mi = Mi / Mi[2, 2]
+    c.alpha_composite(im.transform((W, H), Image.PERSPECTIVE, tuple(Mi.reshape(9)[:8]), Image.BICUBIC))
+
+@functools.lru_cache(maxsize=4)
+def st_beam(x0, x1, alpha):
+    q = 4; lay = Image.new('L', (W // q, H // q), 0); d = ImageDraw.Draw(lay)
+    d.polygon([(x0 / q - 6, -10), (x0 / q + 6, -10), (x1 / q + 70, H / q), (x1 / q - 70, H / q)], fill=int(255 * alpha))
+    return lay.filter(ImageFilter.GaussianBlur(14)).resize((W, H), Image.BILINEAR)
+
+def stage_table(c, u, d, s):
+    """v3.7 'Stage -> Table': opens as a concert stage (a battlefield card's art filling the frame, swaying spotlights), then the
+    camera cranes up and back to show it is a card lying on a table, and the hand of `cards` slides onto the table as a fan.
+    img (landscape battlefield, ideally upscaled), cards, t_off (continue the same move across two scenes),
+    reveal: [t0, t1] (camera pull-back, scene-chain time), deal_at, deal_step, art: [fx, fy] stage point on the card,
+    cam0 / cam1: {el, R, az}, bf_w (battlefield width, world units), card_h (world units), fan_y."""
+    T = u + s.get('t_off', 0); Fc = s.get('focal', 1500.)
+    bf = st_img(s['img']); bw = s.get('bf_w', 900.); bh = bw * bf.height / bf.width; by = s.get('bf_y', 260.)
+    ax, ay = s.get('art', [.5, .45]); art = ((ax - .5) * bw, by + (.5 - ay) * bh)
+    r0, r1 = s.get('reveal', [2.8, 4.1]); q = eio(prog(T, r0, r1))
+    c0, c1 = s.get('cam0', {}), s.get('cam1', {}); fy = s.get('fan_y', -560.)
+    R0 = c0.get('R', Fc * 380 / H) * (1 - .12 * prog(T, 0, r0)); R1 = c1.get('R', 2350.) * (1 + .035 * max(0, T - r1))
+    R = math.exp(lerp(math.log(R0), math.log(R1), q)); el = lerp(c0.get('el', 90), c1.get('el', 52), q)
+    az = lerp(c0.get('az', 0), c1.get('az', -4), q) - 2.5 * max(0, T - r1)
+    tg = (lerp(art[0], c1.get('tx', 0), q), lerp(art[1], c1.get('ty', -220), q)); Hs = st_cam(tg, az, el, R, Fc)
+    c.paste((6, 6, 6, 255), (0, 0, W, H))
+    st_draw(c, Hs, st_table(), 0, -100, 0, 9000)
+    sh, pad = st_shadow(s['img']); st_draw(c, Hs, sh, 18, by - 26, 0, bw * sh.width / bf.width)
+    st_draw(c, Hs, bf, 0, by, 0, bw)
+    cards = s.get('cards', []); n = len(cards); ch = s.get('card_h', 560.); da, ds = s.get('deal_at', 3.3), s.get('deal_step', .12)
+    order = sorted(range(n), key=lambda i: -abs(i - (n - 1) / 2))
+    for i in order:
+        o = i - (n - 1) / 2; fx_, fy_, fth = o * ch * s.get('fan_gap', .36), fy - abs(o) ** 1.6 * 34, -o * 6.5
+        p = eo3(prog(T, da + i * ds, da + i * ds + .6))
+        if p <= 0: continue
+        sx, sy, sth = fx_ * 1.7 + (240 if o >= 0 else -240), fy - 1500, fth - 30 * (1 if o >= 0 else -1)
+        x, y, th = lerp(sx, fx_, p), lerp(sy, fy_, p), lerp(sth, fth, p)
+        im = st_img(cards[i]); cw = ch * im.width / im.height; sh, pad = st_shadow(cards[i])
+        st_draw(c, Hs, sh, x + 14, y - 20, th, cw * sh.width / im.width); st_draw(c, Hs, im, x, y, th, cw)
+    lb = 1 - q                                                   # stage lighting: swaying beams + haze while we are "at the concert"
+    if lb > .01:
+        for k_, (bx, sp, ph) in enumerate([(230, 1.3, 0), (540, .9, 2.1), (850, 1.1, 4.2)]):
+            x1 = bx + 260 * math.sin(T * sp + ph); m = st_beam(int(bx), int(x1 // 20 * 20), .2)
+            lay = Image.new('RGBA', (W, H), (255, 250, 240, 0)); lay.putalpha(m.point(lambda v: int(v * lb))); c.alpha_composite(lay)
+    vg = tint_layer((4, 4, 4), round(lerp(.4, .5, q), 2)); c.alpha_composite(vg)
+    FRAME_BOXES[:] = [b for b in FRAME_BOXES if b[0] != 'card']
+
+def stage_table_sfx(d, s): return []
+def stage_table_keys(d, s):
+    to = s.get('t_off', 0); r0, r1 = s.get('reveal', [2.8, 4.1]); ks = [(.1, 'stage')]
+    if r0 - to < d: ks += [(max(.05, min(d - .05, (r0 + r1) / 2 - to)), 'crane up'), (d - .05, 'table + hand')]
+    else: ks += [(d - .05, 'stage end')]
+    return ks
+
+
+# v3.8 --------------------------------------------------------------- Video 17 motions: player_freeze, spotlight, flip
+@functools.lru_cache(maxsize=16)
+def trace_src(name):
+    im = Image.open(apath(name)).convert('RGBA')
+    return im.resize((im.width // 2, im.height // 2), Image.BILINEAR).convert('RGBA')
+
+@functools.lru_cache(maxsize=8)
+def pf_art(name, w, h):
+    """Cover-fit an artwork into a w x h window (centre crop, no stretching)."""
+    im = img(name, False).convert('RGBA'); s = max(w / im.width, h / im.height)
+    im = im.resize((int(im.width * s) + 1, int(im.height * s) + 1), Image.LANCZOS)
+    x, y = (im.width - w) // 2, (im.height - h) // 2; return im.crop((x, y, x + w, y + h))
+
+@functools.lru_cache(maxsize=4)
+def pf_bg(name):
+    im = img(name, False).convert('RGB'); s = max(W / im.width, H / im.height)
+    im = im.resize((int(im.width * s) + 1, int(im.height * s) + 1), Image.BILINEAR); x, y = (im.width - W) // 2, (im.height - H) // 2
+    im = im.crop((x, y, x + W, y + H)).filter(ImageFilter.GaussianBlur(40)); im = ImageEnhance.Brightness(im).enhance(.32)
+    return im.convert('RGBA')
+
+def player_freeze(c, u, d, s):
+    """v3.8 'Freeze-frame': a Kard-drawn video player (no real footage) plays `img` with Riftbound `cards` held up in the frame;
+    at `freeze_at` it pauses (pause icon + flash), corner brackets snap onto card `zoom_card`, then the camera dives into that card.
+    img, cards, freeze_at, zoom_at, zoom_card, pop (cards appear one by one at these times, optional), title (small top-left text)."""
+    PW, PH = s.get('pw', 1040), s.get('ph', 585); cx, cy = 540, s.get('y', 700) + OY; x0, y0 = cx - PW // 2, cy - PH // 2
+    fa, za = s.get('freeze_at', 99), s.get('zoom_at', 99); frozen = u >= fa; tt = min(u, fa)
+    lay = pf_bg(s['img']).copy()
+    art = pf_art(s['img'], int(PW * 1.12), int(PH * 1.12)); ox = int(lerp(0, PW * .12, prog(tt, 0, d + 1))); win = art.crop((ox, int(PH * .06), ox + PW, int(PH * .06) + PH))
+    if frozen: win = ImageEnhance.Color(win).enhance(.55)
+    lay.alpha_composite(win, (x0, y0))
+    # player chrome
+    ui = Image.new('RGBA', (W, H), (0, 0, 0, 0)); g = ImageDraw.Draw(ui)
+    g.rounded_rectangle([x0 - 3, y0 - 3, x0 + PW + 3, y0 + PH + 3], 22, outline=(250, 250, 250, 120), width=3)
+    sh = Image.new('L', (W, H), 0); ImageDraw.Draw(sh).rectangle([x0, y0 + PH - 120, x0 + PW, y0 + PH], fill=150); sh = sh.filter(ImageFilter.GaussianBlur(30))
+    dk = Image.new('RGBA', (W, H), (0, 0, 0, 0)); dk.putalpha(sh); lay.alpha_composite(dk)
+    by = y0 + PH - 38; bx0, bx1 = x0 + 110, x0 + PW - 40; pr = lerp(s.get('p0', .32), s.get('p1', .58), prog(tt, 0, max(fa, .1)))
+    g.rounded_rectangle([bx0, by - 4, bx1, by + 4], 4, fill=(250, 250, 250, 90)); g.rounded_rectangle([bx0, by - 4, bx0 + (bx1 - bx0) * pr, by + 4], 4, fill=(250, 250, 250, 255))
+    hx = bx0 + (bx1 - bx0) * pr; g.ellipse([hx - 11, by - 11, hx + 11, by + 11], fill=(250, 250, 250, 255))
+    ix, iy = x0 + 50, by
+    if frozen: g.polygon([(ix - 12, iy - 16), (ix - 12, iy + 16), (ix + 16, iy)], fill=(250, 250, 250, 255))       # play icon = paused state
+    else: g.rectangle([ix - 12, iy - 15, ix - 4, iy + 15], fill=(250, 250, 250, 255)); g.rectangle([ix + 4, iy - 15, ix + 12, iy + 15], fill=(250, 250, 250, 255))
+    if s.get('title'): g.text((x0 + 34, y0 + 70), s['title'], font=font(F_XB, 30), fill=(250, 250, 250, 230))
+    zp0 = eio(prog(u, s.get('zoom_at', 99), s.get('zoom_at', 99) + .4))
+    lay.alpha_composite(with_alpha(ui, 1 - zp0) if zp0 > 0 else ui)
+    cards = s.get('cards', []); n = len(cards); ch = s.get('card_h', 330); pops = s.get('pop'); boxes = []
+    for i, nm in enumerate(cards):
+        o = i - (n - 1) / 2; px = cx + o * ch * s.get('spread', .74); py = y0 + PH * s.get('card_y', .82) + abs(o) * 16; ang = -o * 5
+        p = 1 if pops is None else eback(prog(tt, pops[i], pops[i] + .35))
+        if p <= 0: continue
+        bob = 0 if frozen else 10 * math.sin(tt * 2.2 + i)
+        put(lay, nm, px, py + bob - OY + (1 - p) * 300, ch * max(.01, p), angle=ang, shadow=True)
+        cw = ch * .716; boxes.append((px - cw / 2, py + bob - ch / 2, px + cw / 2, py + bob + ch / 2))
+    if frozen:                                                    # big pause pulse + flash
+        pp = prog(u, fa, fa + .5); a = int(220 * (1 - pp))
+        if a > 0:
+            pi = Image.new('RGBA', (W, H), (0, 0, 0, 0)); q = ImageDraw.Draw(pi); r = 80 * lerp(.7, 1.3, pp)
+            q.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(0, 0, 0, a // 2)); q.rectangle([cx - r * .35, cy - r * .45, cx - r * .12, cy + r * .45], fill=(250, 250, 250, a)); q.rectangle([cx + r * .12, cy - r * .45, cx + r * .35, cy + r * .45], fill=(250, 250, 250, a))
+            lay.alpha_composite(pi)
+        fl = int(140 * (1 - prog(u, fa, fa + .18)))
+        if fl > 0: lay.alpha_composite(Image.new('RGBA', (W, H), (255, 255, 255, fl)))
+    zc = s.get('zoom_card', 0); zp = eio(prog(u, za, za + .65))
+    if boxes and u >= fa:                                          # corner brackets close in on the card
+        bx = boxes[min(zc, len(boxes) - 1)]; bp = eo3(prog(u, fa + .12, za))
+        rx0, ry0, rx1, ry1 = [lerp(a, b, bp) for a, b in zip((x0, y0, x0 + PW, y0 + PH), (bx[0] - 18, bx[1] - 18, bx[2] + 18, bx[3] + 18))]
+        br = Image.new('RGBA', (W, H), (0, 0, 0, 0)); q = ImageDraw.Draw(br); L = 46; col = (250, 250, 250, 255)
+        for (px_, py_, sx, sy) in [(rx0, ry0, 1, 1), (rx1, ry0, -1, 1), (rx0, ry1, 1, -1), (rx1, ry1, -1, -1)]:
+            q.line([(px_, py_), (px_ + sx * L, py_)], fill=col, width=6); q.line([(px_, py_), (px_, py_ + sy * L)], fill=col, width=6)
+        lay.alpha_composite(br)
+        if zp > 0:                                                 # dive: crop the frame towards the card (9:16 view), then a sharp card fades in
+            cxb, cyb = (bx[0] + bx[2]) / 2, (bx[1] + bx[3]) / 2; vh = (bx[3] - bx[1]) * 1.45; vw = vh * W / H
+            vx0, vy0, vx1, vy1 = lerp(0, cxb - vw / 2, zp), lerp(0, cyb - vh / 2, zp), lerp(W, cxb + vw / 2, zp), lerp(H, cyb + vh / 2, zp)
+            lay = lay.crop((int(vx0), int(vy0), int(vx1), int(vy1))).resize((W, H), Image.BICUBIC)
+            sp = prog(u, za + .35, za + .65)
+            if sp > 0: put(lay, cards[zc], 540, H / 2 - OY, H / 1.45, angle=0, alpha=sp, shadow=False)
+    c.alpha_composite(lay)
+    FRAME_BOXES[:] = [b for b in FRAME_BOXES if b[0] != 'card']
+
+def player_freeze_sfx(d, s):
+    ev = [(0, 'swoosh', .3)]
+    if s.get('freeze_at', 99) < d: ev.append((s['freeze_at'], 'shutter', .5))
+    if s.get('zoom_at', 99) < d: ev.append((s['zoom_at'], 'swoosh', .6))
+    for t in (s.get('pop') or []): ev.append((t, 'tap', .4))
+    return ev
+def player_freeze_keys(d, s): return [(.2, 'playing'), (min(d - .05, s.get('freeze_at', d) + .1), 'freeze'), (min(d - .05, s.get('zoom_at', d) + .5), 'dive')]
+
+def spotlight(c, u, d, s):
+    """v3.8 'Roll call': a group artwork fills the frame; as each member is named the camera glides to them and a soft spotlight
+    picks them out while the rest of the picture dims; a name chip pops under them.
+    img, targets: [{x, y (0-1 on the artwork), label, at}], h0 (wide), h1 (close), r (spot radius px), dim, overlay: {img, at, out, w, y} (logo over the art)."""
+    im = img(s['img'], False); ar = im.width / im.height; T = s['targets']; h0, h1 = s.get('h0', 1920), s.get('h1', 2700)
+    k = -1
+    for i, t in enumerate(T):
+        if u >= t['at'] - .25: k = i
+    if k < 0: fx, fy, h, sp = .5, s.get('fy0', .5), lerp(h0, h0 * 1.06, prog(u, 0, d)), 0.
+    else:
+        a = T[max(0, k - 1)] if k > 0 else {'x': .5, 'y': s.get('fy0', .5)}; b = T[k]; m = eio(prog(u, b['at'] - .25, b['at'] + .12))
+        fx, fy = lerp(a.get('cx', a['x']), b.get('cx', b['x']), m), lerp(a.get('cy', a['y']), b.get('cy', b['y']), m); h = lerp(h0, h1, eio(prog(u, T[0]['at'] - .25, T[0]['at'] + .15))) if k == 0 else h1; sp = 1.
+    w = h * ar; fx = min(max(fx, 540 / w), 1 - 540 / w); fy = min(max(fy, (H / 2) / h), 1 - (H / 2) / h)
+    put(c, s['img'], 540 - (fx - .5) * w, H / 2 - OY - (fy - .5) * h, h, shadow=False, card=False, bleed=True)
+    if scaled.cache_info().currsize > 30: scaled.cache_clear()   # zooming art = a new size every frame; keep memory flat
+    if sp > 0 and T[k].get('mask'):   # v3.8 'trace': the named member stays lit inside his own outline + a warm rim; the rest of the picture drops into shadow
+        geo = (540 - (fx - .5) * w, H / 2 - OY - (fy - .5) * h, h)
+        def lay_of(nm):   # direct affine warp of a half-res mask (no per-size cache -> low memory)
+            src = trace_src(nm); sc = geo[2] / (src.height * 2); left, top = geo[0] - src.width * 2 * sc / 2, geo[1] + OY - geo[2] / 2
+            k_ = 1 / (sc * 2) * 2 / 2 * 2 / 2 * 1; k_ = 1 / (2 * sc)
+            return src.transform((W, H), Image.AFFINE, (k_, 0, -left * k_, 0, k_, -top * k_), Image.BILINEAR)
+        fin = eo3(prog(u, T[k]['at'] - .22, T[k]['at'] + .12)); keep = np.asarray(lay_of(T[k]['mask']).split()[3]).astype(float) / 255 * fin
+        if k > 0 and fin < 1: keep = np.maximum(keep, np.asarray(lay_of(T[k - 1]['mask']).split()[3]).astype(float) / 255 * (1 - fin))
+        dimf = eio(prog(u, s['overlay']['out'], T[0]['at'] + .15)) if (k == 0 and s.get('overlay')) else 1.   # blackout fades in with the drive-through
+        a_ = Image.fromarray(((1 - keep) * 255 * s.get('dim', .8) * dimf).astype(np.uint8))
+        dk = Image.new('RGBA', (W, H), (3, 3, 4, 0)); dk.putalpha(a_); c.alpha_composite(dk)
+        rim = lay_of(T[k]['rim']); rim.putalpha(rim.split()[3].point(lambda v: int(v * fin * s.get('rim', .9)))); c.alpha_composite(rim)
+        b = T[k]; tx = 540 + (b['x'] - fx) * w
+        if b.get('label'): put_chip(c, b['label'], tx, s.get('label_y', 1330) - OY, prog(u, b['at'] - .05, b['at'] + .2), size=34)
+    elif sp > 0:
+        b = T[k]; tx, ty = 540 + (b['x'] - fx) * w, H / 2 - OY + (b['y'] - fy) * h + s.get('spot_dy', 0)   # v3.8 fix: same OY shift as the artwork
+        q = 6; yy, xx = np.mgrid[0:H:q, 0:W:q]; r = s.get('r', 330); sy = b.get('sy', s.get('sy', 1.35))
+        m = np.clip((np.hypot((xx - tx) / 1.0, (yy - ty) / sy) - r) / s.get('soft', 160), 0, 1)
+        if s.get('beam'):   # v3.8: stage beam from above falling onto the spotlight (dramatic)
+            bw = r * .25 + (r * 1.05 - r * .25) * np.clip(yy / max(ty, 1), 0, 1); inb = (np.abs(xx - tx) < bw) & (yy < ty)
+            m = np.where(inb, np.minimum(m, .35 + .45 * np.clip(np.abs(xx - tx) / np.maximum(bw, 1), 0, 1)), m)
+        a = Image.fromarray((m * 255 * s.get('dim', .72)).astype(np.uint8)).resize((W, H), Image.BILINEAR)
+        dk = Image.new('RGBA', (W, H), (4, 4, 4, 0)); dk.putalpha(a); c.alpha_composite(dk)
+        if s.get('glow'):   # warm light pool inside the spot
+            gl = Image.fromarray((np.clip(1 - np.hypot(xx - tx, (yy - ty) / sy) / r, 0, 1) ** 2 * 255 * s['glow']).astype(np.uint8)).resize((W, H), Image.BILINEAR)
+            gw = Image.new('RGBA', (W, H), (255, 246, 230, 0)); gw.putalpha(gl); c.alpha_composite(gw)
+        if b.get('label'): put_chip(c, b['label'], tx, s.get('label_y', min(H - 520, ty + r * sy * .9) - OY), prog(u, b['at'] - .05, b['at'] + .2), size=34)
+    ov = s.get('overlay')
+    if ov:   # logo / title image that rises in over the dimmed artwork
+        p = eo3(prog(u, ov.get('at', .3), ov.get('at', .3) + .6)); dt = ov.get('dur', .7); z = prog(u, ov.get('out', 99), ov.get('out', 99) + dt); q = 1 - z
+        if p > 0 and q > 0:
+            c.alpha_composite(Image.new('RGBA', (W, H), (0, 0, 0, int(120 * p * q))))
+            lg = img(ov['img'], False); zz = z * z; ww = ov.get('w', 860) * (1 + 3.2 * zz)          # still, then we drive through it
+            lg = lg.resize((int(ww), int(ww * lg.height / lg.width)), Image.LANCZOS)
+            if z > 0: lg = lg.filter(ImageFilter.GaussianBlur(2 + 22 * z))
+            paste_safe(c, with_alpha(lg, p * (1 - z) ** 1.3), int(540 - lg.width / 2), int(ov.get('y', 820) + OY - lg.height / 2))
+    FRAME_BOXES[:] = [x for x in FRAME_BOXES if x[0] != 'card']
+
+def spotlight_sfx(d, s): return [(t['at'], 'tap', .35) for t in s['targets'] if t['at'] < d]
+def spotlight_keys(d, s): return [(.2, 'group')] + [(min(d - .05, t['at'] + .2), t.get('label', 'spot')) for t in s['targets']]
+
+def flip(c, u, d, s):
+    """v3.8 'Makeover flip': a row of original cards; each turns over in true 3D (no stretching) to reveal its new version.
+    pairs: [{from, to, at}], h, gap, y."""
+    P = s['pairs']; n = len(P); hh = s.get('h', 620); gap = s.get('gap', 330); yc = s.get('y', 760)
+    for i, pr in enumerate(P):
+        o = i - (n - 1) / 2; x = 540 + o * gap; ent = eo3(prog(u, i * .08, .45 + i * .08))
+        if ent <= 0: continue
+        f = eio(prog(u, pr['at'], pr['at'] + .5)); ang = 180 * f
+        if ang < 90: nm, yaw = pr['from'], ang
+        else: nm, yaw = pr['to'], ang - 180
+        yaw = int(round(yaw / 3)) * 3; lift = math.sin(f * math.pi)
+        im = yaw_card(nm, int(hh * (1 + .08 * lift)) // 2 * 2, yaw)
+        sh = Image.new('RGBA', (im.width + 80, im.height + 80), (0, 0, 0, 0)); sa = im.split()[3].point(lambda v: int(v * .55))
+        sh.paste((0, 0, 0, 255), (40, 40), sa); sh = sh.filter(ImageFilter.GaussianBlur(22))
+        px, py = int(x - im.width / 2), int(yc + OY - im.height / 2 + (1 - ent) * 900 - 40 * lift)
+        paste_safe(c, with_alpha(sh, ent), px - 40 + 14, py - 40 + 26); paste_safe(c, with_alpha(im, ent), px, py)
+        if f >= 1: FRAME_BOXES.append(('card', px, py, px + im.width, py + im.height, hh, False))
+
+def flip_sfx(d, s): return [(p['at'] + .15, 'swoosh', .35) for p in s['pairs'] if p['at'] < d]
+def flip_keys(d, s): return [(.3, 'originals')] + [(min(d - .05, p['at'] + .55), 'flipped') for p in s['pairs']]
+
+def spot_groups(c, u, d, s):
+    """v3.8 'Who sings': group art; at each step a SET of members stays lit inside their traced outlines (rest in shadow),
+    the camera glides between keyframes. img, cam: [[t, fx, fy, h]], groups: [{at, lit: [member keys], chips: [{label, x, at}]}], dim, rim."""
+    im = img(s['img'], False); ar = im.width / im.height; K = s['cam']
+    if u <= K[0][0]: fx, fy, h = K[0][1:]
+    elif u >= K[-1][0]: fx, fy, h = K[-1][1:]
+    else:
+        j = max(i for i in range(len(K) - 1) if K[i][0] <= u); a, b = K[j], K[j + 1]; pr = prog(u, a[0], b[0])
+        m = pr if (len(b) > 4 and b[4] == 'lin') else eio(pr)      # 'lin' keyframe = constant-speed drift (no stop-start)
+        fx, fy, h = [lerp(a[x], b[x], m) for x in (1, 2, 3)]
+    w = h * ar   # v3.8 fix: no hard edge clamps here (they kicked the camera when the art crossed the frame size) -> keyframes keep the art in frame
+    gx, gy = 540 - (fx - .5) * w, H / 2 - OY - (fy - .5) * h
+    if h < H * 1.1: c.alpha_composite(pf_bg(s['img']))       # framed wide shot: blurred, darkened copy behind the picture
+    put(c, s['img'], gx, gy, h, shadow=False, card=False, bleed=True)
+    if scaled.cache_info().currsize > 30: scaled.cache_clear()
+    G = s['groups']; k = -1
+    for i, g in enumerate(G):
+        if u >= g['at'] - .22: k = i
+    def lay_of(nm):
+        src = trace_src(nm); sc = h / (src.height * 2); left, top = gx - src.width * 2 * sc / 2, gy + OY - h / 2; k_ = 1 / (2 * sc)
+        return src.transform((W, H), Image.AFFINE, (k_, 0, -left * k_, 0, k_, -top * k_), Image.BILINEAR)
+    def union(g):
+        if not g: return np.ones((H, W))
+        out = np.zeros((H, W))
+        for m in g['lit']: out = np.maximum(out, np.asarray(lay_of(f'hsmask_{m}.png').split()[3]).astype(float) / 255)
+        return out
+    if k >= 0:
+        g = G[k]; fin = eo3(prog(u, g['at'] - .22, g['at'] + .14)); prev = G[k - 1] if k > 0 else None
+        keep = union(g) * fin + union(prev) * (1 - fin)
+        a_ = Image.fromarray(((1 - keep) * 255 * s.get('dim', .8)).astype(np.uint8))
+        dk = Image.new('RGBA', (W, H), (3, 3, 4, 0)); dk.putalpha(a_); c.alpha_composite(dk)
+        for grp, al in ((g, fin), (prev, 1 - fin)):
+            if not grp or al <= 0: continue
+            for m in grp['lit']:
+                rim = lay_of(f'hsrim_{m}.png'); rim.putalpha(rim.split()[3].point(lambda v, al=al: int(v * al * s.get('rim', .9)))); c.alpha_composite(rim)
+        for grp in G[:k + 1]:
+            for ch in grp.get('chips', []):
+                if grp is g or ch.get('stay'):
+                    put_chip(c, ch['label'], 540 + (ch['x'] - fx) * w, s.get('label_y', 1330) - OY, prog(u, ch['at'] - .05, ch['at'] + .2), size=34)
+    FRAME_BOXES[:] = [x for x in FRAME_BOXES if x[0] != 'card']
+
+def spot_groups_sfx(d, s): return [(g['at'], 'tap', .35) for g in s['groups'] if g['at'] < d] + [(ch['at'], 'tap', .3) for g in s['groups'] for ch in g.get('chips', []) if ch['at'] < d]
+def spot_groups_keys(d, s): return [(.2, 'all six')] + [(min(d - .05, g['at'] + .3), 'group %d' % i) for i, g in enumerate(s['groups'])]
+
+SCENE_TYPES = ['spot_groups', 'player_freeze', 'spotlight', 'flip', 'stage_table', 'shadow_clones', 'seal', 'versus_rows', 'versus', 'diptych', 'coverflow', 'deal', 'conveyor', 'rank', 'bar_race', 'leaderboard', 'card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
                'featured_cards', 'stat_chart', 'cta_product', 'end_card']
 SCENES = {k: (globals()[k], globals()[k + '_sfx']) for k in SCENE_TYPES}
 KEYS = {k: globals()[k + '_keys'] for k in SCENE_TYPES}
 NO_LOGO = {'end_card'}
-FLOW = {'broll', 'macro3d'}   # keeps moving under the dissolve into the next scene
+FLOW = {'broll', 'macro3d', 'stage_table'}   # keeps moving under the dissolve into the next scene
 NO_CAPTION = {'end_card'}   # full-bleed CTA poster: VO plays, caption not burned in
 
 # ---------------- soft sound mode ("sfx_style": "soft") ----------------
@@ -1221,6 +1551,8 @@ def soft_sfx(d, s):
     elif t == 'versus_rows': ev = [(r.get('at', 0), 'swoosh', .5) for r in s['rows']] + [(r.get('at', 0) + r.get('joiner_at', .5), 'shutter', .35) for r in s['rows']]
     elif t == 'versus': ev = [(0, 'swoosh', .5), (s.get('joiner_at', .55), 'shutter', .4)] if s.get('joiner', 'VS') else [(0, 'swoosh', .5)]
     elif t == 'diptych': ev = [(0, 'swoosh', .45), (s.get('join_at', 1.6) - .05, 'tap', .6), (s.get('join_at', 1.6) + .05, 'reveal', .45)]
+    elif t in ('player_freeze', 'spotlight', 'flip', 'spot_groups'): ev = globals()[t + '_sfx'](d, s)
+    elif t == 'stage_table': ev = ([(0, 'swoosh', .35)] if s.get('t_off', 0) == 0 else []) + ([(s['reveal'][0] - s.get('t_off', 0), 'swoosh', .55)] if 0 <= s.get('reveal', [99])[0] - s.get('t_off', 0) < d else []) + [(s.get('deal_at', 3.3) - s.get('t_off', 0) + i * s.get('deal_step', .12) + .45, 'tap', .35) for i in range(len(s.get('cards', []))) if 0 <= s.get('deal_at', 3.3) - s.get('t_off', 0) + i * s.get('deal_step', .12) + .45 < d]
     elif t == 'rank': ev = [(0, 'swoosh', .55), (s.get('count_at', .55) + s.get('count_dur', 1.7), 'shutter', .4)]
     elif t == 'bar_race': ev = [(s.get('start', .45), 'swoosh', .3), (s.get('start', .45) + s.get('race_dur', 2.0), 'coin', .35)]
     elif t == 'leaderboard': ev = [(r.get('at', .12 + i * s.get('step', .1)), 'tap', .3) for i, r in enumerate(s['rows'])]
@@ -1301,7 +1633,7 @@ def caption_plain(text, size):
 
 def chunks(text, maxw=4):
     """Split a caption into 2-4 word chunks, preferring breaks after punctuation."""
-    words = text.split(); out, cur = [], []
+    words = [w for w in text.split(' ') if w]; out, cur = [], []   # v3.8: NBSP (\u00a0) keeps words together
     for w_ in words:
         cur.append(w_)
         if len(cur) >= maxw or (len(cur) >= 2 and w_[-1] in ',.!?—:…'): out.append(' '.join(cur)); cur = []
@@ -1315,7 +1647,12 @@ def caption_for(s, u, d):
     cap = s.get('caption')
     if not cap: return None
     if CFG.get('caption_mode', 'lines') != 'chunks': return cap, .3 if s is CFG['scenes'][0] else 0, 60, d
-    a, b = s.get('vo_window', [.1, d - .15]); parts = chunks(cap, CFG.get('chunk_words', 4))
+    G = s.get('caption_groups')   # v3.8: one scene, several spoken lines, each chunked inside its own window
+    if G:
+        gi = max([i for i, g in enumerate(G) if u >= g[1] - .05] or [0]); cap, a, b = G[gi]
+        if gi + 1 < len(G): b = min(b, G[gi + 1][1] - .3)
+    else: a, b = s.get('vo_window', [.1, d - .15])
+    parts = (None if G else s.get('chunk_list')) or chunks(cap, CFG.get('chunk_words', 4))   # v3.8: hand-set chunks
     if u < a - .05: return None
     L = sum(len(p) for p in parts); t = a
     for i, p in enumerate(parts):
@@ -1344,9 +1681,9 @@ def scene_layer(i, t, u):
         g = c.convert('L').convert('RGBA'); c = Image.blend(c, g, m * (s['mono'] if isinstance(s['mono'], float) else 1.))
     bs = s.get('badges', [])
     for k, b in enumerate(bs):
-        end = bs[k + 1]['at'] if k + 1 < len(bs) else d
+        end = bs[k + 1]['at'] if k + 1 < len(bs) else b.get('until', d)
         if b['at'] <= u < end + .001:
-            out = prog(u, end - .2, end) if k + 1 < len(bs) else 0
+            out = prog(u, end - .2, end) if (k + 1 < len(bs) or 'until' in b) else 0
             put_chip(c, b['text'], 540, b.get("y", 288 - OY), prog(u, b['at'], b['at'] + .3) * (1 - out), bg=(PAPER if CFG.get('mono_ui') else YELLOW) if b.get('hl') else PAPER, size=b.get('size', 34))
     return c
 
@@ -1680,7 +2017,7 @@ def cmd_check():
     print('OK — no errors' if not errs else f'{len(errs)} error(s)')
     return not errs
 
-DESC = {'shadow_clones': 'Zed card in colour; dark shadow copies slide out to both sides with ghost trails, shadows creep in from the edges', 'seal': 'Stone tomb doors slam shut over the card (dust, last thread of light) or grind open with light pouring from the seam', 'versus_rows': 'Two face-offs stacked: each pair slides in, turned toward each other in 3D, as it is spoken', 'versus': 'Pair face-off: two cards slide in from opposite edges, turned toward each other in 3D, joiner in the middle', 'diptych': 'Two connecting-art cards fly in and slide together until the art joins into one painting, light sweep across the seam', 'coverflow': '3D carousel: centre card faces camera, neighbours turn away; advances card by card', 'deal': 'Cards dealt from the corners slap down onto a centre pile', 'conveyor': 'Cards ride a belt in perspective; ring timer restarts and counter ticks per card',
+DESC = {'spot_groups': 'Who sings: the group art stays on screen while sets of members light up inside their traced outlines (the rest drops into shadow); name chips pop under them', 'player_freeze': 'Freeze-frame: a Kard-drawn video player plays the artwork, pauses, brackets snap onto a card and the camera dives into it', 'spotlight': 'Roll call: camera glides across the group art; a spotlight picks out each member as they are named', 'flip': 'Makeover flip: original cards turn over in 3D to reveal their new versions', 'stage_table': 'Stage → Table: the art fills the frame as a concert stage, then the camera cranes up to reveal a card on a table as a hand of cards slides in', 'shadow_clones': 'Zed card in colour; dark shadow copies slide out to both sides with ghost trails, shadows creep in from the edges', 'seal': 'Stone tomb doors slam shut over the card (dust, last thread of light) or grind open with light pouring from the seam', 'versus_rows': 'Two face-offs stacked: each pair slides in, turned toward each other in 3D, as it is spoken', 'versus': 'Pair face-off: two cards slide in from opposite edges, turned toward each other in 3D, joiner in the middle', 'diptych': 'Two connecting-art cards fly in and slide together until the art joins into one painting, light sweep across the seam', 'coverflow': '3D carousel: centre card faces camera, neighbours turn away; advances card by card', 'deal': 'Cards dealt from the corners slap down onto a centre pile', 'conveyor': 'Cards ride a belt in perspective; ring timer restarts and counter ticks per card',
         'rank': 'Giant outlined rank numeral behind a card swinging in in 3D; counter rolls to the exact count', 'bar_race': 'Bars race at the same speed; the bigger one overtakes', 'leaderboard': 'Ranking board: rows rise in, bars grow, scale zooms out',
         'hook_mystery': 'Starburst; known versions pop in with ✗; blacked-out mystery card + ?; flash reveal',
         'hero_stamp': 'Hero card push-in + stamp', 'product_intro': 'Box + pack fly in, date types out',
