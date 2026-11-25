@@ -9,7 +9,7 @@ Produces a 9:16, 45–60s card-story Reel for Kard Avenue in the thefinecard sty
 
 ## 0. Load the house rules and engine (do this first, once per chat)
 
-**Before starting any reel:** read the project memory file `areas/kard-avenue-reels.md` and playbook §16–§20. **After the user approves a video:** write what was learned (revisions asked for, what worked) back to that memory file and to the playbook, so the same revision never has to be asked twice.
+**Before starting any reel:** read the project memory file `areas/kard-avenue-reels.md` and playbook §16–§21. **After the user approves a video:** write what was learned (revisions asked for, what worked) back to that memory file and to the playbook, so the same revision never has to be asked twice.
 
 The files come from one of these places. Use the first that exists:
 
@@ -21,7 +21,7 @@ The files come from one of these places. Use the first that exists:
 | File (skill folder) | Save locally as |
 |---|---|
 | `references/kard-reel-playbook.md` (also `claude/kard-reel-playbook.md` in the Project) | read only — all rules (layout, branding, script, sound, checklist) |
-| `engine/kard_reel.py` (v3.8.1) | `work/kard_reel.py` |
+| `engine/kard_reel.py` (v3.9) + `engine/worlds.py` + `engine/living.py` | `work/` (keep all three and `fonts/` together; `living.py` imports `worlds.py`) |
 | `engine/editor_template.html` | `work/editor_template.html` |
 | `assets/sfx/*.wav` (the user's sound pack) | copy into `work/sfx/` (no synthesized sounds; never run an old make_sfx.py) |
 | `engine/example_editorial_arita.json` | `work/example.json` (**default pattern to copy**, approved Video 11 editorial style) |
@@ -29,15 +29,19 @@ The files come from one of these places. Use the first that exists:
 | `engine/example_rivalry_lore_vendetta.json` | reference for story/lore reels (Video 15 "Rivalry Lore": `versus`, `versus_rows`, `diptych`, `shadow_clones`, `seal`, rain slam, editorial marker on card text) |
 | `examples/video17/` (`reel.json`, `reel_trial.json`, `gen.py`, `gen_trial.py`, `retime.py`, `retime_trial.py`, `beats.py`) | reference for group-art / music-band reels (Video 17 HEARTSTEEL: `player_freeze`, `spotlight`, `flip`, `spot_groups`) and the VO retime + trial workflow (playbook §20). The scripts are Video 17's working copies: adjust their file paths before reuse |
 | `tools/make_masks.py` + `tools/hs_boxes.json` | outline masks + rim lights for `spotlight` (trace mode) / `spot_groups`: `python3 tools/make_masks.py ART.png boxes.json --preview` (needs `rembg[cpu]`, model `isnet-anime`; check the preview, re-run one member with `--only key`) |
+| `examples/video18/` (`gen.py`, `reel.json`, `prep.py`, `hl_sunday_*.png`) | reference for v3.9 (Video 18 Mangaka × Pokémon: `prerender` scenes from `worlds.py` / `living.py`, ink/focus/page/iris transitions, traced `lift` highlights). Scripts use Video 18's working paths: adjust before reuse |
+| `tools/trace_mask.py` | glyph mask from coloured print for `lift` highlights |
+| `tools/trace_outline.py` | character outline mask for living cards (`living.py`) |
+| `references/kard-reel-v3.9-notes.md` | full v3.9 change list (playbook §21) |
 | `engine/example_brand_mono_delta_reign.json` | reference only (Video 06) |
 | `engine/example_3d_illustration_contest.json` | reference only (Video 05) |
 | `references/reference-thefinecard-style.md` | read only — script structure reference |
 
 If none of these is available, ask the user to attach the skill zip.
 
-**Default style (approved, keep until the user says otherwise):** the Video 11 editorial style in playbook §16, on top of the Video 06 "brand mono" base in §15 (black #0a0a0a / white #fafafa, the user's sound pack), built from `engine/example_editorial_arita.json` (engine v3.8.1, which keeps the v3.2 features: glitch + zoom transitions, `macro3d` with `"card": false`, editorial `highlight` with `follow` camera, `noir` + `spot` detective look, fly-over `plane` mode, artist `cutout`, `card_wall` scene; `mono_ui` turns all accents white, no navy/purple tints). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
+**Default style (approved, keep until the user says otherwise):** the Video 11 editorial style in playbook §16, on top of the Video 06 "brand mono" base in §15 (black #0a0a0a / white #fafafa, the user's sound pack), built from `engine/example_editorial_arita.json` (engine v3.9, which keeps the v3.2 features: glitch + zoom transitions, `macro3d` with `"card": false`, editorial `highlight` with `follow` camera, `noir` + `spot` detective look, fly-over `plane` mode, artist `cutout`, `card_wall` scene; `mono_ui` turns all accents white, no navy/purple tints). Start every new reel from that example. Use only the files in this skill folder; if `engine/` is missing here, use the GitHub repo, never an older Project copy.
 
-**A different pattern per topic (playbook §17).** Keep the pillar and the approved look, but do not repeat the previous video's pattern: pick Artist Spotlight, Set preview or Ranked Countdown by topic, and build at least one motion that is new for this video. Engine v3.3 adds `rank`, `bar_race`, `leaderboard`, `coverflow`, `deal` and `conveyor`; v3.4–v3.6 add `versus`, `versus_rows`, `diptych`, `shadow_clones`, `seal`, the falling-cards `rain` slam and `"caption_shadow": "strong"` (playbook §18–§19); v3.7–v3.8 add `stage_table`, `player_freeze`, `spotlight` (trace mode + logo drive-through), `flip` and `spot_groups` (`mask_fmt`/`rim_fmt`), plus `card_lineup` `rows: 2`/`bg_img`, highlight `style: 'band'`, `caption_groups` and `chunk_list` (playbook §20). Patterns now also include **Rivalry Lore** (one story per reel, §19). Use the `card_wall` / moving `crowd` look at most once per video. `"max_len": 75` allows a longer cut when the user asks for one.
+**A different pattern per topic (playbook §17).** Keep the pillar and the approved look, but do not repeat the previous video's pattern: pick Artist Spotlight, Set preview or Ranked Countdown by topic, and build at least one motion that is new for this video. Engine v3.3 adds `rank`, `bar_race`, `leaderboard`, `coverflow`, `deal` and `conveyor`; v3.4–v3.6 add `versus`, `versus_rows`, `diptych`, `shadow_clones`, `seal`, the falling-cards `rain` slam and `"caption_shadow": "strong"` (playbook §18–§19); v3.7–v3.8 add `stage_table`, `player_freeze`, `spotlight` (trace mode + logo drive-through), `flip` and `spot_groups` (`mask_fmt`/`rim_fmt`), plus `card_lineup` `rows: 2`/`bg_img`, highlight `style: 'band'`, `caption_groups` and `chunk_list` (playbook §20); v3.9 adds the `prerender` scene type (plays a folder of JPG frames made by `worlds.py` — monochrome worlds, `card3d`, `S_versus` / `S_flip` / `S_payoff` recipes — or `living.py` layered 2.5D living cards, camera-only motion), `ink` / `focus` / `page` / `iris` transitions, `lift` highlights on `macro3d` (real colours on a dimmed noir page, exact letters via a traced `mask`), `hl_boost` / `hl_glow`, and `caption_groups` on any scene (playbook §21). Patterns now also include **Rivalry Lore** (one story per reel, §19). Use the `card_wall` / moving `crowd` look at most once per video. `"max_len": 75` allows a longer cut when the user asks for one.
 
 **The playbook always wins.** Old script docs (`claude/video-NN-*.md`) are content records only (facts, lines, asset lists). Voice, register ("kamu"), format, layout and workflow always come from the playbook, even where an old doc says otherwise (e.g. Video 01's "Zandhira" voice and "lo"). If this SKILL.md and the playbook differ, follow the playbook.
 
@@ -106,7 +110,10 @@ The MP4, the cover, the editor page (link or zip), the script doc and the post c
 ## Hard rules (from past feedback)
 
 - **Voiceover sync (playbook §19, critical):** never place lines by estimated duration. Map every script line to the real recording (`silencedetect` pauses + syllable-beat counts per segment vs each line's syllables, confirmed by landmarks), build the timeline from that map, and after rendering check that no speech crosses a cut (except deliberate mid-sentence splits) and that frames at cue words show the right card.
-- **Captions:** plain white with `"caption_shadow": "strong"`, never a box (`caption_bg` off).
+- **Captions:** plain white with `"caption_shadow": "strong"`, never a box (`caption_bg` off). Use `caption_groups: [[text, t0, t1], …]` so captions follow the voice inside one long scene.
+- **Bottom credit line (v3.9):** never leave the bottom band blank — use the two-line credit footer (`FOOTERS` / `footer()` in `worlds.py`, e.g. "CHAPTER 01 · GOSHO AOYAMA" / "DETECTIVE CONAN · SINCE 1994"; `frame=True` on the opening hook). The top badge never overlaps the main object, and name titles stay clear of the caption.
+- **Highlights (v3.9):** coloured print → `style: 'lift'` with a mask traced by `tools/trace_mask.py`; highlight words in VO order (`silencedetect -32dB d=.08` for phrase gaps). `spot` sizes are pixels, never fractions.
+- **2-CPU workspace:** render `prerender` frames in two halves (`miss[part::2]`, or `python3 worlds.py NAME OUTDIR t1 t2 …`), each pass in the foreground and under 10 minutes; background jobs are killed when the reply ends. Put every preview and render on the editor page artifact.
 - **Video 17 rules (playbook §20):** fill the frame (no big empty bands); close-ups frame head + body and never overlap the Kard Avenue logo; trace/outline the subject instead of a round spotlight; never show the same image across two scenes in a row (make it one continuous shot); glitch between hook scenes; highlights sit exactly on the text; camera moves never stop and start mid-beat.
 - **Trial Reel:** the user records only the new hook lines (+ optional bridge); splice them in front of the main VO (`retime_trial.py` / `gen_trial.py` pattern) and merge lines that share one image into one scene.
 - **Small fixes:** render only the changed range with `clip OUT.mp4 a:b` and splice it in with ffmpeg (`-t a` on the first input, `-ss b` on the third; never two `trim`s on one input), audio copied from the original.

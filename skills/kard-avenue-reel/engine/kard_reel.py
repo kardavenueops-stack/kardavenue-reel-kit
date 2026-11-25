@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Kard Avenue Reel engine v3.8 — config-driven. v3 adds the approved Video 05 3D style (macro3d, slam, wall, whip/leak, reflect, glitch, camera, plain captions).
+Kard Avenue Reel engine v3.9 — config-driven. v3 adds the approved Video 05 3D style (macro3d, slam, wall, whip/leak, reflect, glitch, camera, plain captions). v3.9 (Video 18): prerender scenes, ink/focus/page/iris transitions, lift highlights with traced masks.
 
 A new video = one JSON config (script + images + scene types). No code edits.
 
@@ -408,7 +408,7 @@ def card_lineup(c, u, d, s):
             yo = (r - .5) * s.get('row_gap', 500) + abs(o) * 14
         elif n <= 3: x = {1: [540], 2: [330, 750], 3: [255, 540, 825]}[n][j]; a = {1: [0], 2: [5, -5], 3: [6, 0, -6]}[n][j]; yo = 0
         else: o = j - (n - 1) / 2; x = 540 + o * s.get('spread', 820 / (n - 1)); a = -o * s.get('fan', 5); yo = abs(o) ** 1.5 * 22
-        t0_, st_ = s.get('t0', 0), s.get('step', .12); p = eo3(prog(u, t0_ + j * st_, t0_ + .45 + j * st_)); put(c, k['img'], x, lerp(2000, cy0 + yo, p), h, angle=a)
+        t0_, st_ = s.get('t0', 0), s.get('step', .12); p = eo3(prog(u, t0_ + j * st_, t0_ + .45 + j * st_)); put(c, k['img'], x, lerp(s.get('enter_y', 2000), cy0 + yo, p), h, angle=a)
         lt = k.get('at', .8 + j * (d - 1.6) / max(1, n))
         if k.get('label'): put_chip(c, k['label'], x, cy0 + yo + h / 2 + 50, prog(u, lt, lt + .25), size=28 if n <= 3 else 24)
     if s.get('heading'): put_text(c, s['heading'], 540, heading_y(cy0 - h / 2 + OY), F_BLACK, 64, stroke=6, alpha=prog(u, .6, 1.))
@@ -650,7 +650,7 @@ def dof_mask(axis, at, width, q):
     m = np.clip((np.abs(v - at) - width / 2) / .22, 0, 1) ** 1.3
     return Image.fromarray((m * 255).astype(np.uint8)).resize((W, H), Image.BILINEAR)
 
-HL_COLOR = (255, 226, 0)
+HL_COLOR = (255, 236, 40)
 def highlight_src(src, s, u):
     """Editorial highlight on an article screenshot: page upscaled + sharpened + text thickened (bold, crisp);
     noir = drained/darkened page; marker = bright yellow multiplied under the text (text stays solid black), sweeping in sync with the voice."""
@@ -667,11 +667,35 @@ def highlight_src(src, s, u):
         x0, y0, x1, y1 = h_['box']; bx = (int(x0 * Wd), int(y0 * Hd), int(x1 * Wd), int(y1 * Hd))
         if pr <= 0: continue
         xe = int(bx[0] + (bx[2] - bx[0]) * pr); reg = (bx[0], bx[1], max(bx[0] + 1, xe), bx[3])
+        if h_.get('style') == 'lift':   # v3.9: no marker, the object itself in its real colours, brighter, on the dim page
+            raw = img(s['img'], False).convert('RGB'); raw = raw.resize((Wd, Hd), Image.LANCZOS)
+            org = raw.crop(reg)
+            org = ImageEnhance.Brightness(ImageEnhance.Color(org).enhance(1.2)).enhance(h_.get('lift', 1.3))
+            if h_.get('mask'):        # traced mask of the lettering (same size as the image): light exactly the glyphs
+                mk = img(h_['mask'], False).convert('L').resize((Wd, Hd), Image.LANCZOS).crop(reg)
+                out.paste(org.convert('RGBA'), reg[:2], mk); continue
+            if h_.get('text_only'):   # light only the letters (red / white / yellow print), never the background around them
+                a_ = np.asarray(raw.crop(reg)).astype(np.int16); r_, g_, b_ = a_[..., 0], a_[..., 1], a_[..., 2]
+                cols = h_.get('colors', ['red', 'white', 'yellow']); m_ = np.zeros(r_.shape, bool)
+                if 'red' in cols: m_ |= (r_ > 140) & (g_ < 110) & (b_ < 110) & (r_ - g_ > 60)
+                if 'white' in cols: m_ |= (r_ > 200) & (g_ > 200) & (b_ > 200)
+                if 'yellow' in cols: m_ |= (r_ > 170) & (g_ > 140) & (b_ < 150) & (r_ - b_ > 70)
+                mk = Image.fromarray((m_ * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(1.2))
+                out.paste(org.convert('RGBA'), reg[:2], mk); continue
+            out.paste(org.convert('RGBA'), reg[:2]); continue
         if h_.get('style') == 'band':   # v3.8: light text on dark art -> translucent marker band under the words, text kept bright on top
-            org = out.crop(reg).convert('RGB'); band = Image.blend(org, Image.new('RGB', org.size, tuple(h_.get('color', HL_COLOR))), .62)
+            org = base.crop(reg).convert('RGB') if not s.get('noir') else article_base(s['img'], False)[0].crop(reg).convert('RGB')
+            band = Image.blend(org, Image.new('RGB', org.size, tuple(h_.get('color', HL_COLOR))), .45)
+            band = ImageEnhance.Brightness(band).enhance(s.get('hl_boost', 1.0))
             out.paste(ImageChops.lighter(band, org).convert('RGBA'), reg[:2]); continue
         crop = bold.crop(reg).convert('RGB'); col = Image.new('RGB', crop.size, tuple(h_.get('color', HL_COLOR)))
-        out.paste(ImageChops.multiply(crop, col).convert('RGBA'), reg[:2])
+        hi = ImageChops.multiply(crop, col)
+        if s.get('hl_boost'): hi = ImageEnhance.Brightness(hi).enhance(s['hl_boost'])
+        if s.get('hl_glow'):    # soft light bloom around the marked words so they read as the brightest thing on screen
+            gpad = 40; gl = Image.new('RGBA', (reg[2] - reg[0] + gpad * 2, reg[3] - reg[1] + gpad * 2), (0, 0, 0, 0))
+            ImageDraw.Draw(gl).rectangle([gpad, gpad, gl.width - gpad, gl.height - gpad], fill=tuple(HL_COLOR) + (int(150 * s['hl_glow']),))
+            gl = gl.filter(ImageFilter.GaussianBlur(22)); out.alpha_composite(gl, (reg[0] - gpad, reg[1] - gpad))
+        out.paste(hi.convert('RGBA'), reg[:2])
     return out
 
 @functools.lru_cache(maxsize=8)
@@ -684,7 +708,7 @@ def article_base(name, noir):
     bold = Image.blend(sharp, thick, .55).point(lambda v: 0 if v < 90 else (255 if v > 220 else v)).convert('RGBA')   # light bold, not heavy
     page = sharp.convert('RGBA')
     if noir:
-        rgb = ImageEnhance.Brightness(ImageEnhance.Color(sharp).enhance(0)).enhance(.72); page = rgb.convert('RGBA')
+        rgb = ImageEnhance.Brightness(ImageEnhance.Color(sharp).enhance(0)).enhance(.30); page = rgb.convert('RGBA')
     return page, bold
 
 def follow_pos(s, u, h, ar):
@@ -1515,12 +1539,35 @@ def spot_groups(c, u, d, s):
 def spot_groups_sfx(d, s): return [(g['at'], 'tap', .35) for g in s['groups'] if g['at'] < d] + [(ch['at'], 'tap', .3) for g in s['groups'] for ch in g.get('chips', []) if ch['at'] < d]
 def spot_groups_keys(d, s): return [(.2, 'all six')] + [(min(d - .05, g['at'] + .3), 'group %d' % i) for i, g in enumerate(s['groups'])]
 
-SCENE_TYPES = ['spot_groups', 'player_freeze', 'spotlight', 'flip', 'stage_table', 'shadow_clones', 'seal', 'versus_rows', 'versus', 'diptych', 'coverflow', 'deal', 'conveyor', 'rank', 'bar_race', 'leaderboard', 'card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
+
+# ---------------- prerender (v3.9): play frames made by an external renderer (living cards, cover washes) ----------------
+@functools.lru_cache(64)
+def _pr_frame(path):
+    return Image.open(path).convert('RGBA')
+
+
+@functools.lru_cache(64)
+def _pr_list(dr):
+    return sorted(int(f[2:6]) for f in os.listdir(dr) if f.startswith('f_'))
+
+
+def prerender(c, u, d, s):
+    """Full-frame frames from s['frames'] (dir with f_0000.jpg..., 30 fps); nearest rendered frame if some are missing
+    (board = key frames only). Plays past d under the next dissolve (FLOW)."""
+    dr = apath(s['frames']); L = _pr_list(dr)
+    i = int(round((u + s.get('offset', 0)) * FPS)); j = min(L, key=lambda k: abs(k - i))
+    c.alpha_composite(_pr_frame(os.path.join(dr, f'f_{j:04d}.jpg')))
+
+
+def prerender_sfx(d, s): return []
+def prerender_keys(d, s): return [(t, k) for t, k in s.get('keys', [(d * .5, 'prerender')])]
+
+SCENE_TYPES = ['prerender', 'spot_groups', 'player_freeze', 'spotlight', 'flip', 'stage_table', 'shadow_clones', 'seal', 'versus_rows', 'versus', 'diptych', 'coverflow', 'deal', 'conveyor', 'rank', 'bar_race', 'leaderboard', 'card_wall', 'slam', 'wall', 'macro3d', 'broll', 'hook_mystery', 'hero_stamp', 'product_intro', 'card_grid', 'card_lineup', 'reveal_zoom', 'artist',
                'featured_cards', 'stat_chart', 'cta_product', 'end_card']
 SCENES = {k: (globals()[k], globals()[k + '_sfx']) for k in SCENE_TYPES}
 KEYS = {k: globals()[k + '_keys'] for k in SCENE_TYPES}
 NO_LOGO = {'end_card'}
-FLOW = {'broll', 'macro3d', 'stage_table'}   # keeps moving under the dissolve into the next scene
+FLOW = {'broll', 'macro3d', 'stage_table', 'prerender'}   # keeps moving under the dissolve into the next scene
 NO_CAPTION = {'end_card'}   # full-bleed CTA poster: VO plays, caption not burned in
 
 # ---------------- soft sound mode ("sfx_style": "soft") ----------------
@@ -1750,6 +1797,58 @@ def fx_layers(c, s, t, u):
             if k % 3: d.rounded_rectangle([x - w_ / 2, y - sz / 2, x + w_ / 2, y + sz / 2], 3, fill=cols[ci] + (al,))
             else: d.ellipse([x - sz * .4, y - sz * .4, x + sz * .4, y + sz * .4], fill=cols[ci] + (al,))
 
+
+# ---------------- v3.9 transitions: ink bloom, rack-focus, page turn, spotlight iris ----------------
+_TRN = {}
+def _tr_noise(seed):
+    if seed not in _TRN:
+        rng = np.random.default_rng(seed); n = 0
+        for i, sc in enumerate((160, 60, 20)):
+            n = n + np.asarray(Image.fromarray((rng.random((H // sc + 2, W // sc + 2)) * 255).astype(np.uint8)).resize((W, H), Image.BICUBIC)).astype(np.float32) / 255 / (i + 1)
+        _TRN[seed] = (n - n.min()) / (n.max() - n.min())
+    return _TRN[seed]
+
+
+def trans_ink(prev, c, mix, seed=3):
+    """Ink blooms from the centre (black edge), the new shot is revealed inside it."""
+    n = _tr_noise(seed); yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    d = np.hypot((xx - W / 2) / W, (yy - H * .46) / H) / .72
+    th = eo3(mix) * 1.35; f = d * .75 + n * .45
+    m = np.clip((th - f) / .04, 0, 1); edge = np.clip(1 - np.abs(th - f - .05) / .05, 0, 1) * (mix < .98)
+    a = np.asarray(prev).astype(np.float32); b = np.asarray(c).astype(np.float32)
+    o = a * (1 - m[..., None]) + b * m[..., None]; o[..., :3] *= (1 - edge[..., None] * .92)
+    return Image.fromarray(o.astype(np.uint8))
+
+
+def trans_focus(prev, c, mix):
+    """Rack-focus dissolve: both shots go soft at the crossover, the new one pulls into focus."""
+    bl = math.sin(math.pi * mix) * 16
+    a = prev.filter(ImageFilter.GaussianBlur(bl)) if bl > .5 else prev
+    b = c.filter(ImageFilter.GaussianBlur(bl)) if bl > .5 else c
+    return Image.blend(a, b, eio(mix))
+
+
+def trans_page(prev, c, mix):
+    """Page turn: the old shot swings away on its left edge like a page, shading as it turns."""
+    ang = eio(mix) * math.pi * .5; cw = math.cos(ang)
+    if cw < .02: return c
+    sh = math.sin(ang) * 260
+    dst = [(0, 0), (W * cw, -sh), (W * cw, H + sh), (0, H)]
+    co = persp_coeffs([(0, 0), (W, 0), (W, H), (0, H)], dst)
+    pg = prev.transform((W, H), Image.PERSPECTIVE, co, Image.BILINEAR)
+    shade = Image.new('RGBA', (W, H), (0, 0, 0, int(160 * math.sin(ang))))
+    pg = Image.alpha_composite(pg, Image.composite(shade, Image.new('RGBA', (W, H), (0, 0, 0, 0)), pg.split()[3]))
+    out = c.copy(); dark = Image.new('RGBA', (W, H), (0, 0, 0, int(120 * (1 - mix)))); out.alpha_composite(dark); out.alpha_composite(pg); return out
+
+
+def trans_iris(prev, c, mix):
+    """Spotlight iris: the old shot closes to a point of light, the new one opens from it."""
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32); d = np.hypot(xx - W / 2, yy - H * .46)
+    src = prev if mix < .5 else c; r = abs(math.cos(math.pi * mix)) * 1250 + 4
+    m = np.clip((r - d) / 24, 0, 1)
+    o = np.asarray(src).astype(np.float32); o[..., :3] *= m[..., None]
+    return Image.fromarray(o.astype(np.uint8))
+
 @functools.lru_cache(None)
 def leak_layer(k):
     a = k / 20; yy, xx = np.mgrid[0:H:8, 0:W:8]; r = np.hypot((xx - W * .75) / W, (yy - H * .3) / H)
@@ -1829,6 +1928,10 @@ def frame(t):
                 cw, ch = W / z, H / z; return im.transform((W, H), Image.EXTENT, ((W - cw) / 2, (H - ch) / 2, (W + cw) / 2, (H + ch) / 2), Image.BILINEAR)
             c = Image.blend(zs(prev, z1), zs(c, z2), mix); bl = math.sin(math.pi * mix)
             if bl > .1: c = Image.blend(c, c.resize((W // 6, H // 6), Image.BILINEAR).resize((W, H), Image.BILINEAR), bl * .5)
+        elif tr == 'ink': c = trans_ink(prev, c, mix, seed=i)
+        elif tr == 'focus': c = trans_focus(prev, c, mix)
+        elif tr == 'page': c = trans_page(prev, c, mix)
+        elif tr == 'iris': c = trans_iris(prev, c, mix)
         else: c = Image.blend(prev, c, mix)
         if tr == 'leak':   # warm light-leak flare across the cut
             c.alpha_composite(leak_layer(int(math.sin(math.pi * mix) * 20)))
@@ -2031,7 +2134,7 @@ def scene_rows():
     rows = []
     for i, (t0, t1, s) in enumerate(timeline()):
         rows.append({'t': round(t0, 2), 'e': round(t1, 2), 'title': s.get('beat', s['type']), 'vo': s.get('vo', ''), 'cap': s.get('caption', ''),
-                     'vis': s.get('visual', DESC[s['type']]), 'sfx': ', '.join(sorted({n for _, n, _ in scene_sfx(s)}))})
+                     'vis': s.get('visual', DESC.get(s['type'], s['type'])), 'sfx': ', '.join(sorted({n for _, n, _ in scene_sfx(s)}))})
     return rows
 
 def post_caption():
