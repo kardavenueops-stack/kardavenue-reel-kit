@@ -560,3 +560,30 @@ Approved on 26 Nov 2026 (Video 18 v4). This builds on v3.8.1 from `kardavenueops
 - The top text badge must never overlap the main object, and name titles stay clear of the caption.
 - Canva AI video refuses Pokémon characters (`moderation_rejected`) but makes b-roll without characters. Its download host is blocked in the workspace, so the user has to download the clip.
 - Every preview and render goes on the editor page artifact.
+
+### v3.9.1 additions (after the photos and the trial, 26–27 Nov 2026)
+
+- **`popout()`:** a small scissor-cut photo frame. The person (a background-removed cut-out) is scaled up inside it, and their head and shoulders break out over the top edge. `shift` moves the person sideways so the body isn't cropped; `poff` is for extra rows added above the photo. Used for Aoyama and Kamome Shirahama.
+  - Cut people out with rembg `isnet-general-use` plus alpha matting, so caps and hair keep their edges.
+  - If the photo crops the top of the hair, trim a clean rounded arc along the hair. Don't invent hair: a rebuilt crown looked bad.
+- **`S_trialhook`:** the trial roll-call hook. Each cover slams in big at the centre on its name, and the previous one slides behind to the side, so the three build up into a fan. Then they ink into the cards. `shuchusen()` adds manga focus lines; it was used with mirrored, darker panels so the trial background differs from the main hook.
+- **`tools/cover_v18.py`:** the Video 18 cover (card-focused layout, B/W manga-cover wall). The hero can be a person cut-out, with the held art swapped for a card through a perspective warp. Clean any leftover photo background from the mask, and check the body isn't chopped.
+- **`examples/video18/reel_trial.json`:** the trial config. The first two main scenes are replaced by one 6.0s hook, and the VO is the new hook plus the main VO from 7.04s.
+
+## `living.py` (new)
+
+- **Layers:**
+  - the character layer, traced along its black outline (whole character, no straight cuts)
+  - an inpainted plate (`grow`, `sharp=True` for tight clean fills)
+  - locked text and frame on top
+- **Camera-only motion.** The rigs, bounces, trails and ghost hands are off because they looked funny. `use_rig` must be set explicitly to use a rig. `sharp=True` on a shot turns the focus band off.
+- **`reveal=(t0, t1, n)`:** the background art lights up wedge by wedge around the figure. It was used for "the hands kept multiplying" on Crasher Wake's Passion.
+- **Run:** `python3 living.py NAME OUTDIR [--stills | t1 t2 …]`.
+
+## Workflow notes learned on Video 18
+
+- The workspace has only 2 CPUs. Render prerender frames in two halves (`miss[part::2]`), and run each pass in the foreground under 10 minutes. Background jobs get killed when the reply ends.
+- Article highlights: segment the glyph columns of each text line, map the highlighted words to what the VO says at that moment (`silencedetect -32dB d=.08` gives phrase gaps), and highlight in VO order.
+- The top text badge must never overlap the main object, and name titles stay clear of the caption.
+- Canva AI video refuses Pokémon characters (`moderation_rejected`) but makes b-roll without characters. Its download host is blocked in the workspace, so the user has to download the clip.
+- Every preview and render goes on the editor page artifact.

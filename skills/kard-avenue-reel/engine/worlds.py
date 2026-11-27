@@ -149,6 +149,58 @@ def cutout(name, h, seed=3):
     return out
 
 
+def popout(photo, person, crop, h, k=1.3, seed=3, top_fade=0, poff=0, shift=0):
+    """Small scissor-cut photo frame with the person scaled up inside it and breaking out over the top edge.
+    Returns (tile RGBA float, dy) where dy = how far the frame centre sits below the tile centre."""
+    src = Image.open(A + photo).convert('RGB'); per = Image.open(A + person).convert('RGBA')
+    x0, y0, x1, y1 = crop; s = h / (y1 - y0); fw = int((x1 - x0) * s)
+    inner = np.asarray(src.crop(crop).resize((fw, h), Image.LANCZOS)).astype(np.float32) / 255
+    rng = np.random.default_rng(seed); pad = 26
+    P = Image.new('L', (fw + pad * 2, h + pad * 2), 0); pts = []
+    for side in range(4):
+        for q in range(4):
+            f = (q + rng.random() * .6) / 4
+            x, y = [(f * fw, 0), (fw, f * h), ((1 - f) * fw, h), (0, (1 - f) * h)][side]
+            pts.append((x + pad + rng.uniform(-14, 14), y + pad + rng.uniform(-14, 14)))
+    ImageDraw.Draw(P).polygon(pts, fill=255)
+    pm = np.asarray(P).astype(np.float32) / 255
+    ps = s * k
+    pal = np.asarray(per.split()[3]); rows = np.where(pal.max(1) > 40)[0]
+    ptop = (rows[0] - poff) if len(rows) else y0
+    over = max(int(h * (k - 1) * 1.05) + 30, int((y1 - ptop) * ps - pad - h) + 24)   # room for the whole head
+    TW, TH = fw + pad * 2, h + pad * 2 + over
+    tile = np.zeros((TH, TW, 4), np.float32)
+    fy0 = over                                              # frame top inside the tile
+    tile[fy0:, :, :3] = .98; tile[fy0:, :, 3] = pm
+    ins = cv2.erode(pm, np.ones((19, 19), np.uint8))[pad:pad + h, pad:pad + fw, None]
+    reg = tile[fy0 + pad:fy0 + pad + h, pad:pad + fw]
+    reg[..., :3] = reg[..., :3] * (1 - ins) + inner * ins
+    # person, scaled k x around the frame's bottom centre
+    pr = per.resize((max(2, int(per.width * ps)), max(2, int(per.height * ps))), Image.LANCZOS)
+    pa = np.asarray(pr).astype(np.float32) / 255
+    a = pa[..., 3]; a = np.clip((a - .12) / .45, 0, 1)                # keep fine hair, drop faint halo
+    if top_fade:
+        ys = np.where(a.max(1) > .5)[0]
+        if len(ys): a[ys[0]:ys[0] + top_fade] *= np.linspace(0, 1, top_fade)[:, None]
+    cxs = (x0 + x1) / 2 * ps - shift; bys = (y1 + poff) * ps                         # source anchor -> tile frame bottom centre
+    ox = int(TW / 2 - cxs); oy = int(fy0 + pad + h - bys)
+    lay = np.zeros((TH, TW, 4), np.float32)
+    sx0, sy0 = max(0, -ox), max(0, -oy); dx0, dy0 = max(0, ox), max(0, oy)
+    w_ = min(pr.width - sx0, TW - dx0); h_ = min(pr.height - sy0, TH - dy0)
+    if w_ > 0 and h_ > 0:
+        lay[dy0:dy0 + h_, dx0:dx0 + w_, :3] = pa[sy0:sy0 + h_, sx0:sx0 + w_, :3]
+        lay[dy0:dy0 + h_, dx0:dx0 + w_, 3] = a[sy0:sy0 + h_, sx0:sx0 + w_]
+    allow = np.zeros((TH, TW), np.float32)
+    allow[:fy0 + pad + 40, :] = 1                                   # above the frame's top edge: free
+    allow[fy0 + pad:fy0 + pad + h, pad + 8:pad + fw - 8] = 1         # inside the photo window
+    allow = cv2.GaussianBlur(allow, (0, 0), 1.2)
+    la = lay[..., 3] * allow
+    # soft contact shadow where the body leaves the frame
+    tile[..., :3] = tile[..., :3] * (1 - la[..., None]) + lay[..., :3] * la[..., None]
+    tile[..., 3] = np.maximum(tile[..., 3], la)
+    return tile, (TH - (h + pad * 2)) / 2
+
+
 def noise(h, w, scale, seed, oct=3):
     rng = np.random.default_rng(seed); n = 0
     for i in range(oct):
@@ -430,6 +482,56 @@ def S_hook1(t):
     return grain(vignette(c), t)
 
 
+def shuchusen(t, cx=540, cy=900, n=150, seed=21):
+    """Manga focus lines radiating from a centre (black on the panels), slowly breathing."""
+    rng = np.random.default_rng(seed)
+    m = np.zeros((H, W), np.float32)
+    ang = rng.uniform(0, 2 * np.pi, n); wid = rng.uniform(.004, .016, n); r0 = rng.uniform(360, 560, n)
+    A = np.arctan2(gy - cy, gx - cx); R = np.hypot(gx - cx, gy - cy)
+    for a0, w0, r in zip(ang, wid, r0):
+        d = np.abs(np.angle(np.exp(1j * (A - a0))))
+        m = np.maximum(m, np.clip(1 - d / w0, 0, 1) * np.clip((R - r - 40 * math.sin(t * 2 + a0)) / 260, 0, 1))
+    return m
+
+
+def S_trialhook(t, dur=6.0):
+    """Trial hook roll call: each cover slams in big at centre on its name, the previous one slides behind to the side;
+    on 'semuanya' all three ink into their cards (fan: Pichu left, Simisear right, Palafin front)."""
+    c = bg_manga(t, dur)[:, ::-1].copy()                    # mirrored panels
+    c = c * .78 + .03                                       # a touch darker than the main hook
+    fl = cache('shuchusen', lambda: shuchusen(0))
+    c = c * (1 - fl[..., None] * .85)                       # black focus lines pulling to the centre
+    T1, T2, T3 = .50, 1.66, 2.58
+    C = (540, 900, 820, 0., 0.); L = (165, 925, 740, .26, -.06); R = (915, 925, 740, -.26, .06)
+    def slot(i):
+        if i == 0: return C if t < T2 else lerp_slot(C, L, eo3(prog(t, T2, T2 + .30)))
+        if i == 1: return C if t < T3 else lerp_slot(C, R, eo3(prog(t, T3, T3 + .30)))
+        return C
+    items = [('m_conan.png', 'c_pichu.png', T1, 3.62), ('m_chiikawa.png', 'c_simisear.png', T2, 3.84), ('m_hokuto.png', 'c_palafin.png', T3, 4.06)]
+    shake = sum((1 - prog(t, ts + .10, ts + .42)) * (t >= ts + .08) * 14 * math.sin(t * 75 + ts) for _, _, ts, _ in items)
+    push = lerp(1.0, 1.04, ease(t / dur))
+    order = [0, 1, 2] if t >= T3 else ([1, 0] if False else [0, 1])
+    for i in order:
+        cov, card, ts, ti = items[i]
+        s = eo3(prog(t, ts - .02, ts + .12))
+        if s <= 0: continue
+        x, y, h, yaw, roll = slot(i)
+        h = h * push * lerp(1.55, 1.0, s); x = 540 + (x - 540) * push + shake; y = y + shake * .5
+        p = eo3(prog(t, ti, ti + .5))
+        if p < 1:
+            c, _ = card3d(c, None, x, y, h, yaw, .05, roll, img=bw(rgba(cov, int(h)), 1.3), thick=6, shadow=.7, alpha=s * (1 - p ** 3))
+        m = ink_burst(x, y, prog(t, ti - .05, ti + .45), 70 + i, r=460)
+        if m is not None: c = c * (1 - m[..., None] * (1 - p) * .95)
+        if p > 0:
+            c, _ = card3d(c, card, x, y, h * .97, yaw * .85, .05, roll, sweep=lerp(-.3, 1.3, prog(t, ti + .2, ti + 1.3)), thick=10, shadow=.7, alpha=p, glow=(.30, .30, .30))
+        f = (1 - prog(t, ts + .08, ts + .30)) * (t >= ts + .08)
+        if f > 0: c = screen(c, np.dstack([np.exp(-(((gx - x) / 420) ** 2 + ((gy - y) / 600) ** 2)) * f * .35] * 3))
+    return grain(vignette(c), t)
+
+
+def lerp_slot(a, b, x): return tuple(lerp(p, q, x) for p, q in zip(a, b))
+
+
 def S_hook2(t):
     """Ink-action slam: brush strokes rip across, the Hokuto cover slams in, bursts into Palafin; Crasher Wake joins."""
     c = bg_ink(t, (.25, .45, .9), seed=5)
@@ -455,7 +557,9 @@ def S_aoyama(t):
     c = bg_noir(t)
     push = ease(t / 4.4)
     c, _ = card3d(c, None, 540, 850, lerp(760, 790, push), lerp(-.16, -.06, push), .03, .02, img=rgba('m_conan.png', 1000), thick=8, shadow=.7, sweep=lerp(-.3, 1.2, prog(t, .4, 3.4)))
-    # papers on the desk
+    a = eo3(prog(t, .55, 1.05))                       # his photo, scissor-cut, lands on the cover's corner
+    cut, dy = cache('pop_aoyama', lambda: popout('v_aoyama_photo_src.png', 'x_aoyama_person.png', (70, 300, 560, 760), 330, 1.32, 4, shift=34))
+    if a > 0: c, _ = card3d(c, None, 835, lerp(1220, 1125, a) - dy, cut.shape[0], -.10, 0, .07, img=cut, thick=0, shadow=.65, alpha=a)
     c = name_title(c, 'Gosho Aoyama', 'ILLUSTRATOR · DETECTIVE CONAN', .5, t, y=1405)
     return grain(vignette(c, .7), t, .025)
 
@@ -529,7 +633,7 @@ def S_versus(t, dur=2.53):
 def S_hara(t):
     c = bg_ink(t, (.25, .45, .9), seed=8)
     a = eo3(prog(t, .05, .45))
-    cut = cache('cut_hara', lambda: cutout('v_hara.png', 720, 8))
+    cut = cache('cut_hara', lambda: cutout('v_hara_photo.png', 820, 8))
     c = put_rgba(c, cut, W / 2 + 10 * math.sin(t * 1.5), 800, a, scale=lerp(1.15, 1.0, a))
     c = name_title(c, 'Tetsuo Hara', 'ILLUSTRATOR · FIST OF THE NORTH STAR', .5, t, y=1300)
     return grain(vignette(c), t)
@@ -604,8 +708,8 @@ def S_shirahama(t):
     fr = cache('frame_witch', lambda: framed('m_witchhat.png', 760))
     c, _ = card3d(c, None, 540 - 30 * ease(t / 3.3), 700, fr.shape[0] * z * .98, .05 - .04 * ease(t / 3.3), .0, 0, img=cv2.resize(fr, None, fx=z * .98, fy=z * .98), thick=0, shadow=.75)
     a = eo3(prog(t, .35, .85))
-    cut = cache('cut_shira2', lambda: cutout('v_shirahama.png', 330, 11))
-    if a > 0: c, _ = card3d(c, None, 800, lerp(1220, 1100, a), cut.shape[0], -.10, 0, .07, img=cut, thick=0, shadow=.6, alpha=a)
+    cut, dy = cache('pop_shira', lambda: popout('v_shirahama_photo_src.png', 'x_shirahama_person.png', (0, 110, 391, 470), 330, 1.30, 11))
+    if a > 0: c, _ = card3d(c, None, 800, lerp(1220, 1110, a) - dy, cut.shape[0], -.10, 0, .07, img=cut, thick=0, shadow=.6, alpha=a)
     c = name_title(c, 'Kamome Shirahama', 'ILLUSTRATOR · WITCH HAT ATELIER', .5, t, y=1380)
     return grain(vignette(c, .6), t, .016)
 
@@ -672,6 +776,7 @@ def S_payoff(t, at, dur=5.97):
 
 # bottom credit line (fills the low empty band like a documentary lower credit); hook1 also keeps the dashed frame
 FOOTERS = {'hook1': ('MANGAKA × POKÉMON TCG', 'FOUR ARTISTS · FIVE CARDS', True),
+           'trialhook': ('MANGAKA × POKÉMON TCG', 'FOUR ARTISTS · FIVE CARDS', True),
            'aoyama': ('CHAPTER 01 · GOSHO AOYAMA', 'DETECTIVE CONAN · SINCE 1994', False),
            'pichu': ('SPIKY-EARED PICHU · DPt-P 042', 'SHŌNEN SUNDAY PROMO · 2009', False),
            'hara': ('CHAPTER 03 · TETSUO HARA', 'FIST OF THE NORTH STAR · SINCE 1983', False),
@@ -701,7 +806,7 @@ def ai_watermark(c, desc):
     return c
 
 
-SCENES = {'hook1': (S_hook1, 3.82), 'hook2': (S_hook2, 3.219), 'aoyama': (S_aoyama, 4.428), 'pichu': (S_pichu, 1.91),
+SCENES = {'trialhook': (S_trialhook, 6.0), 'hook1': (S_hook1, 3.82), 'hook2': (S_hook2, 3.219), 'aoyama': (S_aoyama, 4.428), 'pichu': (S_pichu, 1.91),
           'nagano': (S_nagano, 1.893), 'versus': (S_versus, 2.528), 'hara': (S_hara, 4.435), 'flip': (S_flip, 5.524),
           'shirahama': (S_shirahama, 3.298), 'glaceon': (S_glaceon, 3.783), 'payoff': (None, 5.973)}
 

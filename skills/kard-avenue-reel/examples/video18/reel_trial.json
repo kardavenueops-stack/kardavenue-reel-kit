@@ -1,0 +1,1129 @@
+{
+ "title": "Video 18 — Mangaka who drew Pokémon cards — TRIAL",
+ "assets_dir": "assets",
+ "sfx_dir": "sfx",
+ "logo": "07_kard_logo.png",
+ "caption_mode": "chunks",
+ "chunk_words": 4,
+ "highlight_words": [],
+ "forbidden_words": [
+  "TGA"
+ ],
+ "sfx_gain": 0.55,
+ "sfx_style": "soft",
+ "xfade": 0.35,
+ "stock_confirmed": true,
+ "ig_handle": "@kardavenue",
+ "cover": {
+  "img": "c_palafin.png",
+  "title": "MANGAKA x POKÉMON"
+ },
+ "bokeh": [
+  [
+   250,
+   250,
+   250
+  ],
+  [
+   150,
+   150,
+   150
+  ],
+  [
+   210,
+   210,
+   210
+  ]
+ ],
+ "highlight_sfx_once": true,
+ "camera": {
+  "punch": 0.03,
+  "punch_t": 0.5,
+  "breathe": 0.01,
+  "drift": 4,
+  "base": 1.02,
+  "grade": {
+   "sat": 1.1,
+   "contrast": 1.08
+  }
+ },
+ "badge_sfx": "shutter",
+ "cut_sfx": "swoosh",
+ "caption_style": "plain",
+ "caption_size": 50,
+ "caption_shadow": "strong",
+ "bg_color": [
+  [
+   26,
+   26,
+   26
+  ],
+  [
+   10,
+   10,
+   10
+  ]
+ ],
+ "mono_ui": true,
+ "slam_tint": [
+  20,
+  20,
+  20
+ ],
+ "slam_color": [
+  250,
+  250,
+  250
+ ],
+ "leak_color": [
+  250,
+  250,
+  250
+ ],
+ "voiceover": "vo_trial.wav",
+ "voiceover_offset": 0,
+ "max_len": 76,
+ "post_caption": "Mangaka favoritmu ternyata pernah menggambar kartu Pokémon 🖌️🃏\n\nGosho Aoyama (Detective Conan) · nagano (Chiikawa) · Tetsuo Hara (Hokuto no Ken) · Kamome Shirahama (Witch Hat Atelier)\n\nSpiky-eared Pichu, Simisear VSTAR SAR, Palafin ex SAR & Glaceon ex SAR ready di @kardavenue · Download Kard Avenue di Google Play & App Store\n\n#kardavenue #reels #pokemon #pokemontcg #pokemonindonesia",
+ "scenes": [
+  {
+   "beat": "Hook",
+   "type": "prerender",
+   "frames": "../w_trialhook",
+   "vo": "Pencipta Detective Conan, Chiikawa, sampai Hokuto no Ken… semuanya pernah gambar kartu Pokémon!",
+   "caption": "The creators of Detective Conan, Chiikawa and Fist of the North Star all drew Pokémon cards!",
+   "caption_groups": [
+    [
+     "The creators of Detective Conan,",
+     0.3,
+     1.62
+    ],
+    [
+     "Chiikawa,",
+     1.62,
+     2.28
+    ],
+    [
+     "even Fist of the North Star…",
+     2.28,
+     3.62
+    ],
+    [
+     "all drew Pokémon cards!",
+     3.62,
+     5.85
+    ]
+   ],
+   "sfx": [
+    [
+     0.5,
+     "tap",
+     0.4
+    ],
+    [
+     1.66,
+     "tap",
+     0.4
+    ],
+    [
+     2.58,
+     "tap",
+     0.4
+    ],
+    [
+     3.62,
+     "swoosh",
+     0.3
+    ]
+   ],
+   "dur": 6.0,
+   "vo_window": [
+    0.25,
+    5.62
+   ]
+  },
+  {
+   "beat": "Aoyama",
+   "type": "prerender",
+   "frames": "../w_aoyama",
+   "keys": [
+    [
+     1.0,
+     "noir desk: Conan cover"
+    ],
+    [
+     3.8,
+     "name title"
+    ]
+   ],
+   "vo": "Nah, mulai dari Gosho Aoyama. Tahun dua ribu sembilan, dia gambar Pokémon untuk pertama kalinya.",
+   "caption": "First up: Gosho Aoyama. In 2009, he drew a Pokémon for the first time ever.",
+   "visual": "Conan cover as paper cut-out, name title; 2009 / FIRST POKÉMON EVER chips",
+   "trans": "ink",
+   "xfade_in": 0.5,
+   "badges": [
+    {
+     "text": "2009",
+     "at": 1.75
+    },
+    {
+     "text": "HIS FIRST POKÉMON EVER",
+     "at": 2.9,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0,
+     "drop",
+     0.3
+    ]
+   ],
+   "dur": 4.428,
+   "vo_window": [
+    0.16,
+    4.27
+   ]
+  },
+  {
+   "beat": "Pichu",
+   "type": "prerender",
+   "frames": "../w_pichu",
+   "keys": [
+    [
+     0.4,
+     "card rises off desk"
+    ],
+    [
+     1.7,
+     "product shot"
+    ]
+   ],
+   "img": "c_pichu.png",
+   "vo": "Hasilnya? Spiky-eared Pichu,",
+   "caption": "The result? Spiky-eared Pichu,",
+   "visual": "Reversed fly-over: Pichu card starts close, pulls back and tips away",
+   "trans": "focus",
+   "xfade_in": 0.45,
+   "badges": [
+    {
+     "text": "SPIKY-EARED PICHU · 042/DPt-P",
+     "at": 0.5
+    }
+   ],
+   "dur": 1.91,
+   "vo_window": [
+    0.16,
+    1.91
+   ]
+  },
+  {
+   "beat": "Sunday",
+   "type": "macro3d",
+   "img": "p_sunday_insert.png",
+   "card": false,
+   "dof": 0,
+   "focus": {
+    "axis": "y",
+    "at": 0.5,
+    "width": 0.6
+   },
+   "to": {
+    "fx": 0.48,
+    "fy": 0.64,
+    "h": 2150,
+    "rot": 1,
+    "tx": 0.06,
+    "ty": 0.02
+   },
+   "highlight": [
+    {
+     "box": [
+      0.094,
+      0.45,
+      0.878,
+      0.59
+     ],
+     "t0": 0.25,
+     "dur": 0.9,
+     "style": "lift",
+     "mask": "hl_sunday_1.png"
+    },
+    {
+     "box": [
+      0.139,
+      0.842,
+      0.833,
+      0.908
+     ],
+     "t0": 1.45,
+     "dur": 0.9,
+     "style": "lift",
+     "mask": "hl_sunday_2.png"
+    }
+   ],
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1050,
+    "h": 400,
+    "dark": 0.8
+   },
+   "hl_bold": false,
+   "hl_boost": 1.35,
+   "hl_glow": 1.0,
+   "vo": "yang diselipkan di majalah Shonen Sunday, rumahnya Detective Conan.",
+   "caption": "tucked into Shonen Sunday, Conan's home magazine.",
+   "visual": "Real 2009 Sunday insert, noir + marker on 青山剛昌 and スペシャルカード",
+   "trans": "page",
+   "xfade_in": 0.45,
+   "badges": [
+    {
+     "text": "SHŌNEN SUNDAY #33 · JULY 2009",
+     "at": 0.2
+    }
+   ],
+   "dur": 3.428,
+   "from": {
+    "fx": 0.42,
+    "fy": 0.52,
+    "h": 1950,
+    "rot": -2,
+    "tx": -0.08,
+    "ty": 0.05
+   },
+   "vo_window": [
+    0.0,
+    3.27
+   ]
+  },
+  {
+   "beat": "Price",
+   "type": "macro3d",
+   "img": "p_sunday_cover.png",
+   "card": false,
+   "dof": 8,
+   "focus": {
+    "axis": "y",
+    "at": 0.3,
+    "at1": 0.5,
+    "width": 0.45
+   },
+   "to": {
+    "fx": 0.52,
+    "fy": 0.45,
+    "h": 2300,
+    "rot": -1,
+    "tx": -0.08,
+    "ty": 0.03
+   },
+   "vo": "Harga majalahnya cuma dua ratus enam puluh yen.",
+   "caption": "The magazine cost just ¥260.",
+   "visual": "Shonen Sunday #33 cover macro slide; ¥260 chip",
+   "trans": "glitch",
+   "xfade_in": 0.3,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.25
+    ]
+   ],
+   "badges": [
+    {
+     "text": "¥260",
+     "at": 0.9,
+     "hl": true
+    }
+   ],
+   "dur": 1.82,
+   "from": {
+    "fx": 0.45,
+    "fy": 0.25,
+    "h": 2600,
+    "rot": 2,
+    "tx": 0.1,
+    "ty": 0.05
+   },
+   "vo_window": [
+    0.16,
+    1.76
+   ]
+  },
+  {
+   "beat": "Price",
+   "type": "macro3d",
+   "img": "a_yahoo.png",
+   "card": false,
+   "dof": 0,
+   "focus": {
+    "axis": "y",
+    "at": 0.45,
+    "width": 0.6
+   },
+   "to": {
+    "fx": 0.4,
+    "fy": 0.63,
+    "h": 2900,
+    "rot": -1,
+    "tx": -0.04,
+    "ty": 0.03
+   },
+   "highlight": [
+    {
+     "box": [
+      0.348,
+      0.267,
+      0.402,
+      0.291
+     ],
+     "t0": 0.5,
+     "dur": 0.7
+    },
+    {
+     "box": [
+      0.348,
+      0.62,
+      0.41,
+      0.643
+     ],
+     "t0": 1.7,
+     "dur": 0.7
+    }
+   ],
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1050,
+    "h": 340,
+    "dark": 0.8
+   },
+   "hl_bold": false,
+   "hl_boost": 1.35,
+   "hl_glow": 1.0,
+   "vo": "Sekarang, kartunya bisa laku lebih dari dua ratus kali lipat!",
+   "caption": "Now the card can sell for over 200 times that!",
+   "visual": "Yahoo! Auctions sold listings, noir + marker on ¥55,000 then ¥110,000",
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "badges": [
+    {
+     "text": "YAHOO! AUCTIONS · SOLD · OCT 2026",
+     "at": 0.15
+    },
+    {
+     "text": "200×+",
+     "at": 2.35,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     2.35,
+     "coin",
+     0.35
+    ]
+   ],
+   "dur": 2.969,
+   "from": {
+    "fx": 0.4,
+    "fy": 0.28,
+    "h": 2700,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "vo_window": [
+    0.05,
+    2.81
+   ]
+  },
+  {
+   "beat": "nagano",
+   "type": "prerender",
+   "frames": "../w_nagano",
+   "keys": [
+    [
+     1.2,
+     "fun world: bear cut-out"
+    ]
+   ],
+   "vo": "Terus ada nagano. Pas kartu ini keluar,",
+   "caption": "Then there's nagano. When this card dropped,",
+   "visual": "nagano's bear self-character as paper cut-out, name title",
+   "trans": "zoom",
+   "xfade_in": 0.3,
+   "dur": 1.893,
+   "vo_window": [
+    0.16,
+    1.89
+   ]
+  },
+  {
+   "beat": "nagano",
+   "type": "macro3d",
+   "img": "a_insidegames.png",
+   "card": false,
+   "dof": 0,
+   "focus": {
+    "axis": "y",
+    "at": 0.43,
+    "width": 0.6
+   },
+   "to": {
+    "fx": 0.3,
+    "fy": 0.44,
+    "h": 3100,
+    "rot": -1,
+    "tx": -0.04,
+    "ty": 0.02
+   },
+   "highlight": [
+    {
+     "box": [
+      0.522,
+      0.406,
+      0.608,
+      0.431
+     ],
+     "t0": 0.25,
+     "dur": 0.5
+    },
+    {
+     "box": [
+      0.132,
+      0.437,
+      0.3,
+      0.463
+     ],
+     "t0": 0.8,
+     "dur": 1.0
+    }
+   ],
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1050,
+    "h": 340,
+    "dark": 0.8
+   },
+   "hl_bold": false,
+   "hl_boost": 1.35,
+   "hl_glow": 1.0,
+   "vo": "fans langsung curiga, kok mirip Chiikawa?",
+   "caption": "fans wondered: why does it look like Chiikawa?",
+   "visual": "inside-games article, noir + marker on the fan quote 「ちいかわみたい…」",
+   "trans": "focus",
+   "xfade_in": 0.45,
+   "badges": [
+    {
+     "text": "SOURCE: INSIDE GAMES, NOV 2022",
+     "at": 0.2
+    }
+   ],
+   "dur": 2.24,
+   "from": {
+    "fx": 0.45,
+    "fy": 0.42,
+    "h": 2900,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "vo_window": [
+    0.0,
+    2.19
+   ]
+  },
+  {
+   "beat": "nagano",
+   "type": "prerender",
+   "frames": "../w_versus",
+   "keys": [
+    [
+     0.5,
+     "split screen opens"
+    ],
+    [
+     1.9,
+     "both close-ups panning"
+    ]
+   ],
+   "vo": "Ternyata benar, pencipta Chiikawa sendiri yang gambar!",
+   "caption": "Turns out the Chiikawa creator drew it herself!",
+   "visual": "Split screen: Chiikawa (left) | Simisear VSTAR (right), each a close-up 3D pan side to side",
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "dur": 2.528,
+   "vo_window": [
+    0.06,
+    2.37
+   ]
+  },
+  {
+   "beat": "Simisear",
+   "type": "prerender",
+   "frames": "../lvw_simisear",
+   "vo": "Lihat Simisear VSTAR-nya, lagi asyik makan Sitrus Berry sambil pose \"yay\". Dan ini satu-satunya kartu dia.",
+   "caption": "Simisear VSTAR munching a Sitrus Berry, mid-\"yay\". Her only card.",
+   "visual": "Living card: Simisear layers, macro onto the berry, hop on \"yay\", pull back",
+   "trans": "zoom",
+   "xfade_in": 0.3,
+   "badges": [
+    {
+     "text": "SIMISEAR VSTAR · SAR · 2022",
+     "at": 0.3
+    },
+    {
+     "text": "HER ONLY POKÉMON CARD",
+     "at": 4.3,
+     "hl": true
+    }
+   ],
+   "keys": [
+    [
+     1.0,
+     "macro"
+    ],
+    [
+     3.65,
+     "yay hop"
+    ],
+    [
+     5.8,
+     "full card in fun world"
+    ]
+   ],
+   "dur": 6.099,
+   "vo_window": [
+    0.16,
+    5.94
+   ]
+  },
+  {
+   "beat": "Hara",
+   "type": "prerender",
+   "frames": "../w_hara",
+   "keys": [
+    [
+     2.5,
+     "ink-action world: Kenshiro cut-out"
+    ]
+   ],
+   "vo": "Sekarang, Tetsuo Hara. Komiknya, Hokuto no Ken, laku lebih dari seratus juta kopi!",
+   "caption": "Now, Tetsuo Hara. His Fist of the North Star sold over 100 million copies!",
+   "visual": "Hara's Kenshiro drawing as paper cut-out, name; 100,000,000+ COPIES chip",
+   "trans": "ink",
+   "xfade_in": 0.5,
+   "sfx": [
+    [
+     0,
+     "drop",
+     0.3
+    ],
+    [
+     0,
+     "bit8",
+     0.3
+    ]
+   ],
+   "badges": [
+    {
+     "text": "100,000,000+ COPIES",
+     "at": 2.1,
+     "hl": true
+    }
+   ],
+   "dur": 4.435,
+   "vo_window": [
+    0.16,
+    4.27
+   ]
+  },
+  {
+   "beat": "Palafin",
+   "type": "prerender",
+   "frames": "../lvw_palafin",
+   "vo": "Desember dua ribu dua empat, dia gambar Palafin ex. Lihat tinjunya, ninggalin bayangan kayak jurusnya Kenshiro!!",
+   "caption": "Dec 2024: Palafin ex. Look at the fists, leaving afterimages like Kenshiro!",
+   "visual": "Living card: Palafin layers, macro fist -> face, fists push with afterimage trails, pull back",
+   "trans": "zoom",
+   "xfade_in": 0.3,
+   "badges": [
+    {
+     "text": "PALAFIN ex · SAR · DEC 2024",
+     "at": 0.3
+    }
+   ],
+   "keys": [
+    [
+     0.8,
+     "macro fist"
+    ],
+    [
+     3.2,
+     "afterimages"
+    ],
+    [
+     5.2,
+     "full card"
+    ]
+   ],
+   "dur": 5.399,
+   "vo_window": [
+    0.16,
+    5.24
+   ]
+  },
+  {
+   "beat": "Quote",
+   "type": "macro3d",
+   "img": "a_hara_interview.png",
+   "card": false,
+   "dof": 0,
+   "focus": {
+    "axis": "y",
+    "at": 0.88,
+    "width": 0.4
+   },
+   "to": {
+    "fx": 0.34,
+    "fy": 0.89,
+    "h": 3100,
+    "rot": -1,
+    "tx": -0.04,
+    "ty": 0.02
+   },
+   "highlight": [
+    {
+     "box": [
+      0.4341,
+      0.8975,
+      0.5208,
+      0.9217
+     ],
+     "t0": 0.9,
+     "dur": 0.8
+    },
+    {
+     "box": [
+      0.486,
+      0.8698,
+      0.6559,
+      0.894
+     ],
+     "t0": 2.0,
+     "dur": 1.1
+    },
+    {
+     "box": [
+      0.6559,
+      0.8698,
+      0.7657,
+      0.894
+     ],
+     "t0": 3.37,
+     "dur": 0.8
+    }
+   ],
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1050,
+    "h": 340,
+    "dark": 0.8
+   },
+   "hl_bold": false,
+   "hl_boost": 1.35,
+   "hl_glow": 1.0,
+   "vo": "Kata Hara, bagian paling susahnya: tetap terasa Pokémon, tapi tetap keren ala dia.",
+   "caption": "The hardest part, he said: keep it Pokémon, but make it his kind of cool.",
+   "visual": "Official interview, noir + marker on the Pokémon-ness / his cool line",
+   "trans": "focus",
+   "xfade_in": 0.45,
+   "badges": [
+    {
+     "text": "SOURCE: POKÉMON CARD GAME OFFICIAL, NOV 2026",
+     "at": 0.2
+    }
+   ],
+   "dur": 4.597,
+   "from": {
+    "fx": 0.5,
+    "fy": 0.87,
+    "h": 2900,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "vo_window": [
+    0.16,
+    4.44
+   ]
+  },
+  {
+   "beat": "New card",
+   "type": "prerender",
+   "frames": "../w_flip",
+   "keys": [
+    [
+     1.5,
+     "arena: mystery card in spotlight"
+    ],
+    [
+     4.2,
+     "flipped: Crasher Wake"
+    ]
+   ],
+   "vo": "Nah, tanggal dua tujuh November, kartu keduanya rilis di Jepang. Namanya Crasher Wake's Passion, dari set Aura Seeker!",
+   "caption": "Nov 27: his second card, Crasher Wake's Passion, lands in Japan in Aura Seeker!",
+   "visual": "Blacked-out mystery card, 27 NOV date chip, 3D flip to Crasher Wake's Passion on its name",
+   "trans": "iris",
+   "xfade_in": 0.55,
+   "badges": [
+    {
+     "text": "27 NOV 2026 · JAPAN",
+     "at": 0.45
+    },
+    {
+     "text": "AURA SEEKER · M7 · SAR",
+     "at": 3.3,
+     "hl": true
+    }
+   ],
+   "sfx": [
+    [
+     0,
+     "metal_whoosh",
+     0.25
+    ],
+    [
+     0,
+     "bit8",
+     0.3
+    ],
+    [
+     2.9,
+     "reveal",
+     0.35
+    ]
+   ],
+   "caption_groups": [
+    [
+     "Nov 27: his second card",
+     0.2,
+     1.42
+    ],
+    [
+     "lands in Japan.",
+     1.42,
+     2.78
+    ],
+    [
+     "Crasher Wake's Passion, from Aura Seeker!",
+     2.8,
+     5.45
+    ]
+   ],
+   "dur": 5.524,
+   "vo_window": [
+    0.16,
+    5.36
+   ]
+  },
+  {
+   "beat": "Hands",
+   "type": "macro3d",
+   "img": "a_hara_interview.png",
+   "card": false,
+   "dof": 0,
+   "focus": {
+    "axis": "y",
+    "at": 0.2,
+    "width": 0.4
+   },
+   "to": {
+    "fx": 0.5,
+    "fy": 0.22,
+    "h": 2900,
+    "rot": 1,
+    "tx": 0.04,
+    "ty": 0.02
+   },
+   "highlight": [
+    {
+     "box": [
+      0.2354,
+      0.1509,
+      0.3512,
+      0.1878
+     ],
+     "t0": 0.8,
+     "dur": 0.6
+    },
+    {
+     "box": [
+      0.3626,
+      0.1509,
+      0.7668,
+      0.1878
+     ],
+     "t0": 1.5,
+     "dur": 1.1
+    }
+   ],
+   "follow": true,
+   "noir": true,
+   "spot": {
+    "w": 1050,
+    "h": 340,
+    "dark": 0.8
+   },
+   "hl_bold": false,
+   "hl_boost": 1.35,
+   "hl_glow": 1.0,
+   "vo": "Lucunya, tangan sebanyak itu awalnya enggak direncanakan.",
+   "caption": "Funny thing: he never planned that many hands.",
+   "visual": "Interview headline 「手の残像は、最初から描くつもりだった…」 noir + marker",
+   "trans": "page",
+   "xfade_in": 0.45,
+   "sfx": [],
+   "dur": 2.735,
+   "from": {
+    "fx": 0.5,
+    "fy": 0.17,
+    "h": 2700,
+    "rot": 0,
+    "tx": 0,
+    "ty": 0
+   },
+   "vo_window": [
+    0.16,
+    2.68
+   ]
+  },
+  {
+   "beat": "Hands",
+   "type": "prerender",
+   "frames": "../lvw_crasher",
+   "vo": "Makin digambar, makin nambah terus!!",
+   "caption": "They kept multiplying as he drew!",
+   "visual": "Living card: Crasher Wake, ghost-hand afterimages fan out one by one",
+   "trans": "zoom",
+   "xfade_in": 0.3,
+   "sfx": [
+    [
+     0.2,
+     "swoosh",
+     0.2
+    ],
+    [
+     0.8,
+     "swoosh",
+     0.2
+    ],
+    [
+     1.4,
+     "swoosh",
+     0.22
+    ]
+   ],
+   "keys": [
+    [
+     0.4,
+     "first hands"
+    ],
+    [
+     1.9,
+     "many hands"
+    ]
+   ],
+   "dur": 1.948,
+   "vo_window": [
+    0.05,
+    1.79
+   ]
+  },
+  {
+   "beat": "Shirahama",
+   "type": "prerender",
+   "frames": "../w_shirahama",
+   "keys": [
+    [
+     1.2,
+     "gallery wall"
+    ],
+    [
+     2.8,
+     "name title"
+    ]
+   ],
+   "vo": "Eh, satu lagi! Kamome Shirahama, pencipta Witch Hat Atelier.",
+   "caption": "Oh, one more! Kamome Shirahama, creator of Witch Hat Atelier.",
+   "visual": "Gallery wall: Witch Hat Atelier cover framed under a gallery light, her portrait card beside it, name title",
+   "trans": "glitch",
+   "xfade_in": 0.25,
+   "sfx": [
+    [
+     0,
+     "bit8",
+     0.35
+    ]
+   ],
+   "dur": 3.298,
+   "vo_window": [
+    0.16,
+    3.24
+   ]
+  },
+  {
+   "beat": "Shirahama",
+   "type": "prerender",
+   "frames": "../w_glaceon",
+   "keys": [
+    [
+     0.9,
+     "Glaceon spotlight + snow"
+    ],
+    [
+     2.75,
+     "Marvel + Star Wars logos"
+    ]
+   ],
+   "img": "c_glaceon.png",
+   "vo": "Dia pemenang Eisner Award, dan pernah gambar cover Marvel sampai Star Wars!!!!!",
+   "caption": "Eisner Award winner, with covers for Marvel and Star Wars!",
+   "visual": "Glaceon ex product shot in a single spotlight, slow orbit, falling snow; Marvel + Star Wars logos pop on their names",
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "badges": [
+    {
+     "text": "GLACEON ex · SAR",
+     "at": 0.1
+    },
+    {
+     "text": "EISNER AWARD 2020",
+     "at": 0.9,
+     "hl": true,
+     "until": 2.0
+    }
+   ],
+   "dur": 3.783,
+   "vo_window": [
+    0.06,
+    3.62
+   ],
+   "cues": {
+    "marvel": 2.29,
+    "starwars": 2.99
+   }
+  },
+  {
+   "beat": "Payoff",
+   "type": "prerender",
+   "frames": "../w_payoff",
+   "keys": [
+    [
+     4.0,
+     "studio: cards landing on their names"
+    ],
+    [
+     5.85,
+     "all four, light sweep"
+    ]
+   ],
+   "cards": [
+    {
+     "img": "c_pichu.png",
+     "at": 2.24
+    },
+    {
+     "img": "c_simisear.png",
+     "at": 2.79
+    },
+    {
+     "img": "c_palafin.png",
+     "at": 3.68
+    },
+    {
+     "img": "c_glaceon.png",
+     "at": 4.63
+    }
+   ],
+   "enter_y": -600,
+   "vo": "Jadi, mau punya kartu dari mangaka favoritmu? Pichu, Simisear, Palafin, sampai Glaceon, ada di Kard Avenue!",
+   "caption": "Want your favorite mangaka's card? Pichu, Simisear, Palafin and Glaceon: at Kard Avenue!",
+   "visual": "Four in-stock cards land one by one on their names over a blurred Eeveelution SAR; READY AT KARD AVENUE",
+   "trans": "whip",
+   "xfade_in": 0.3,
+   "badges": [
+    {
+     "text": "READY AT KARD AVENUE",
+     "at": 5.21,
+     "hl": true,
+     "y": 1180,
+     "size": 40
+    }
+   ],
+   "dur": 5.973,
+   "vo_window": [
+    0.16,
+    5.76
+   ],
+   "sfx": [
+    [
+     2.24,
+     "tap",
+     0.4
+    ],
+    [
+     2.79,
+     "tap",
+     0.4
+    ],
+    [
+     3.68,
+     "tap",
+     0.4
+    ],
+    [
+     4.63,
+     "tap",
+     0.4
+    ],
+    [
+     5.21,
+     "coin",
+     0.35
+    ]
+   ],
+   "caption_groups": [
+    [
+     "Want your favorite mangaka's card?",
+     0.05,
+     2.28
+    ],
+    [
+     "Pichu, Simisear, Palafin and Glaceon: at Kard Avenue!",
+     2.19,
+     5.92
+    ]
+   ]
+  },
+  {
+   "beat": "End card",
+   "type": "end_card",
+   "img": "23_follow_us_cta.jpg",
+   "punch": 0.4,
+   "vo": "Follow Kard Avenue, dan download aplikasinya Sekarang!!",
+   "caption": "Follow Kard Avenue and download the app now!",
+   "visual": "FOLLOW US! poster",
+   "trans": "leak",
+   "xfade_in": 0.45,
+   "dur": 3.484,
+   "vo_window": [
+    0.21,
+    2.45
+   ]
+  }
+ ]
+}

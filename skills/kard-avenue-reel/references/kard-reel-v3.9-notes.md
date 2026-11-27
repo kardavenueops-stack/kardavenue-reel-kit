@@ -42,6 +42,15 @@ Approved on 26 Nov 2026 (Video 18 v4). This builds on v3.8.1 from `kardavenueops
 - **`FOOTERS` / `footer()`:** the bottom two-line credit line (for example "CHAPTER 01 · GOSHO AOYAMA" / "DETECTIVE CONAN · SINCE 1994"). The bottom band is never left blank. `frame=True` adds the dashed outline frame (used on the opening hook).
 - **Run:** `python3 worlds.py NAME OUTDIR [t1 t2 …]`. With times it renders only those frames, which lets you split a scene across CPUs or resume.
 
+### v3.9.1 additions (after the photos and the trial, 26–27 Nov 2026)
+
+- **`popout()`:** a small scissor-cut photo frame. The person (a background-removed cut-out) is scaled up inside it, and their head and shoulders break out over the top edge. `shift` moves the person sideways so the body isn't cropped; `poff` is for extra rows added above the photo. Used for Aoyama and Kamome Shirahama.
+  - Cut people out with rembg `isnet-general-use` plus alpha matting, so caps and hair keep their edges.
+  - If the photo crops the top of the hair, trim a clean rounded arc along the hair. Don't invent hair: a rebuilt crown looked bad.
+- **`S_trialhook`:** the trial roll-call hook. Each cover slams in big at the centre on its name, and the previous one slides behind to the side, so the three build up into a fan. Then they ink into the cards. `shuchusen()` adds manga focus lines; it was used with mirrored, darker panels so the trial background differs from the main hook.
+- **`tools/cover_v18.py`:** the Video 18 cover (card-focused layout, B/W manga-cover wall). The hero can be a person cut-out, with the held art swapped for a card through a perspective warp. Clean any leftover photo background from the mask, and check the body isn't chopped.
+- **`examples/video18/reel_trial.json`:** the trial config. The first two main scenes are replaced by one 6.0s hook, and the VO is the new hook plus the main VO from 7.04s.
+
 ## `living.py` (new)
 
 - **Layers:**
